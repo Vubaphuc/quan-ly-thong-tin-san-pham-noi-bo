@@ -27,22 +27,22 @@ public class WarrantyEmployeeController {
         return ResponseEntity.ok(warrantyEmployeeService.findProductAndCustomerById(id));
     }
 
-    @GetMapping("san-pham/bao-hanh/{id}")
-    public ResponseEntity<?> getProducWarrantyById(@PathVariable Integer id) {
-        return ResponseEntity.ok(warrantyEmployeeService.getProducWarrantyById(id));
+    @GetMapping("product/guarantee/{id}")
+    public ResponseEntity<?> getProductWarrantyById(@PathVariable Integer id) {
+        return ResponseEntity.ok(warrantyEmployeeService.getProductWarrantyById(id));
     }
 
-    @PostMapping("dang-ky/tinh-phi")
+    @PostMapping("create/charge")
     public ResponseEntity<?> createProductWarrantyMoney(@RequestBody CreateWarrantyChargeRequest request) {
         return ResponseEntity.ok(warrantyEmployeeService.createProductWarrantyMoney(request));
     }
 
-    @PostMapping("dang-ky/khong-tinh-phi")
+    @PostMapping("create/no-charge")
     public ResponseEntity<?> createProductWarrantyNoMoney(@RequestBody CreateWarrantyNoChargeRequest request) {
         return ResponseEntity.ok(warrantyEmployeeService.createProductWarrantyNoMoney(request));
     }
 
-    @GetMapping("danh-sach/pending")
+    @GetMapping("product/pending")
     public ResponseEntity<?> getListProductWarrantyPending(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize,
@@ -50,7 +50,7 @@ public class WarrantyEmployeeController {
         return ResponseEntity.ok(warrantyEmployeeService.getListProductWarrantyPending(page,pageSize,term));
     }
 
-    @GetMapping("danh-sach/ok")
+    @GetMapping("product/ok")
     public ResponseEntity<?> getListProductWarrantyOk(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize,
@@ -58,7 +58,7 @@ public class WarrantyEmployeeController {
         return ResponseEntity.ok(warrantyEmployeeService.getListProductWarrantyOk(page,pageSize,term));
     }
 
-    @GetMapping("danh-sach/tat-ca")
+    @GetMapping("product/all")
     public ResponseEntity<?> getListProductWarrantyAll(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize,
@@ -66,7 +66,7 @@ public class WarrantyEmployeeController {
         return ResponseEntity.ok(warrantyEmployeeService.getListProductWarrantyAll(page,pageSize,term));
     }
 
-    @PutMapping("san-pham/nhan-vien-sua-chua/{id}")
+    @PutMapping("product/engineer/{id}")
     public ResponseEntity<?> updateInformationEngineer(@RequestBody CreateEmployeeEngineerRequest request, @PathVariable Integer id) {
         return ResponseEntity.ok(warrantyEmployeeService.updateInformationEngineer(request, id));
     }

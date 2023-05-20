@@ -66,7 +66,7 @@ public class WarrantyEmployeeService {
     }
 
     // Lấy ra bảo hành theo id
-    public GuaranteeDto getProducWarrantyById(Integer id) {
+    public GuaranteeDto getProductWarrantyById(Integer id) {
         return guaranteeRepository.getProducWarrantyById(id).orElseThrow(() -> {
             throw new NotFoundException("Not Found with id : " + id);
         });

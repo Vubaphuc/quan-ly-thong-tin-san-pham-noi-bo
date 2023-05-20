@@ -178,7 +178,7 @@ public class EngineerService {
         );
     }
 
-    public Object getListMaterialAndComponents(String tenModel, String tenLinhKien) {
+    public Object getListMaterialAndComponents(String nameModel, String nameComponentts) {
         // chuaw vieets gif
         return null;
     }

@@ -70,13 +70,15 @@ public class SecurityConfig {
         };
 
         String [] NHANVIENLETAN = {
-                "/receptionist/**",
+                "/receptionist/v1/**",
+                "/receptionist/v2/**"
         };
         String [] NHANVIENSUACHUA = {
                 "/engineer/**"
         };
         String [] NHANVIENKHO = {
-                "/warehouse-employee/**"
+                "/warehouse-employee/v1/**",
+                "/warehouse-employee/v2/**"
         };
         String [] NHANVIENBAOHANH = {
                 "/warranty-employee/**"

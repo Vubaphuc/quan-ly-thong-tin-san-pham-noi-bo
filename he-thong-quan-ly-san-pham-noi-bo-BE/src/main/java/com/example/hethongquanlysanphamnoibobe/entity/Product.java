@@ -57,7 +57,7 @@ public class Product {
     @Column(name = "charge")
     private boolean charge;
     // ngày trả sản phẩm cho khách => ngày hoàn thành quá trình sửa chữa product
-    @Column(name = "name_model")
+    @Column(name = "finish_date")
     private LocalDateTime finishDate;
 
     // nhân viên nhận sản phẩm. có thể là nhân viên lễ tân hoặc bảo hành

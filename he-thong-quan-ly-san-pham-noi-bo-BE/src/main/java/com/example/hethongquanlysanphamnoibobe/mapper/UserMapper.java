@@ -9,8 +9,8 @@ public class UserMapper {
 
         UserDto userDto = new UserDto (
                 user.getId(),
-                user.getMaNhanVien(),
-                user.getFullName(),
+                user.getEmployeeCode(),
+                user.getEmployeeName(),
                 user.getEmail(),
                 user.getPhoneNumber(),
                 user.getAddress(),

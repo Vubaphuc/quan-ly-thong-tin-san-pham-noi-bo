@@ -35,7 +35,7 @@ public class CustomerController {
             @PathVariable Integer id) {
         return ResponseEntity.ok(customerService.getListProductByCustomerId(id,page,pageSize));
     }
-    @GetMapping("{customer/{id}")
+    @GetMapping("customer/{id}")
     public ResponseEntity<?> getCustomerById(@PathVariable Integer id) {
         return ResponseEntity.ok(customerService.getCustomerById(id));
     }

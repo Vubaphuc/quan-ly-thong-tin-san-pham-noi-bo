@@ -14,23 +14,23 @@ public class WarehouseEmployeeController {
     @Autowired
     private WarehouseEmployeeService warehouseEmployeeService;
 
-    @GetMapping("linh-kien/danh-sach")
+    @GetMapping("components")
     public ResponseEntity<?> getListComponents(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
         return ResponseEntity.ok(warehouseEmployeeService.getListComponents(page,pageSize));
     }
 
-    @PostMapping("linh-kien/tao-moi")
+    @PostMapping("components/create")
     public ResponseEntity<?> createComponents (@RequestBody CreateComponentsRequest request) {
         return ResponseEntity.ok(warehouseEmployeeService.createComponents(request));
     }
 
-    @PostMapping("tao-moi")
+    @PostMapping("material/create")
     public ResponseEntity<?> createMaterial (@RequestBody CreateMaterialRequest request) {
         return ResponseEntity.ok(warehouseEmployeeService.createMaterial(request));
     }
 
 
-    @GetMapping("danh-sach")
+    @GetMapping("materilies")
     public ResponseEntity<?> getListMaterialAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
         return ResponseEntity.ok(warehouseEmployeeService.getListMaterialAll(page,pageSize));
     }
@@ -44,41 +44,41 @@ public class WarehouseEmployeeController {
     }
 
 
-    @GetMapping("danh-sach")
+    @GetMapping("vendories")
     public ResponseEntity<?> getListVendorAll (@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
         return ResponseEntity.ok(warehouseEmployeeService.getListVendorAll(page,pageSize));
     }
 
     // Tạo mới 1 vender
-    @PostMapping("tao-moi")
+    @PostMapping("vendor/create")
     public ResponseEntity<?> createVendor (@RequestBody CreateVendorRequest request) {
         return ResponseEntity.ok(warehouseEmployeeService.createVendor(request));
     }
 
     // lấy 1 vender theo id
-    @GetMapping("search/{id}")
+    @GetMapping("vendor/{id}")
     public ResponseEntity<?> getVendorById (@PathVariable Integer id) {
         return ResponseEntity.ok(warehouseEmployeeService.getVendorById(id));
     }
 
     // lấy 1 vender theo tên
-    @GetMapping("tim-kiem/{name}")
+    @GetMapping("search-vendor/{name}")
     public ResponseEntity<?> getVendorByName (@PathVariable String name) {
         return ResponseEntity.ok(warehouseEmployeeService.getVendorByName(name));
     }
 
     // sửa tên vender
-    @PutMapping("sua-ten/{id}")
+    @PutMapping("update-vendor/{id}")
     public ResponseEntity<?> updateNameVendor (@RequestBody CreateVendorRequest request ,@PathVariable Integer id) {
         return ResponseEntity.ok(warehouseEmployeeService.updateNameVendor(request,id));
     }
 
-    @GetMapping("tong")
+    @GetMapping("warehouse")
     public ResponseEntity<?> getListVendorTotalMaterial(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
         return ResponseEntity.ok(warehouseEmployeeService.getListVendorTotalMaterial(page,pageSize));
     }
 
-    @GetMapping("chi-tiet")
+    @GetMapping("vendor/detail")
     public ResponseEntity<?> getListVendorById(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize,@RequestParam int vendorId) {
         return ResponseEntity.ok(warehouseEmployeeService.getListVendorById(page,pageSize,vendorId));
     }

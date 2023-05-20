@@ -58,8 +58,8 @@ public class EngineerController {
     }
 
     @GetMapping("material-components")
-    public ResponseEntity<?> getListMaterialAndComponents(@RequestParam String tenModel, @RequestParam String tenLinhKien) {
-        return ResponseEntity.ok(engineerService.getListMaterialAndComponents(tenModel,tenLinhKien));
+    public ResponseEntity<?> getListMaterialAndComponents(@RequestParam String nameModel, @RequestParam String nameComponents) {
+        return ResponseEntity.ok(engineerService.getListMaterialAndComponents(nameModel,nameComponents));
     }
 
     @GetMapping("order/{id}")

@@ -32,7 +32,6 @@ const hookUpdateAvatar = () => {
         }
       );
         // chưa chuyển  trang
-      navigate("/");
 
     } catch (error) {
       toast.error(error.data.message);

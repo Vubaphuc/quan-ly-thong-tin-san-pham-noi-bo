@@ -17,14 +17,17 @@ export const productApi = createApi ({
     }),
     tagTypes: ['Receptionist'],
     endpoints: (builder) => ({
+        // danh sách sản phẩm mới thêm mới
         getPageProductNewCreate: builder.query ({
             query: ({page,pageSize,term}) => `product-new?page=${page}&pageSize=${pageSize}&term=${term}`,
             providesTags: ['Receptionist'],
         }),
+        // lấy sản phẩm theo id
         getProductById: builder.query ({
             query: (id) => `product/${id}`,
             providesTags: ['Receptionist'],
         }),
+        // cập nhât thông tin nhân viên sửa chữa
         updateEngineerInformationByProduct: builder.mutation ({
             query: ({id,...data}) => ({
                 url: `update-product/${id}`,
@@ -33,14 +36,17 @@ export const productApi = createApi ({
             }),
             invalidatesTags: ['Receptionist'],
         }),
+        // lấy sản phẩm status = ok
         getPageProductStatusOK: builder.query ({
             query: ({page, pageSize, term}) => `product-ok?page=${page}&pageSize=${pageSize}&term=${term}`,
             providesTags: ['Receptionist'],
         }),
+        // lấy tìm kiếm lịch sử sản phẩm
         searchHistoryProductByTerm: builder.query ({
             query: ({page, pageSize, term}) => `product-history?page=${page}&pageSize=${pageSize}&term=${term}`,
             providesTags: ['Receptionist'],
         }),
+        // tạo sản phẩm mới
         createProduct: builder.mutation({
             query: (data) => ({
                 url: "create-product",
@@ -49,6 +55,7 @@ export const productApi = createApi ({
             }),
             invalidatesTags: ['Receptionist'],
         }),
+        // tạo hóa đơn mới
         createBill: builder.mutation({
             query: (data) => ({
                 url: "create-bill",
@@ -57,6 +64,7 @@ export const productApi = createApi ({
             }),
             invalidatesTags: ['Receptionist'],
         }),
+        // hóa đơn theo id
         getBillById: builder.query({
             query: (id) => `product/bill/${id}`,
             providesTags: ['Receptionist'],

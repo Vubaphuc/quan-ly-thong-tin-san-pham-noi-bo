@@ -14,6 +14,7 @@ import { engineerApi } from "./apis/engineer/engineerApi";
 const store = configureStore ({
     reducer: {
         auth: authReducer,
+        [authApi.reducerPath]: authApi.reducer,
         [employeeApi.reducerPath]: employeeApi.reducer,
         [forgotPasswordApi.reducerPath]: forgotPasswordApi.reducer,
         [engineerApi.reducerPath]: engineerApi.reducer,

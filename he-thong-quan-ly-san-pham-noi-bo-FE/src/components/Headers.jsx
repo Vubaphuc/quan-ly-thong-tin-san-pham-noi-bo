@@ -8,6 +8,8 @@ function Headers() {
   const dispath = useDispatch();
   const navigate = useNavigate();
 
+  console.log(auth)
+
   const handleLogout = () => {
     dispath(logout());
     navigate("/login");
@@ -25,7 +27,7 @@ function Headers() {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            {auth?.fullName}
+            {auth?.employeeName}
           </a>
 
           <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">

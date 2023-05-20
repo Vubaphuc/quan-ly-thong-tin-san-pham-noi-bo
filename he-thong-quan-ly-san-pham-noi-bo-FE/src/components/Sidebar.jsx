@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import useFetchQuery from "../page/hook/hookAccount/useFetchQuery";
+import hookFetchQuery from "../page/hookForm/hook/hookAccount/hookFetchQuery";
 
 function Sidebar() {
-  const { auth } = useFetchQuery();
+  const { auth } = hookFetchQuery();
 
   const roles = auth.roles.map((role) => role.name);
 

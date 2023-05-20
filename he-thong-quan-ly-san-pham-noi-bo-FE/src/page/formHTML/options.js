@@ -23,11 +23,11 @@ export const getAddress = (provinces) => {
     });
   }
   
-  export const getEmployees = (employee) => {
-    if (!employee) {
+  export const getEmployees = (employees) => {
+    if (!employees) {
       return [];
     }
-    return nhanviens.map((employee) => {
+    return employees.map((employee) => {
       return {
         label: employee.fullName,
         value: employee.maNhanVien,

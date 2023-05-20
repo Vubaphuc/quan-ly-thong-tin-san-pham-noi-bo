@@ -39,7 +39,7 @@ function Customer() {
               <div className="v2-error"></div>
             </div>
             <div className="search-warranty-content__main v2-search">
-              <form onSubmit={"/"}>
+              <form>
                 <input type="hidden" name="_token" />
                 <div className="v2-search-item">
                   <input

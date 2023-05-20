@@ -1,12 +1,22 @@
 import React from "react";
 import addressQuery from "../formHTML/address";
-import { getAddress } from "../formHTML/options";
+import { getAddress, getEmployees } from "../formHTML/options";
+import hookFetchQuery from "../hookForm/hook/hookAccount/hookFetchQuery";
+import hookUpdateAvatar from "../hookForm/hook/hookAccount/hookUpdateAvatar";
+import hookPersonalInformation from "../hookForm/hook/hookAccount/hookPersonalInformation";
+import { Controller } from "react-hook-form";
+import Select from "react-select";
+import { Link } from "react-router-dom";
 
 function PersonalInformation() {
 
+  const { auth, avatarUrl } = hookFetchQuery();
 
+  const { setFiles, handleChangeAvatar } = hookUpdateAvatar();
 
+  const { provinces } = addressQuery();
 
+  const { control, register, handleSubmit, errors, onPersonalInformation } = hookPersonalInformation();
 
     // chọn và hiển thị ảnh lên
     const handleReaderAvatar = (e) => {
@@ -22,9 +32,16 @@ function PersonalInformation() {
     }
 
 
-    const { provinces } = addressQuery();
+    
 
     const addressOptions = getAddress(provinces);
+
+    const defaultAddress = {
+      label: auth.address,
+      value: auth.address
+    }
+
+    const employeeOptions = getEmployees(auth.roles);
 
 
 
@@ -33,7 +50,7 @@ function PersonalInformation() {
     <>
       <div className="container mt-5 mb-5">
         <h2 className="text-center text-uppercase mb-3">Thông tin user</h2>
-        <form onSubmit={handleSubmit(onCapNhatThongTinCaNhan)}>
+        <form onSubmit={handleSubmit(onPersonalInformation)}>
           <div className="row justify-content-center">
             <div className="col-md-6">
               <div className="bg-light p-4">
@@ -82,7 +99,7 @@ function PersonalInformation() {
                   <input
                     type="text"
                     id="loai-nhan-vien"
-                    value={loaiNhanVien}
+                    value={employeeOptions}
                     disabled
                     className="form-control"
                   />

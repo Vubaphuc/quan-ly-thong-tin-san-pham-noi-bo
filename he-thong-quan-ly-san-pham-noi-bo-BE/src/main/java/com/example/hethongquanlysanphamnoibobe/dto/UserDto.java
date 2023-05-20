@@ -13,8 +13,8 @@ import java.util.List;
 @Builder
 public class UserDto {
     private Integer id;
-    private String maNhanVien;
-    private String fullName;
+    private String employeeCode;
+    private String employeeName;
     private String email;
     private String phone;
     private String address;

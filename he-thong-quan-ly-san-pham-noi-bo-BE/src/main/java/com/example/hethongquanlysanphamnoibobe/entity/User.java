@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
     @Column(name = "address")
-    private String Address;
+    private String address;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avatar")

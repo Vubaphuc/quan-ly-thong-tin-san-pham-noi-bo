@@ -58,6 +58,7 @@ class HeThongQuanLySanPhamNoiBoBeApplicationTests {
         Role leTanRole = roleRepository.findRoleByName("NHANVIENLETAN").orElse(null);
         Role ADMINRole = roleRepository.findRoleByName("ADMIN").orElse(null);
 
+
         List<User> users = List.of(
                 new User(null, generateCode.generateCode(),"Diệu Linh", "linh@gmail.com",passwordEncoder.encode("111"),"0968616076","Hà Nội",null,List.of(khoRole)),
                 new User(null, generateCode.generateCode(),"Bá Hậu", "hau@gmail.com",passwordEncoder.encode("111"),"0968616076","Hà Nội",null,List.of(baoHanhRole)),

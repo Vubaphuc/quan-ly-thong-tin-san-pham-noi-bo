@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changePasswordSchema } from "../../schemas/accountSchemas";
+import { useChangePasswordMutation } from "../../../../app/apis/employee/employeeApi";
 
 const hookChangePassword = () => {
 
@@ -11,6 +12,8 @@ const hookChangePassword = () => {
     const { auth } = useSelector((state) => state.auth);
 
     const roles = auth.roles.map((role) => role.name);
+
+    const [changePassword] = useChangePasswordMutation();
 
 
     const { register, handleSubmit, formState: { errors } } = useForm({

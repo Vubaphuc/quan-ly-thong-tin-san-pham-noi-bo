@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useLoginMutation } from "../../app/apis/login/authApi";
+import { toast } from "react-toastify";
 
 function LoginPage() {
   // TODO : Validate form trước lên gửi lên server
@@ -15,7 +15,6 @@ function LoginPage() {
 
   // Nếu đã login -> chuyển hướng sang trang homepage
   if (isAuthenticated) {
-
     const roles = auth.roles.map((role) => role.name);
 
     if (roles.includes("NHANVIENLETAN")) {
@@ -42,9 +41,11 @@ function LoginPage() {
     login({ email, password })
       .unwrap()
       .then(() => {
-        toast.success("Đăng nhập thành công");     
+        toast.success("Đăng Nhập thành Công")
       })
-      .catch(() => toast.error("Tài khoản hoặc mật khẩu không đúng"));
+      .catch((err) => {
+          toast.error(err.data.message)
+      });
   };
 
   return (
@@ -55,10 +56,9 @@ function LoginPage() {
       >
         <div className="login shadow p-5" style={{ width: 500 }}>
           <h1 className="mb-3 text-center">Đăng nhập</h1>
-          <form 
+          <form
             onSubmit={handleLogin}
             className="d-flex flex-column align-items-center"
-          
           >
             <input
               className="form-control mb-3"

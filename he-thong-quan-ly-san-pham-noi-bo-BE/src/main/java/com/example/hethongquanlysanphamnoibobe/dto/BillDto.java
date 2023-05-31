@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class BillDto {
     private Integer billId;
+    private Integer productId;
     private String customerName;
     private String customerPhone;
     private String customerEmail;

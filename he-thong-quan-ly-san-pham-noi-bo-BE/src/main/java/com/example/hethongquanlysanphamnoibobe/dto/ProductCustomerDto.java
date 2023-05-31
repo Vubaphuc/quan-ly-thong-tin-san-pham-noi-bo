@@ -12,6 +12,7 @@ public class ProductCustomerDto {
     private String model;
     private String phoneCompany;
     private String IME;
+    private boolean status;
     private Integer customerId;
     private String customerName;
     private String customerPhoneNumber;

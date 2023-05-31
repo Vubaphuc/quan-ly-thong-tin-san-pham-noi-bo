@@ -6,8 +6,9 @@ import com.example.hethongquanlysanphamnoibobe.dto.MaterialDto;
 import com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto;
 import com.example.hethongquanlysanphamnoibobe.dto.ProductDto;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateOrderMaterialRequest;
-import com.example.hethongquanlysanphamnoibobe.dto.request.InformationRepairRequest;
+import com.example.hethongquanlysanphamnoibobe.request.CreateOrderMaterialRequest;
+import com.example.hethongquanlysanphamnoibobe.request.InformationRepairRequest;
+import com.example.hethongquanlysanphamnoibobe.request.UpdateOrderMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.entity.Components;
 import com.example.hethongquanlysanphamnoibobe.entity.Material;
 import com.example.hethongquanlysanphamnoibobe.entity.OrderMaterial;
@@ -25,8 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class EngineerService {
@@ -42,9 +44,11 @@ public class EngineerService {
     private ICurrentUserLmpl iCurrentUserLmpl;
     @Autowired
     private GenerateCode generateCode;
-    public PageDto getListProductByUser(int page, int pageSize) {
 
-        Page<ProductDto> productDtoPage = productRepository.getListProductByUser(PageRequest.of(page -1 , pageSize), iCurrentUserLmpl.getUser().getId());
+    // lấy danh sách sản suwawr chữa theo engineer - 1
+    public PageDto getListProductByUser(int page, int pageSize, String term) {
+
+        Page<ProductDto> productDtoPage = productRepository.getListProductByUser(PageRequest.of(page -1 , pageSize), iCurrentUserLmpl.getUser().getId(), term);
 
         return new PageDto(
                 productDtoPage.getNumber() + 1,
@@ -54,16 +58,16 @@ public class EngineerService {
                 productDtoPage.getContent()
         );
     }
-
+    // lấy ra sản phẩm theo id - 2
     public ProductDto getProductById(Integer id) {
         return productRepository.getProductById(id, iCurrentUserLmpl.getUser().getId()).orElseThrow(() -> {
            throw new NotFoundException("Not Found with id: " + id);
         });
     }
-
+    // cappj nhật thông tin sửa chữa nhân viên engineer - 3
     public StatusResponse upDateInformationProductbyId(InformationRepairRequest request, Integer id) {
         // lấy ra sản phẩm theo id
-        Product product = productRepository.findProductById(id).orElseThrow(() -> {
+        Product product = productRepository.findProductById_Engineer(id, iCurrentUserLmpl.getUser().getId()).orElseThrow(() -> {
             throw new NotFoundException("Not Found with id : "  + id);
         });
         // lấy ra loại linh kiện
@@ -74,6 +78,8 @@ public class EngineerService {
         product.setLocation(request.getLocation());
         product.setStatus(request.isStatus());
         product.setComponents(components);
+        product.setNote(request.getNote());
+        product.setOutputDate(LocalDateTime.now());
         // lưu lại lên csdl
         productRepository.save(product);
         // tạo response trả về
@@ -86,7 +92,7 @@ public class EngineerService {
         return new StatusResponse(HttpStatus.OK, "update information Product successs", dataResponse);
 
     }
-
+    // danh sách các loại linh kiện - 4
     public PageDto getListComponentPhone(int page, int pageSize) {
 
         Page<ComponentsDto> componentsDtoPage = componentsRepository.getListComponentPhone(PageRequest.of(page - 1, pageSize));
@@ -99,7 +105,7 @@ public class EngineerService {
                 componentsDtoPage.getContent()
         );
     }
-
+    // danh sách vật liệu có số lượng > 0 - 5
     public PageDto getListMaterialByQuantity(int page, int pageSize) {
 
         Page<MaterialDto> materialDtos = materialRepository.getListMaterialByQuantity(PageRequest.of(page - 1, pageSize));
@@ -112,13 +118,13 @@ public class EngineerService {
                 materialDtos.getContent()
         );
     }
-
-    public MaterialDto getMaterialByCode(String code) {
-        return materialRepository.getMaterialByCode(code).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with code : " + code);
+    // lấy ra vật liệu theo id - 6
+    public MaterialDto getMaterialById(Integer id) {
+        return materialRepository.getMaterialById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not Found with id : " + id);
         });
     }
-
+    // tạo order vật liệu mới - 7
     public StatusResponse CreateOrderMaterial(CreateOrderMaterialRequest request) {
 
         Material material = materialRepository.findByCode(request.getMaterialCode()).orElseThrow(() -> {
@@ -151,7 +157,7 @@ public class EngineerService {
 
         return new StatusResponse(HttpStatus.OK, "Create order material success", dataResponse);
     }
-
+    // lây ra danh sách order vật liệu có status = true - 8
     public PageDto getListOrderMaterialByStatusTrue(int page, int pageSize) {
 
         Page<OrderMaterialDto> orderMaterialDtos = orderMaterialRepository.getListOrderMaterialByStatusTrue(PageRequest.of(page - 1, pageSize), iCurrentUserLmpl.getUser().getId());
@@ -164,7 +170,7 @@ public class EngineerService {
                 orderMaterialDtos.getContent()
         );
     }
-
+    // lấy ra danh sách order vật liệu có status = false - 9
     public Object getListOrderMaterialByStatusFalse(int page, int pageSize) {
 
         Page<OrderMaterialDto> orderMaterialDtos = orderMaterialRepository.getListOrderMaterialByStatusFalse(PageRequest.of(page - 1, pageSize), iCurrentUserLmpl.getUser().getId());
@@ -177,15 +183,52 @@ public class EngineerService {
                 orderMaterialDtos.getContent()
         );
     }
-
+    // chưa làm gì
     public Object getListMaterialAndComponents(String nameModel, String nameComponentts) {
         // chuaw vieets gif
         return null;
     }
-
+    // lấy ra order vật liệu theo id - 10
     public OrderMaterialDto getOrderMaterialById(Integer id) {
         return orderMaterialRepository.getOrderMaterialById(id).orElseThrow(() -> {
             throw new NotFoundException("Not Found with id : " + id);
         });
+    }
+    // xóa mềm order material - 11
+    public void deleteOrderById(Integer id) {
+
+        OrderMaterial orderMaterial = orderMaterialRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not Found with id: " + id);
+        });
+
+        if (orderMaterial.isStatus()) {
+            throw new BadRequestException("Order approved successfully. Can't cancel");
+        }
+
+        orderMaterial.setDelete(false);
+
+        orderMaterialRepository.save(orderMaterial);
+    }
+    // cập nhật số lượng trong order material - 12
+    public StatusResponse updateQuantityOrderMaterialById(UpdateOrderMaterialRequest request, Integer id) {
+
+        OrderMaterial orderMaterial = orderMaterialRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not Found with id: " + id);
+        });
+
+        if (orderMaterial.isStatus()) {
+            throw new BadRequestException("Order approved successfully. Can't update");
+        }
+
+        orderMaterial.setQuantity(request.getQuantity());
+        orderMaterialRepository.save(orderMaterial);
+
+        DataResponse dataResponse = DataResponse.builder()
+                .id(orderMaterial.getId())
+                .code(orderMaterial.getOrderCode())
+                .name(orderMaterial.getOrderer().getEmployeeName())
+                .build();
+
+        return new StatusResponse(HttpStatus.OK,"Update successful", dataResponse);
     }
 }

@@ -84,7 +84,7 @@ public class SecurityConfig {
                 "/warranty-employee/**"
         };
         String [] ADMIN = {
-                "/admin/"
+                "/admin/**"
         };
 
 

@@ -344,3 +344,24 @@ footer .container .footer-top .footer-top-item .title {
 .search-results {
   text-align: center;
 }
+
+.container .row .col-md-6 .search-results .col-md-5 .warranty-input {
+  width: 400px;
+  margin-bottom: 20px;
+  margin-left: 110px;
+  margin-top: 15px;
+}
+
+.container .row .col-md-6 .search-results .col-md-5 .search-button {
+  margin-left: 260px;
+}
+
+.content .container-fluid .chart {
+  width: 70vw;
+}
+
+.content .container-fluid .pie {
+  width: 200px;
+  height: 200px;
+  margin-left: 300px;
+}

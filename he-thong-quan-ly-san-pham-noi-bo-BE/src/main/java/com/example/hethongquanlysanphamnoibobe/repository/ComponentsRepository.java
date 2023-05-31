@@ -12,9 +12,40 @@ import java.util.Optional;
 
 public interface ComponentsRepository extends JpaRepository<Components, Integer> {
 
+
+
+
+
+    // khu vực nhân viên chung
+    // ###################################################################################################
+
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ComponentsDto" +
+            "(cp.id, cp.name, cp.warrantyPeriod) " +
+            "from Components cp " +
+            "where cp.id = ?1")
+    Optional<ComponentsDto> getComponentsById(Integer id);
+
+
     Optional<Components> findByName(String name);
+
     @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ComponentsDto " +
             "(cp.id, cp.name, cp.warrantyPeriod ) " +
             "from Components cp ")
     Page<ComponentsDto> getListComponentPhone(Pageable pageable);
+
+
+    // khu vực nhân viên lễ tân
+    // ###################################################################################################
+
+    // khu vực nhân viên sửa chữa
+    // ###################################################################################################
+
+    // khu vực nhân viên kho
+    // ###################################################################################################
+
+    // khu vực nhân viên bảo hành
+    // ###################################################################################################
+
+    // khu vực ADMIN
+    // ###################################################################################################
 }

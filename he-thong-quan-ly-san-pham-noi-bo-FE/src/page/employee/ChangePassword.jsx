@@ -3,7 +3,8 @@ import hookChangePassword from "../hookForm/hook/hookAccount/hookChangePassword"
 
 function ChangePassword() {
 
-    const { register, handleSubmit, errors, onChangePassword } = hookChangePassword();
+  const { register, handleSubmit, errors, onChangePassword } =
+    hookChangePassword();
 
   return (
     <>
@@ -30,19 +31,19 @@ function ChangePassword() {
               className="form-control mb-3"
               type="password"
               placeholder="Nhập mật khẩu mới"
-              {...register("newPassword1")}
+              {...register("newPassword")}
             />
             <p className="text-danger fst-italic mt-2">
-              {errors.newPassword1?.message}
+              {errors.newPassword?.message}
             </p>
             <input
               className="form-control mb-3"
               type="password"
               placeholder="Nhập lại mật khẩu mới"
-              {...register("newPassword2")}
+              {...register("confirmNewPassword")}
             />
             <p className="text-danger fst-italic mt-2">
-              {errors.newPassword2?.message}
+              {errors.confirmNewPassword?.message}
             </p>
             <button type="submit" className="btn btn-primary  btn-block mt-1">
               Đổi Mật Khẩu

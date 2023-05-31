@@ -29,8 +29,8 @@ export const productApi = createApi ({
         }),
         // cập nhât thông tin nhân viên sửa chữa
         updateEngineerInformationByProduct: builder.mutation ({
-            query: ({id,...data}) => ({
-                url: `update-product/${id}`,
+            query: (data) => ({
+                url: "update-product",
                 method: "PUT",
                 body: data
             }),
@@ -69,7 +69,42 @@ export const productApi = createApi ({
             query: (id) => `product/bill/${id}`,
             providesTags: ['Receptionist'],
         }),
-
+        getListBillAll: builder.query ({
+            query: ({page, pageSize, term}) => `bills?page=${page}&pageSize=${pageSize}&term=${term}`,
+            providesTags: ['Receptionist'],
+        }),
+        getListProductsPending: builder.query ({
+            query: ({page, pageSize, term}) => `products/pending?page=${page}&pageSize=${pageSize}&term=${term}`,
+            providesTags: ['Receptionist'],
+        }),
+        updateEngineerProductById: builder.mutation ({
+            query: ({id,...data}) => ({
+                url: `product/pending/${id}`,
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ['Receptionist'],
+        }),
+        getProductByIme: builder.query ({
+            query: ({ime}) => `product?ime=${ime}`,
+            providesTags: ['Receptionist'],
+        }),
+        createNewGuarantee: builder.mutation ({
+            query: (data) => ({
+                url: "guarantee/create",
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ['Receptionist'],
+        }),
+        findGuaranteeAll: builder.query ({
+            query: ({page, pageSize, term}) => `guarantees?page=${page}&pageSize=${pageSize}&term=${term}`,
+            providesTags: ['Receptionist'],
+        }),
+        getProductAndCustomerById: builder.query ({
+            query: (id) => `product-customer/${id}`,
+            providesTags: ['Receptionist'],
+        }),
     }),
 });;
 
@@ -77,9 +112,16 @@ export const {
     useGetPageProductNewCreateQuery,
     useGetProductByIdQuery,
     useUpdateEngineerInformationByProductMutation,
-    useGetPageProductStatusOKQuery,
+    useLazyGetPageProductStatusOKQuery,
     useSearchHistoryProductByTermQuery,
     useCreateProductMutation,
     useCreateBillMutation,
-    useGetBillByIdQuery
+    useGetBillByIdQuery,
+    useGetListBillAllQuery,
+    useGetListProductsPendingQuery,
+    useUpdateEngineerProductByIdMutation,
+    useLazyGetProductByImeQuery,
+    useCreateNewGuaranteeMutation,
+    useFindGuaranteeAllQuery,
+    useGetProductAndCustomerByIdQuery
 } = productApi;

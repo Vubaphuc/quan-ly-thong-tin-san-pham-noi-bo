@@ -15,15 +15,14 @@ export const employeeApi = createApi ({
             return headers;
         },
     }),
-    tagTypes: ['User'],
+    tagTypes: ['Avatar'],
     endpoints: (builder) => ({
         changePassword: builder.mutation ({
             query: (data) => ({
-                url: "doi-mat-khau",
+                url: "change-password",
                 method: "PUT",
                 body: data,
             }),
-            invalidatesTags: ['User'],
         }),
         updatePersonalInformation: builder.mutation ({
             query: (data) => ({
@@ -31,11 +30,10 @@ export const employeeApi = createApi ({
                 method: "PUT",
                 body: data,
             }),
-            invalidatesTags: ['User'],
         }),
         getAvatar: builder.query ({
             query: (id) => `avatar/${id}`,
-            providesTags: ['User'],
+            providesTags: ['Avatar']
         }),
         updateAvatar: builder.mutation ({
             query: (data) => ({
@@ -43,11 +41,10 @@ export const employeeApi = createApi ({
                 method: "POST",
                 body: data,
             }),
-            invalidatesTags: ['User'],
+            invalidatesTags: ['Avatar']
         }),
         getListEngineer: builder.query ({
             query: () => "engineer",
-            providesTags: ['User'],
         }),
     }),
 });;
@@ -56,5 +53,6 @@ export const {
     useChangePasswordMutation,
     useUpdatePersonalInformationMutation,
     useGetAvatarQuery,
-    useUpdateAvatarMutation
+    useUpdateAvatarMutation,
+    useGetListEngineerQuery
 } = employeeApi;

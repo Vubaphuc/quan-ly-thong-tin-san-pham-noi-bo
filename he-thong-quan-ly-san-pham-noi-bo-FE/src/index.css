@@ -141,3 +141,8 @@ a {
   transition: all .3s;
 }
 
+.input-bh {
+  width: 100px;
+  margin-left: 500px;
+}
+

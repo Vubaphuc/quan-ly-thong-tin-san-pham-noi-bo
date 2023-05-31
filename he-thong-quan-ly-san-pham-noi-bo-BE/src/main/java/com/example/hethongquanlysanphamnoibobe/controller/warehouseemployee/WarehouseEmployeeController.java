@@ -1,8 +1,8 @@
 package com.example.hethongquanlysanphamnoibobe.controller.warehouseemployee;
 
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateComponentsRequest;
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateMaterialRequest;
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateVendorRequest;
+import com.example.hethongquanlysanphamnoibobe.request.CreateComponentsRequest;
+import com.example.hethongquanlysanphamnoibobe.request.CreateMaterialRequest;
+import com.example.hethongquanlysanphamnoibobe.request.CreateVendorRequest;
 import com.example.hethongquanlysanphamnoibobe.service.warehouseemployeeservice.WarehouseEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +17,10 @@ public class WarehouseEmployeeController {
     @GetMapping("components")
     public ResponseEntity<?> getListComponents(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
         return ResponseEntity.ok(warehouseEmployeeService.getListComponents(page,pageSize));
+    }
+    @GetMapping("component/{id}")
+    public ResponseEntity<?> getComponentsById(@PathVariable Integer id) {
+        return ResponseEntity.ok(warehouseEmployeeService.getComponentsById(id));
     }
 
     @PostMapping("components/create")
@@ -81,5 +85,10 @@ public class WarehouseEmployeeController {
     @GetMapping("vendor/detail")
     public ResponseEntity<?> getListVendorById(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize,@RequestParam int vendorId) {
         return ResponseEntity.ok(warehouseEmployeeService.getListVendorById(page,pageSize,vendorId));
+    }
+
+    @GetMapping("material/{id}")
+    public ResponseEntity<?> getMaterialById (@PathVariable Integer id) {
+        return ResponseEntity.ok(warehouseEmployeeService.getMaterialById(id));
     }
 }

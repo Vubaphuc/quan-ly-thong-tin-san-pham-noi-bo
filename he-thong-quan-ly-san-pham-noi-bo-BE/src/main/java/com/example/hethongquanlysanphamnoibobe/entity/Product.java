@@ -48,9 +48,10 @@ public class Product {
     // vị trí sửa => tên linh kiện ()
     @Column(name = "location")
     private String location;
-    // ngày sửa chữa hoàn thành;
+
     @Column(name = "note")
     private String note;
+    // ngày sửa chữa hoàn thành;
     @Column(name = "output_date")
     private LocalDateTime outputDate;
     // trạng thái tính phí hay không tính phí: charge = true => có tính phí , charge = false => không tính phí
@@ -70,6 +71,7 @@ public class Product {
     @JoinColumn(name = "engineer_id")
     private User engineer;
 
+
     // thông tin khách hàng
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
@@ -78,15 +80,15 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "components_id")
     private Components components;
+    // người trả sản phẩm
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_payer_id")
+    private User productPayer;
 
     @PrePersist
     public void prePersist() {
         // mặc định khi tạo sản phẩm là ngày nhận sản phẩm vào của hàng
         this.inputDate = LocalDateTime.now();
-        // mặc định loại sản phẩm là mới sửa chữa
-        this.isRepair = false;
-        // mặc đinh là có tính phí
-        this.charge = true;
         // mặc định hàng mới vào là false chờ  sửa chữa
         this.status = false;
     }

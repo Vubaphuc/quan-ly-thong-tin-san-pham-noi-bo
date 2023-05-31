@@ -1,8 +1,8 @@
 package com.example.hethongquanlysanphamnoibobe.controller.employee;
 
-import com.example.hethongquanlysanphamnoibobe.dto.request.ChangePasswordRequest;
-import com.example.hethongquanlysanphamnoibobe.dto.request.ForgotPasswordRequest;
-import com.example.hethongquanlysanphamnoibobe.dto.request.UpdatePersonalInformationRequest;
+import com.example.hethongquanlysanphamnoibobe.request.ChangePasswordRequest;
+import com.example.hethongquanlysanphamnoibobe.request.ForgotPasswordRequest;
+import com.example.hethongquanlysanphamnoibobe.request.UpdatePersonalInformationRequest;
 import com.example.hethongquanlysanphamnoibobe.entity.Image;
 import com.example.hethongquanlysanphamnoibobe.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;

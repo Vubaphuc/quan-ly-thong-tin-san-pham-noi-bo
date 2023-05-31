@@ -4,14 +4,11 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changePasswordSchema } from "../../schemas/accountSchemas";
 import { useChangePasswordMutation } from "../../../../app/apis/employee/employeeApi";
+import { toast } from "react-toastify";
 
 const hookChangePassword = () => {
 
     const navigate = useNavigate();
-
-    const { auth } = useSelector((state) => state.auth);
-
-    const roles = auth.roles.map((role) => role.name);
 
     const [changePassword] = useChangePasswordMutation();
 
@@ -22,7 +19,18 @@ const hookChangePassword = () => {
     });
 
     const onChangePassword = (data) => {
-        console.log(data);
+        
+        changePassword(data)
+        .unwrap()
+        .then(() => {
+            toast.success("Đổi Mật khẩu thành công");
+            setTimeout(() => {
+                navigate("/employee/personal-information");
+            },2000)                               
+        })
+        .catch((err) => {
+            toast.error(err.data.message);
+        })
     }
 
     return {

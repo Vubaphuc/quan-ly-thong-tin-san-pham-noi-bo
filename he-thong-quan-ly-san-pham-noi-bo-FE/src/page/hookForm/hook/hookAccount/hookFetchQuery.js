@@ -11,7 +11,7 @@ const hookFetchQuery = () => {
 
     useEffect(() => {
         getAvatar();
-    },[]);
+    });
 
     const getAvatar = async () => {
         try {
@@ -34,7 +34,7 @@ const hookFetchQuery = () => {
             const imgSrc = `data:image/png;base64,${base64String}`;
             setAvatarUrl(imgSrc);
         } catch (err) {
-            toast.error(err.data.message)
+
         }
     }
 

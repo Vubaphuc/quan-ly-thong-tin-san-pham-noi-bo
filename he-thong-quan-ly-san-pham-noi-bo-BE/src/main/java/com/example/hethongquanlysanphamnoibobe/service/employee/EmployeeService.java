@@ -2,9 +2,9 @@ package com.example.hethongquanlysanphamnoibobe.service.employee;
 
 import com.example.hethongquanlysanphamnoibobe.dto.EmployeeDto;
 import com.example.hethongquanlysanphamnoibobe.dto.UserDto;
-import com.example.hethongquanlysanphamnoibobe.dto.request.ChangePasswordRequest;
-import com.example.hethongquanlysanphamnoibobe.dto.request.ForgotPasswordRequest;
-import com.example.hethongquanlysanphamnoibobe.dto.request.UpdatePersonalInformationRequest;
+import com.example.hethongquanlysanphamnoibobe.request.ChangePasswordRequest;
+import com.example.hethongquanlysanphamnoibobe.request.ForgotPasswordRequest;
+import com.example.hethongquanlysanphamnoibobe.request.UpdatePersonalInformationRequest;
 import com.example.hethongquanlysanphamnoibobe.entity.Image;
 import com.example.hethongquanlysanphamnoibobe.entity.User;
 import com.example.hethongquanlysanphamnoibobe.exception.BadRequestException;

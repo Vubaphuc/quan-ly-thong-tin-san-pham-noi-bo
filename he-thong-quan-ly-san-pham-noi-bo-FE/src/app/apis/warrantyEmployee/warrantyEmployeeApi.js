@@ -2,76 +2,120 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 const END_POINT = "http://localhost:8080/warranty-employee";
 
-export const warrantyEmployeeApi = createApi ({
-    reducerPath: "warrantyEmployeeApi",
-    baseQuery: fetchBaseQuery ({
-        baseUrl:END_POINT,
-        prepareHeaders: (headers, { getState }) => {
-            const token = getState().auth.token;
+export const warrantyEmployeeApi = createApi({
+  reducerPath: "warrantyEmployeeApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: END_POINT,
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.token;
 
-            if (token) {
-                headers.set("Authorization", `Bearer ${token}`);
-            }
-            return headers;
-        },
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  tagTypes: ["Warranty"],
+  endpoints: (builder) => ({
+    getListCustomeriesByTerm: builder.query({
+      query: ({ page, pageSize, term }) =>
+        `customeries?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ["Warranty"],
     }),
-    tagTypes: ['Warranty'],
-    endpoints: (builder) => ({
-        searchHistoryProductByTerm: builder.query ({
-            query: ({page,pageSize,term}) => `search/history-product?page=${page}&pageSize=${pageSize}&term=${term}`,
-            providesTags: ['Warranty'],
-        }),
-        findProductAndCustomerById: builder.query ({
-            query: (id) => `product/${id}`,
-            providesTags: ['Warranty'],
-        }),
-        getProductWarrantyById: builder.query ({
-            query: (id) => `product/guarantee/${id}`,
-            providesTags: ['Warranty'],
-        }),
-        createProductWarrantyMoney: builder.mutation ({
-            query: (data) => ({
-                url: "create/charge",
-                method: "POST",
-                body: data,
-            }),
-            invalidatesTags: ['Warranty'],
-        }),
-        createProductWarrantyNoMoney: builder.mutation ({
-            query: (data) => ({
-                url: "create/no-charge",
-                method: "POST",
-                body: data,
-            }),
-            invalidatesTags: ['Warranty'],
-        }),
-        getListProductWarrantyPending: builder.query ({
-            query: ({page,pageSize,term}) => `product/pending?page=${page}&pageSize=${pageSize}&term=${term}`,
-            providesTags: ['Warranty'],
-        }),
-        getListProductWarrantyOk: builder.query ({
-            query: ({page,pageSize,term}) => `product/ok?page=${page}&pageSize=${pageSize}&term=${term}`,
-            providesTags: ['Warranty'],
-        }),
-        getListProductWarrantyAll: builder.query ({
-            query: ({page,pageSize,term}) => `product/all?page=${page}&pageSize=${pageSize}&term=${term}`,
-            providesTags: ['Warranty'],
-        }),
-        updateInformationEngineer: builder.query ({
-            query: (id) => `product/engineer/${id}`,
-            providesTags: ['Warranty'],
-        }),
+    getCustomerById: builder.query({
+      query: (id) => `customer/${id}`,
+      providesTags: ["Warranty"],
     }),
-});;
+    createProductCharge: builder.mutation({
+      query: (data) => ({
+        url: "product/create-charge",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Warranty"],
+    }),
+    createProductNoCharge: builder.mutation({
+      query: (data) => ({
+        url: "product/create-no-charge",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Warranty"],
+    }),
+    getListProductPendingNoEngineer: builder.query({
+      query: ({ page, pageSize, term }) =>
+        `product-pending?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ["Warranty"],
+    }),
+    getListHistoryProductByIME: builder.query({
+      query: ({ ime }) => `history-products?IME=${ime}`,
+      providesTags: ["Warranty"],
+    }),
+    findProductById: builder.query({
+      query: (id) => `product/${id}`,
+      providesTags: ["Warranty"],
+    }),
+    updateEngineerInformationByProduct: builder.mutation({
+      query: (data) => ({
+        url: "update-product",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ['Warranty'],
+    }),
+    findProductGuaranteeStatusOKByTerm: builder.query ({
+      query: ({page, pageSize, term}) => `products?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ['Warranty'],
+    }),
+    warrantyCreateBill: builder.mutation ({
+      query: (data) => ({
+        url: "bill/create",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ['Warranty'],
+    }),
+    findBillProductGuaranteeAll: builder.query({
+      query: ({page, pageSize, term}) => `bills?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ['Warranty'],
+    }),
+    findGuaranteeAll: builder.query({
+      query: ({page, pageSize, term}) => `guarantees?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ['Warranty'],
+    }),
+    findProductEngineerPendingAll: builder.query ({
+      query: ({page, pageSize, term}) => `pending-product?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ['Warranty'],
+    }),
+    findProductPendingEngineerById: builder.query ({
+      query: (id) => `pending-product/${id}`,
+      providesTags: ['Warranty'],
+    }),
+    updateEngineerProductById: builder.mutation ({
+      query: ({id, ...data}) => ({
+        url: `pending-product/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ['Warranty'],
+    }),
+  }),
+});
 
-export const { 
-    useSearchHistoryProductByTermQuery,
-    useFindProductAndCustomerByIdQuery,
-    useGetProductWarrantyByIdQuery,
-    useCreateProductWarrantyMoneyMutation,
-    useCreateProductWarrantyNoMoneyMutation,
-    useGetListProductWarrantyAllQuery,
-    useGetListProductWarrantyPendingQuery,
-    useGetListProductWarrantyOkQuery,
-    useUpdateInformationEngineerQuery
+export const {
+  useGetListCustomeriesByTermQuery,
+  useGetCustomerByIdQuery,
+  useCreateProductChargeMutation,
+  useCreateProductNoChargeMutation,
+  useGetListProductPendingNoEngineerQuery,
+  useLazyGetListHistoryProductByIMEQuery,
+  useFindProductByIdQuery,
+  useUpdateEngineerInformationByProductMutation,
+  useLazyFindProductGuaranteeStatusOKByTermQuery,
+  useWarrantyCreateBillMutation,
+  useLazyFindBillProductGuaranteeAllQuery,
+  useLazyFindGuaranteeAllQuery,
+  useLazyFindProductEngineerPendingAllQuery,
+  useFindProductPendingEngineerByIdQuery,
+  useUpdateEngineerProductByIdMutation
 } = warrantyEmployeeApi;

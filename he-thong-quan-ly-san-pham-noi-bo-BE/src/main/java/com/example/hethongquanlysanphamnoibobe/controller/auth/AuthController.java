@@ -1,6 +1,6 @@
 package com.example.hethongquanlysanphamnoibobe.controller.auth;
 
-import com.example.hethongquanlysanphamnoibobe.dto.request.LoginRequest;
+import com.example.hethongquanlysanphamnoibobe.request.LoginRequest;
 import com.example.hethongquanlysanphamnoibobe.response.AuthResponse;
 import com.example.hethongquanlysanphamnoibobe.service.auth.AuthSerice;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -8,7 +8,6 @@ function Headers() {
   const dispath = useDispatch();
   const navigate = useNavigate();
 
-  console.log(auth)
 
   const handleLogout = () => {
     dispath(logout());

@@ -1,8 +1,6 @@
 package com.example.hethongquanlysanphamnoibobe.controller.receptionist;
 
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateBillRequest;
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateProductRequet;
-import com.example.hethongquanlysanphamnoibobe.dto.request.InformationEngineerRequest;
+import com.example.hethongquanlysanphamnoibobe.request.*;
 import com.example.hethongquanlysanphamnoibobe.service.receptionisrservice.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +27,10 @@ public class ProductController {
     }
 
     // cập nhật thông tin nhân viên sửa chữa
-    @PutMapping("update-product/{id}")
-    public ResponseEntity<?> updateEngineerInformationByProduct(@RequestBody InformationEngineerRequest request, @PathVariable Integer id) {
+    @PutMapping("update-product")
+    public ResponseEntity<?> updateEngineerInformationByProduct(@RequestBody InformationEngineerRequest request) {
 
-        return ResponseEntity.ok(productService.updateEngineerInformationByProduct(request, id));
+        return ResponseEntity.ok(productService.updateEngineerInformationByProduct(request));
     }
 
     // lấy ra danh sách sản phẩm sửa ok
@@ -66,4 +64,52 @@ public class ProductController {
     public ResponseEntity<?> getBillById(@PathVariable Integer id) {
         return ResponseEntity.ok(productService.getBillById(id));
     }
+
+    @GetMapping("bills")
+    public ResponseEntity<?> getListBillAll(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "") String term) {
+        return ResponseEntity.ok(productService.getListBillAll(page,pageSize,term));
+    }
+
+    @GetMapping("product")
+    public ResponseEntity<?> getProductByIme(@RequestParam(defaultValue = "") String ime) {
+        return ResponseEntity.ok(productService.getProductByIme(ime));
+    }
+
+    @GetMapping("product-customer/{id}") ///
+    public ResponseEntity<?> getProductAndCustomerById(@PathVariable Integer id) {
+        return ResponseEntity.ok(productService.getProductAndCustomerById(id));
+    }
+
+    // đăng ký bảo hành cho sản phẩm
+    @PostMapping("guarantee/create")
+    public ResponseEntity<?> createNewGuarantee (@RequestBody CreateGuaranteeRequest request) {
+        return ResponseEntity.ok(productService.createNewWarranty(request));
+    }
+    // danh sách sản phẩm đang pending chỗ người sửa chữa
+    @GetMapping("products/pending")
+    public ResponseEntity<?> getListProductsPending(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "") String term) {
+        return ResponseEntity.ok(productService.getListProductsPending(page, pageSize, term));
+    }
+
+    // thay đổi người sửa chữa
+    @PutMapping("product/pending/{id}")
+    public ResponseEntity<?> updateEngineerProductPending (@RequestBody UpdateInformationEngineerRequest request, @PathVariable Integer id) {
+        return ResponseEntity.ok(productService.updateEngineerProductPending(request, id));
+    }
+
+
+    // lấy danh sách sách hóa đơn
+    @GetMapping("guarantees")
+    public ResponseEntity<?> findGuaranteeAll(@RequestParam(defaultValue = "1") int page,
+                                              @RequestParam(defaultValue = "10") int pageSize,
+                                              @RequestParam(defaultValue = "") String term) {
+        return ResponseEntity.ok(productService.findGuaranteeAll(page,pageSize, term));
+    }
+
 }

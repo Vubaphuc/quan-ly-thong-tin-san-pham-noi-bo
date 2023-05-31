@@ -18,11 +18,11 @@ export const approverOrderMaterialApi = createApi ({
     tagTypes: ['Warehouse'],
     endpoints: (builder) => ({
         getListOrderMaterialStatusFalse: builder.query ({
-            query: ({page,pageSize, term}) => `order-pending?page=${page}&pageSize=${pageSize}&term=${term}`,
+            query: ({page,pageSize}) => `order-pending?page=${page}&pageSize=${pageSize}`,
             providesTags: ['Warehouse'],
         }),
         getListOrderMaterialStatusTrue: builder.query ({
-            query: ({page,pageSize, term}) => `order-ok?page=${page}&pageSize=${pageSize}&term=${term}`,
+            query: ({page,pageSize}) => `order-ok?page=${page}&pageSize=${pageSize}`,
             providesTags: ['Warehouse'],
         }),
         getOrderMaterialById: builder.query ({

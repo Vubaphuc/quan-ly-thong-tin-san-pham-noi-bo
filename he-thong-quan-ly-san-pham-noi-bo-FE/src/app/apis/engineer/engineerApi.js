@@ -18,7 +18,7 @@ export const engineerApi = createApi ({
     tagTypes: ['Engineer'],
     endpoints: (builder) => ({
         getListProductbyUser: builder.query ({
-            query: ({page, pageSize}) => `products?page=${page}&pageSize=${pageSize}`,
+            query: ({page, pageSize, term}) => `products?page=${page}&pageSize=${pageSize}&term=${term}`,
             providesTags: ['Engineer'],
         }),
         getProductByID: builder.query ({
@@ -38,11 +38,11 @@ export const engineerApi = createApi ({
             providesTags: ['Engineer'],
         }),
         getListMaterialByQuantity: builder.query ({
-            query: ({page, pageSize}) => `components?page=${page}&pageSize=${pageSize}`,
+            query: ({page, pageSize}) => `materialies?page=${page}&pageSize=${pageSize}`,
             providesTags: ['Engineer'],
         }),
-        getMaterialByCode: builder.query ({
-            query: (code) => `material/${code}`,
+        getMaterialById: builder.query ({
+            query: (id) => `material/${id}`,
             providesTags: ['Engineer'],
         }),
         CreateOrderMaterial: builder.mutation({
@@ -69,19 +69,37 @@ export const engineerApi = createApi ({
             query: (id) => `order/${id}`,
             providesTags: ['Engineer'],
         }),
+        deleteOrderMaterialById: builder.mutation ({
+            query: (id) => ({
+                url: `order/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ['Engineer'],
+        }),
+        updateOrderMaterialById: builder.mutation ({
+            query: ({id, ...data}) => ({
+                url: `order/${id}`,
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ['Engineer'],
+        }),
     }),
 });;
 
 export const { 
     useGetListProductbyUserQuery,
+    useLazyGetListProductbyUserQuery,
     useGetProductByIDQuery,
     useUpDateInformationProductbyIdMutation,
     useGetListComponentPhoneQuery,
     useGetListMaterialByQuantityQuery,
-    useGetMaterialByCodeQuery,
+    useGetMaterialByIdQuery,
     useCreateOrderMaterialMutation,
     useGetListOrderMaterialByStatusFalseQuery,
     useGetListOrderMaterialByStatusTrueQuery,
     useGetListMaterialAndComponentsQuery,
-    useGetOrderMaterialByIdQuery
+    useGetOrderMaterialByIdQuery,
+    useDeleteOrderMaterialByIdMutation,
+    useUpdateOrderMaterialByIdMutation
 } = engineerApi;

@@ -3,7 +3,7 @@ package com.example.hethongquanlysanphamnoibobe.service.warehouseemployeeservice
 import com.example.hethongquanlysanphamnoibobe.dto.HistoryOrderMaterialDto;
 import com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
-import com.example.hethongquanlysanphamnoibobe.dto.request.ApproveOrderMaterialRequest;
+import com.example.hethongquanlysanphamnoibobe.request.ApproveOrderMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.entity.Material;
 import com.example.hethongquanlysanphamnoibobe.entity.OrderMaterial;
 import com.example.hethongquanlysanphamnoibobe.exception.BadRequestException;
@@ -19,9 +19,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
+
 public class ApproverOrderMaterialService {
     @Autowired
     private OrderMaterialRepository orderMaterialRepository;
@@ -29,6 +31,7 @@ public class ApproverOrderMaterialService {
     private ICurrentUserLmpl iCurrentUserLmpl;
     @Autowired
     private MaterialRepository materialRepository;
+    // danh sách order vật liệu có status = false - 1
     public PageDto getListOrderMaterialStatusFalse(int page, int pageSize) {
         // danh sách order material by status = false
         Page<OrderMaterialDto> orderMaterialDtos = orderMaterialRepository.getListOrderMaterialStatusFalse(PageRequest.of(page - 1, pageSize));
@@ -41,7 +44,7 @@ public class ApproverOrderMaterialService {
                 orderMaterialDtos.getContent()
         );
     }
-    // danh sách order material by status = true và do user phê duyệt
+    // danh sách order material by status = true và do user phê duyệt - 2
     public PageDto getListOrderMaterialStatusTrue(int page, int pageSize) {
 
         Page<OrderMaterialDto> orderMaterialDtos = orderMaterialRepository.getListOrderMaterialStatusTrue(PageRequest.of(page - 1, pageSize), iCurrentUserLmpl.getUser().getId());
@@ -54,14 +57,14 @@ public class ApproverOrderMaterialService {
                 orderMaterialDtos.getContent()
         );
     }
-    // lấy 1 order Material theo ID
+    // lấy 1 order Material theo ID - 3
     public OrderMaterialDto getOrderMaterialById(Integer id) {
         return orderMaterialRepository.getOrderMaterialById(id).orElseThrow(() -> {
             throw new NotFoundException("Not Found with id : " + id);
         });
     }
 
-    // phê duyệt order material cho nhân viên sửa chữa
+    // phê duyệt order material cho nhân viên sửa chữa - 4
     public StatusResponse approveOrderMaterial(ApproveOrderMaterialRequest request, Integer id) {
 
         // lấy ra order material đang chờ phê duyệt theo
@@ -78,6 +81,7 @@ public class ApproverOrderMaterialService {
         }
         // chưa phê duyệt thì bắt đầu phê duyệt
         orderMaterial.setApprover(iCurrentUserLmpl.getUser());
+        orderMaterial.setApprovalDate(LocalDateTime.now());
         orderMaterial.setStatus(request.isStatus());
         // lưu ;lại lên csdl
         orderMaterialRepository.save(orderMaterial);
@@ -95,7 +99,7 @@ public class ApproverOrderMaterialService {
 
         return new StatusResponse(HttpStatus.OK, "approval success", dataResponse);
     }
-    // tìm kiếm order material theo term
+    // tìm kiếm order material theo term - 5
     public PageDto searchOrderMaterialByTerm(int page, int pageSize, String term) {
         // kiểm tra term rỗng hoặc null không
         if (term == null || term.trim().isEmpty()) {

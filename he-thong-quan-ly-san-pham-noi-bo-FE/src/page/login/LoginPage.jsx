@@ -1,52 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../app/apis/login/authApi";
-import { toast } from "react-toastify";
+import hookLogin from "../hookForm/hook/hookAccount/hookLogin";
+
+
 
 function LoginPage() {
-  // TODO : Validate form trước lên gửi lên server
-  const navigate = useNavigate();
-
   const { isAuthenticated, auth } = useSelector((state) => state.auth);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [login] = useLoginMutation();
+
+  const { register, handleSubmit, errors, onLogin } = hookLogin();
 
   // Nếu đã login -> chuyển hướng sang trang homepage
   if (isAuthenticated) {
     const roles = auth.roles.map((role) => role.name);
 
     if (roles.includes("NHANVIENLETAN")) {
-      return <Navigate to={"/nhan-vien/le-tan"} />;
+      return <Navigate to={"/employee/receptionist"} />;
     }
     if (roles.includes("NHANVIENSUACHUA")) {
-      return <Navigate to={"/nhan-vien/sua-chua"} />;
+      return <Navigate to={"/employee/engineer"} />;
     }
     if (roles.includes("NHANVIENKHO")) {
-      return <Navigate to={"/nhan-vien/kho"} />;
+      return <Navigate to={"/employee/warehouse"} />;
     }
     if (roles.includes("NHANVIENBAOHANH")) {
-      return <Navigate to={"/nhan-vien/bao-hanh"} />;
+      return <Navigate to={"/employee/warranty"} />;
     }
     if (roles.includes("ADMIN")) {
       return <Navigate to={"/admin"} />;
     }
   }
-
-  // Xử lý logic login
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-    login({ email, password })
-      .unwrap()
-      .then(() => {
-        toast.success("Đăng Nhập thành Công")
-      })
-      .catch((err) => {
-          toast.error(err.data.message)
-      });
-  };
 
   return (
     <>
@@ -57,30 +40,32 @@ function LoginPage() {
         <div className="login shadow p-5" style={{ width: 500 }}>
           <h1 className="mb-3 text-center">Đăng nhập</h1>
           <form
-            onSubmit={handleLogin}
+            onSubmit={handleSubmit(onLogin)}
             className="d-flex flex-column align-items-center"
           >
             <input
               className="form-control mb-3"
               type="text"
               placeholder="Nhập email"
-              required="required"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email")}
             />
+            <p className="text-danger fst-italic mt-2">
+              {errors.email?.message}
+            </p>
             <input
               className="form-control mb-3"
               type="password"
               placeholder="Nhập password"
-              required="required"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password")}
             />
+            <p className="text-danger fst-italic mt-2">
+              {errors.password?.message}
+            </p>
             <button type="submit" className="btn btn-primary  btn-block mt-1">
               Đăng nhập
             </button>
             <div className="mt-3">
-              <Link to={"/quen-mat-khau"} className="text-decoration-none">
+              <Link to={"/forgot-password"} className="text-decoration-none">
                 Quên Mật Khẩu
               </Link>
             </div>

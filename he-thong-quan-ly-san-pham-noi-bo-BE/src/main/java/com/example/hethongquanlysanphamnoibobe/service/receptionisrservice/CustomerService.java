@@ -1,8 +1,9 @@
 package com.example.hethongquanlysanphamnoibobe.service.receptionisrservice;
 
 import com.example.hethongquanlysanphamnoibobe.dto.CustomerDto;
+import com.example.hethongquanlysanphamnoibobe.dto.ProductDto;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateCustomerRequest;
+import com.example.hethongquanlysanphamnoibobe.request.CreateCustomerRequest;
 import com.example.hethongquanlysanphamnoibobe.entity.Customer;
 import com.example.hethongquanlysanphamnoibobe.exception.BadRequestException;
 import com.example.hethongquanlysanphamnoibobe.exception.NotFoundException;
@@ -29,7 +30,7 @@ public class CustomerService {
     private ICurrentUserLmpl iCurrentUserLmpl;
 
 
-    // tìm kiếm san phẩm theo tên khách hang
+    // tìm kiếm san phẩm theo tên khách hang - 1
     public PageDto searchProductStatusOKByCustomer(int page, int pageSize, String term) {
 
         Page<CustomerDto> customerDtoPage = productRepository.searchProductStatusOKByCustomer(PageRequest.of(page - 1, pageSize),term);
@@ -43,6 +44,7 @@ public class CustomerService {
         );
     }
 
+    // tìm kiếm sản phẩm có status = false theo từng khách hàng - 2
     public PageDto searchProductStatusPendingByCustomer(int page, int pageSize, String term) {
 
         Page<CustomerDto> customerDtoPage = productRepository.searchProductStatusPendingByCustomer(PageRequest.of(page - 1, pageSize),term);
@@ -56,25 +58,28 @@ public class CustomerService {
         );
     }
 
+
+    // lấy ra list product theo id khách hàng -  3
     public PageDto getListProductByCustomerId(Integer id, int page, int pageSize) {
 
-        Page<CustomerDto> customerDtoPage = productRepository.getListProductByCustomerId(PageRequest.of(page - 1, pageSize), id);
+        Page<ProductDto> productDtoPage = productRepository.getListProductByCustomerId(PageRequest.of(page - 1, pageSize), id);
 
         return new PageDto(
-                customerDtoPage.getNumber() + 1,
-                customerDtoPage.getSize(),
-                customerDtoPage.getTotalPages(),
-                (int) Math.ceil(customerDtoPage.getTotalElements()),
-                customerDtoPage.getContent()
+                productDtoPage.getNumber() + 1,
+                productDtoPage.getSize(),
+                productDtoPage.getTotalPages(),
+                (int) Math.ceil(productDtoPage.getTotalElements()),
+                productDtoPage.getContent()
         );
     }
 
+    // lấy ra khách hàng theo id -4
     public CustomerDto getCustomerById(Integer id) {
         return customerRepository.getCustomerById(id).orElseThrow(() -> {
             throw new NotFoundException("Not Found with id a " + id);
         });
     }
-
+    // tạo khách hàng mới -  5
     public StatusResponse createCustomer(CreateCustomerRequest request) {
 
         // lấy ra khách hàng theo email response gửi
@@ -104,4 +109,6 @@ public class CustomerService {
 
         return new StatusResponse(HttpStatus.OK, "Create Customer success" , dataResponse);
     }
+
+
 }

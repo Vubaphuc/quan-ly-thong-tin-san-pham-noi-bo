@@ -2,46 +2,55 @@ import { useState } from "react";
 import hookFetchQuery from "./hookFetchQuery";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const hookUpdateAvatar = () => {
-  const [files, setFiles] = useState(null);
-  const navigate = useNavigate();
+  const [files, setFiles] = useState(null)
 
   const { token } = hookFetchQuery();
 
+  const navigate = useNavigate();
+
+
   const handleChangeAvatar = async () => {
-    const formData = new FormData();
 
-    formData.append("avatar", files);
+      const formData = new FormData();
 
-    try {
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
+      formData.append("avatar", files);
 
-      const rs = await axios.post(
-        "http://localhost:8080/api/v1/employee/upload-avatar",
-        formData,
-        {
-          headers,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
+      try {
+
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        const rs = await axios.post(
+          "http://localhost:8080/api/v1/employee/upload-avatar",
+          formData,
+          {
+            headers
           },
-        }
-      );
-        // chưa chuyển  trang
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        
 
-    } catch (error) {
-      toast.error(error.data.message);
-    }
-  };
+        navigate("/employee/personal-information")
+
+      } catch (error) {
+
+        console.log(error);
+        
+      }
+    };
+
 
   return {
-    setFiles,
-    handleChangeAvatar,
-  };
+      setFiles, handleChangeAvatar
+  }
 };
 
 export default hookUpdateAvatar;

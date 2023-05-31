@@ -1,7 +1,8 @@
 package com.example.hethongquanlysanphamnoibobe.controller.engineer;
 
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateOrderMaterialRequest;
-import com.example.hethongquanlysanphamnoibobe.dto.request.InformationRepairRequest;
+import com.example.hethongquanlysanphamnoibobe.request.CreateOrderMaterialRequest;
+import com.example.hethongquanlysanphamnoibobe.request.InformationRepairRequest;
+import com.example.hethongquanlysanphamnoibobe.request.UpdateOrderMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.service.engineerservice.EngineerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,10 @@ public class EngineerController {
     private EngineerService engineerService;
 
     @GetMapping("products")
-    public ResponseEntity<?> getListProductByUser(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
-        return ResponseEntity.ok(engineerService.getListProductByUser(page,pageSize));
+    public ResponseEntity<?> getListProductByUser(@RequestParam(defaultValue = "1") int page,
+                                                  @RequestParam(defaultValue = "10") int pageSize,
+                                                  @RequestParam(defaultValue = "") String term) {
+        return ResponseEntity.ok(engineerService.getListProductByUser(page,pageSize,term));
     }
 
     @GetMapping("product/{id}")
@@ -37,9 +40,9 @@ public class EngineerController {
         return ResponseEntity.ok(engineerService.getListMaterialByQuantity(page,pageSize));
     }
 
-    @GetMapping("material/{code}")
-    public ResponseEntity<?> getMaterialByCode(@PathVariable String code) {
-        return ResponseEntity.ok(engineerService.getMaterialByCode(code));
+    @GetMapping("material/{id}")
+    public ResponseEntity<?> getMaterialById(@PathVariable Integer id) {
+        return ResponseEntity.ok(engineerService.getMaterialById(id));
     }
 
     @PostMapping("order")
@@ -65,5 +68,17 @@ public class EngineerController {
     @GetMapping("order/{id}")
     public ResponseEntity<?> getOrderMaterialById (@PathVariable Integer id) {
         return ResponseEntity.ok(engineerService.getOrderMaterialById(id));
+    }
+    // hủy order theo id (status === false)
+    @DeleteMapping("order/{id}")
+    public ResponseEntity<?> deleteOrderById(@PathVariable Integer id) {
+        engineerService.deleteOrderById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // cập nhật số lượng order vật liệu
+    @PutMapping("order/{id}")
+    public ResponseEntity<?> updateQuantityOrderMaterialById(@RequestBody UpdateOrderMaterialRequest request , @PathVariable Integer id) {
+        return ResponseEntity.ok(engineerService.updateQuantityOrderMaterialById(request, id));
     }
 }

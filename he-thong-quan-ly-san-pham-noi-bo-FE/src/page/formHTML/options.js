@@ -29,8 +29,8 @@ export const getAddress = (provinces) => {
     }
     return employees.map((employee) => {
       return {
-        label: employee.fullName,
-        value: employee.maNhanVien,
+        label: employee.employeeName,
+        value: employee.employeeCode,
       };
     });
   }
@@ -54,14 +54,14 @@ export const getAddress = (provinces) => {
     });
   }
   
-  export const getComponents = (component) => {
-    if(!component) {
+  export const getComponents = (components) => {
+    if(!components) {
       return [];
     }
-    return linhKiens.map((component) => {
+    return components.map((component) => {
       return {
-        label: component.name,
-        value: component.id,
+        label: component.componentName,
+        value: component.componentId,
       };
     });
   }
@@ -74,5 +74,12 @@ export const getAddress = (provinces) => {
         { label: "Oppo", value: "Oppo" },
         { label: "Huawei", value: "Huawei" },
         { label: "Motorola", value: "Motorola" },
+    ];
+  }
+
+  export const getStatus = () => {
+    return [
+        { label: "OK", value: true },
+        { label: "PENDING", value: false },
     ];
   }

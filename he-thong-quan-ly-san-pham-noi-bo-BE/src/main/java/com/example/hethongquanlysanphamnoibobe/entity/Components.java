@@ -3,6 +3,8 @@ package com.example.hethongquanlysanphamnoibobe.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,8 +24,14 @@ public class Components {
     @Column(name = "warranty_period")
     private Integer warrantyPeriod;
     // nhân viên kho
+    @Column(name = "create_date")
+    private LocalDateTime createDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_employee_id")
     private User warehouseEmployee;
 
+    @PrePersist
+    public void prePersist() {
+        this.createDate = LocalDateTime.now();
+    }
 }

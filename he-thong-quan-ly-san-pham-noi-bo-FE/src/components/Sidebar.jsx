@@ -23,6 +23,12 @@ function Sidebar() {
         {isShowMenu(roles, ["NHANVIENSUACHUA"]) && (
           <h3 className="fs-4 text-white">Nhân viên sửa chữa</h3>
         )}
+        {isShowMenu(roles, ["NHANVIENKHO"]) && (
+          <h3 className="fs-4 text-white">Nhân viên Kho</h3>
+        )}
+        {isShowMenu(roles, ["NHANVIENBAOHANH"]) && (
+          <h3 className="fs-4 text-white">Nhân viên Bảo Hành</h3>
+        )}
       </div>
       <div className="menu">
         <div className="menu-item">
@@ -39,7 +45,7 @@ function Sidebar() {
                   <ul className="m-0 p-0">
                     <li>
                       <Link
-                        to={"/nhan-vien/le-tan"}
+                        to={"/employee/receptionist"}
                         className="text-decoration-none"
                       >
                         Danh sách sản phẩm
@@ -47,7 +53,15 @@ function Sidebar() {
                     </li>
                     <li>
                       <Link
-                        to={"/nhan-vien/le-tan/dk-sc"}
+                        to={"/employee/receptionist/products/pending"}
+                        className="text-decoration-none"
+                      >
+                        Danh sách sản phẩm Pending
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={"/employee/receptionist/products"}
                         className="text-decoration-none"
                       >
                         Đăng ký nhân viên sửa
@@ -55,7 +69,7 @@ function Sidebar() {
                     </li>
                     <li>
                       <Link
-                        to={"/nhan-vien/le-tan/tim-kiem"}
+                        to={"/employee/receptionist/search"}
                         className="text-decoration-none"
                       >
                         Tìm kiếm sản phẩm
@@ -73,7 +87,7 @@ function Sidebar() {
                   <ul className="m-0 p-0">
                     <li>
                       <Link
-                        to={"/nhan-vien/le-tan/ds-kh"}
+                        to={"/employee/receptionist/customers"}
                         className="text-decoration-none"
                       >
                         Danh sách khách hàng
@@ -81,26 +95,54 @@ function Sidebar() {
                     </li>
                     <li>
                       <Link
-                        to={"/nhan-vien/le-tan/dk-kh"}
+                        to={"/employee/receptionist/customer/create"}
                         className="text-decoration-none"
                       >
                         Đăng ký khách hàng
                       </Link>
                     </li>
+                  </ul>
+                </div>
+                <div className="menu-item">
+                  <h5>
+                    <span className="d-inline-block me-1">
+                      <i className="fa-solid fa-explosion"></i>
+                    </span>
+                    Quản lý Bảo Hành
+                  </h5>
+                  <ul className="m-0 p-0">
                     <li>
                       <Link
-                        to={"/nhan-vien/le-tan/hd-bh"}
+                        to={"/employee/receptionist/guarantees"}
                         className="text-decoration-none"
                       >
-                        Hóa đơn và bảo hành
+                        Danh sách bảo hành
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to={"/nhan-vien/le-tan/tk-kh"}
+                        to={"/employee/receptionist/guarantee/create"}
                         className="text-decoration-none"
                       >
-                        Tìm kiếm khách hàng
+                        Đăng Ký Bảo Hành
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+                <div className="menu-item">
+                  <h5>
+                    <span className="d-inline-block me-1">
+                      <i className="fa-solid fa-explosion"></i>
+                    </span>
+                    Quản lý Hóa đơn
+                  </h5>
+                  <ul className="m-0 p-0">
+                    <li>
+                      <Link
+                        to={"/employee/receptionist/bills"}
+                        className="text-decoration-none"
+                      >
+                        Danh sách hóa đơn
                       </Link>
                     </li>
                   </ul>
@@ -115,7 +157,7 @@ function Sidebar() {
                   <ul className="m-0 p-0">
                     <li>
                       <Link
-                        to={"/nhan-vien/thong-tin/tai-khoan"}
+                        to={"/employee/personal-information"}
                         className="text-decoration-none"
                       >
                         Thông tin tài khoản
@@ -123,7 +165,7 @@ function Sidebar() {
                     </li>
                     <li>
                       <Link
-                        to={"/nhan-vien/thong-tin/doi-mat-khau"}
+                        to={"/employee/change-password"}
                         className="text-decoration-none"
                       >
                         Đổi mật khẩu
@@ -146,7 +188,7 @@ function Sidebar() {
                   <ul className="m-0 p-0">
                     <li>
                       <Link
-                        to={"/nhan-vien/sua-chua"}
+                        to={"/employee/engineer"}
                         className="text-decoration-none"
                       >
                         Danh sách Sản Phẩm
@@ -164,18 +206,28 @@ function Sidebar() {
                   <ul className="m-0 p-0">
                     <li>
                       <Link
-                        to={"/nhan-vien/sua-chua/vat-lieu"}
-                        className="text-decoration-none"
-                      >
-                        Danh sách Vật Liệu
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={"/nhan-vien/sua-chua/order"}
+                        to={"/employee/engineer/orders"}
                         className="text-decoration-none"
                       >
                         Danh sách Oder
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+                <div className="menu-item">
+                  <h5>
+                    <span className="d-inline-block me-1">
+                      <i className="fa-solid fa-explosion"></i>
+                    </span>
+                    Vật liệu
+                  </h5>
+                  <ul className="m-0 p-0">
+                    <li>
+                      <Link
+                        to={"/employee/engineer/materials"}
+                        className="text-decoration-none"
+                      >
+                        Danh sách Vật Liệu
                       </Link>
                     </li>
                   </ul>
@@ -190,7 +242,7 @@ function Sidebar() {
                   <ul className="m-0 p-0">
                     <li>
                       <Link
-                        to={"/nhan-vien/thong-tin/tai-khoan"}
+                        to={"/employee/personal-information"}
                         className="text-decoration-none"
                       >
                         Thông tin tài khoản
@@ -198,7 +250,7 @@ function Sidebar() {
                     </li>
                     <li>
                       <Link
-                        to={"/nhan-vien/thong-tin/doi-mat-khau"}
+                        to={"/employee/change-password"}
                         className="text-decoration-none"
                       >
                         Đổi mật khẩu
@@ -221,13 +273,16 @@ function Sidebar() {
               </h5>
               <ul className="m-0 p-0">
                 <li>
-                  <Link to={"/nhan-vien/kho"} className="text-decoration-none">
+                  <Link
+                    to={"/employee/warehouse"}
+                    className="text-decoration-none"
+                  >
                     Danh sách Vật liệu
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to={"/nhan-vien/kho/dang-ky"}
+                    to={"/employee/warehouse/material/create"}
                     className="text-decoration-none"
                   >
                     Đăng ký vật liệu
@@ -235,7 +290,15 @@ function Sidebar() {
                 </li>
                 <li>
                   <Link
-                    to={"/nhan-vien/kho/linh-kien/new-linh-kien"}
+                    to={"/employee/warehouse/components"}
+                    className="text-decoration-none"
+                  >
+                    Danh Sách Linh Kiện
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/employee/warehouse/component/create"}
                     className="text-decoration-none"
                   >
                     Đăng ký Linh Kiện Mới
@@ -243,7 +306,7 @@ function Sidebar() {
                 </li>
                 <li>
                   <Link
-                    to={"/nhan-vien/kho/search-vat-lieu"}
+                    to={"/employee/warehouse/search/material"}
                     className="text-decoration-none"
                   >
                     Tìm kiếm vật liệu
@@ -261,7 +324,7 @@ function Sidebar() {
               <ul className="m-0 p-0">
                 <li>
                   <Link
-                    to={"/nhan-vien/kho/oder"}
+                    to={"/employee/warehouse/orderMaterials"}
                     className="text-decoration-none"
                   >
                     Danh sách oder vật liệu
@@ -269,7 +332,7 @@ function Sidebar() {
                 </li>
                 <li>
                   <Link
-                    to={"/nhan-vien/kho/search-oder"}
+                    to={"/employee/warehouse/search/order"}
                     className="text-decoration-none"
                   >
                     Tìm kiếm oder
@@ -287,7 +350,7 @@ function Sidebar() {
               <ul className="m-0 p-0">
                 <li>
                   <Link
-                    to={"/nhan-vien/kho/vender"}
+                    to={"/employee/warehouse/vendors"}
                     className="text-decoration-none"
                   >
                     Danh sách Vender
@@ -295,15 +358,10 @@ function Sidebar() {
                 </li>
                 <li>
                   <Link
-                    to={"/nhan-vien/kho/vender/new-vender"}
+                    to={"/employee/warehouse/vendor/create"}
                     className="text-decoration-none"
                   >
                     Thêm Vender Mới
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/"} className="text-decoration-none">
-                    Tìm kiếm Vender
                   </Link>
                 </li>
               </ul>
@@ -318,7 +376,7 @@ function Sidebar() {
               <ul className="m-0 p-0">
                 <li>
                   <Link
-                    to={"/nhan-vien/thong-tin/tai-khoan"}
+                    to={"/employee/personal-information"}
                     className="text-decoration-none"
                   >
                     Thông tin tài khoản
@@ -326,7 +384,7 @@ function Sidebar() {
                 </li>
                 <li>
                   <Link
-                    to={"/nhan-vien/thong-tin/doi-mat-khau"}
+                    to={"/employee/change-password"}
                     className="text-decoration-none"
                   >
                     Đổi mật khẩu
@@ -348,7 +406,7 @@ function Sidebar() {
               <ul className="m-0 p-0">
                 <li>
                   <Link
-                    to={"/nhan-vien/bao-hanh"}
+                    to={"/employee/warranty"}
                     className="text-decoration-none"
                   >
                     Danh sách bảo hành
@@ -356,23 +414,70 @@ function Sidebar() {
                 </li>
                 <li>
                   <Link
-                    to={"/nhan-vien/bao-hanh/dang-ky"}
+                    to={"/employee/warranty/customeries"}
                     className="text-decoration-none"
                   >
-                    Đăng Ký Sản Phẩm Bảo Hành
+                    Danh Sách Khách hàng
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to={"/nhan-vien/bao-hanh/chuyen"}
+                    to={"/employee/warranty/products"}
                     className="text-decoration-none"
                   >
                     Chuyển Sản Phẩm Bảo Hành
                   </Link>
                 </li>
+              </ul>
+            </div>
+            <div className="menu-item">
+              <h5>
+                <span className="d-inline-block me-1">
+                  <i className="fa-solid fa-explosion"></i>
+                </span>
+                Quản lý Sản Phẩm
+              </h5>
+              <ul className="m-0 p-0">
                 <li>
-                  <Link to={"/"} className="text-decoration-none">
-                    Tìm kiếm bảo hành
+                  <Link
+                    to={"/employee/warranty/product/pending"}
+                    className="text-decoration-none"
+                  >
+                    Danh Sách sản phẩm Pending
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/employee/warranty/search/products"}
+                    className="text-decoration-none"
+                  >
+                    Tìm Kiếm Lịch Sử Sản Phẩm
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="menu-item">
+              <h5>
+                <span className="d-inline-block me-1">
+                  <i className="fa-solid fa-explosion"></i>
+                </span>
+                Danh sách hóa đơn và bảo hành
+              </h5>
+              <ul className="m-0 p-0">
+                <li>
+                  <Link
+                    to={"/employee/warranty/bills"}
+                    className="text-decoration-none"
+                  >
+                    Danh sách hóa đơn
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={"/employee/warranty/guarantees"}
+                    className="text-decoration-none"
+                  >
+                    Danh sách bảo hành
                   </Link>
                 </li>
               </ul>
@@ -387,7 +492,7 @@ function Sidebar() {
               <ul className="m-0 p-0">
                 <li>
                   <Link
-                    to={"/nhan-vien/thong-tin/tai-khoan"}
+                    to={"/employee/personal-information"}
                     className="text-decoration-none"
                   >
                     Thông tin tài khoản
@@ -395,7 +500,7 @@ function Sidebar() {
                 </li>
                 <li>
                   <Link
-                    to={"/nhan-vien/thong-tin/doi-mat-khau"}
+                    to={"/employee/change-password"}
                     className="text-decoration-none"
                   >
                     Đổi mật khẩu
@@ -416,7 +521,7 @@ function Sidebar() {
               </h5>
               <ul className="m-0 p-0">
                 <li>
-                  <Link to={"/"} className="text-decoration-none">
+                  <Link to={"/admin/shop"} className="text-decoration-none">
                     Danh sách danh mục
                   </Link>
                 </li>
@@ -431,13 +536,16 @@ function Sidebar() {
               </h5>
               <ul className="m-0 p-0">
                 <li>
-                  <Link to={"/"} className="text-decoration-none">
+                  <Link
+                    to={"/employee/personal-information"}
+                    className="text-decoration-none"
+                  >
                     Thông tin tài khoản
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to={"/admin/doi-mat-khau"}
+                    to={"/employee/change-password"}
                     className="text-decoration-none"
                   >
                     Đổi mật khẩu

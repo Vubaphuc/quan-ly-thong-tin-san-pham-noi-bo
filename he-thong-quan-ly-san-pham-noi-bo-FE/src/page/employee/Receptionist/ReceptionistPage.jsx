@@ -1,33 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import { useGetPageProductStatusOKQuery } from "../../../app/apis/receptionist/productApi";
+import { useLazyGetPageProductStatusOKQuery } from "../../../app/apis/receptionist/productApi";
+import { Link } from "react-router-dom";
 
 function ReceptionistPage() {
-  const [status, setStatus] = useState("KHACHHANG");
   const [term, setTerm] = useState("");
-  const [page, setPage] = useState(0);
 
-  const { data: productData, isLoading: productLoading } =
-    useGetPageProductStatusOKQuery({
-      page: page + 1,
-      pageSize: 10,
-      term: term,
-    });
+  const [getProduct, { data: productData, isLoading: productLoading }] =
+    useLazyGetPageProductStatusOKQuery();
+
+    useEffect(() => {
+      getProduct({
+        page: 1,
+        pageSize: 10,
+        term: term
+      })
+    },[term])
 
   if (productLoading) {
     return <h2>Loading....</h2>;
   }
 
+  console.log(productData)
+
   const handlePageClick = (page) => {
-    setPage(page.selected);
-  };
 
-  const handleStatusChange = (e) => {
-    setStatus(e.target.value);
-  };
-
-  const handleChaneNameCustomer = (e) => {
-    setTerm(e.target.value);
+    getProduct({
+      page: page.selected + 1,
+      pageSize: 10,
+      term: term
+    })
   };
 
   return (
@@ -40,103 +42,89 @@ function ReceptionistPage() {
               type="text"
               placeholder="Tìm kiếm kiếm sản phẩm..."
               value={term}
-              onChange={handleChaneNameCustomer}
+              onChange={(e) => setTerm(e.target.value)}
             />
           </div>
-          <div className="row">
-            <div className="col-12">
-              <div className="card">
-                <div className="card-body">
-                  <div className="btn-lua-chon">
-                    <label htmlFor="statusSelect" className="mb-2">
-                      Trạng Thái:
-                    </label>
-                    <select
-                      id="statusSelect"
-                      className="form-control"
-                      value={status}
-                      onChange={handleStatusChange}
-                    >
-                      <option value="KHACHHANG">Khách Hàng</option>
-                      <option value="BAOHANH">Bảo Hành</option>
-                    </select>
-                  </div>
-                  <table className="table table-bordered table-hover">
-                    <thead>
-                      <tr>
-                        <th>Model</th>
-                        <th>Hãng Điện Thoại</th>
-                        <th>Số IME</th>
-                        <th>Tên Lỗi</th>
-                        <th>Vị Trí Sửa</th>
-                        <th>Số Lượng</th>
-                        <th>Giá Tiền</th>
-                        <th>Thành Tiền</th>
-                        <th>Trạng Thái</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {status === "KHACHHANG" &&
-                        productData &&
-                        productData.data.map((sanPham) => (
-                          <tr key={sanPham.id}>
-                            <td>
-                              <Link
-                                to={`/nhan-vien/le-tan/hd-bh/${sanPham.id}`}
-                                className="text-decoration-none"
-                              >
-                                {sanPham?.model}
-                              </Link>
-                            </td>
-                            <td>
-                              <Link
-                                to={`/nhan-vien/le-tan/hd-bh/${sanPham.id}`}
-                                className="text-decoration-none"
-                              >
-                                {sanPham?.hangSanXuat}
-                              </Link>
-                            </td>
-                            <td>{sanPham?.ime}</td>
-                            <td>{sanPham?.tenLoi}</td>
-                            <td>{sanPham?.viTriSua}</td>
-                            <td>{sanPham?.soLuong}</td>
-                            <td>{sanPham?.giaTien}</td>
-                            <td>{sanPham?.thanhTien}</td>
-                            <td>
-                              {sanPham?.trangThai === true ? "OK" : "PENDING"}
-                            </td>
+          <div className="search-results mt-3">
+            {productData && productData.data.length > 0 ? (
+              <div className="row">
+                <div className="col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <table className="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>Model</th>
+                            <th>Hãng Điện Thoại</th>
+                            <th>Số IME</th>
+                            <th>Tên Lỗi</th>
+                            <th>Vị Trí Sửa</th>
+                            <th>Giá Tiền</th>
+                            <th>Trạng Thái</th>
                           </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                  <div
-                    className="d-flex justify-content-center mt-3"
-                    id="pagination"
-                  >
-                    <ReactPaginate
-                      nextLabel="next >"
-                      onPageChange={handlePageClick}
-                      pageRangeDisplayed={3}
-                      marginPagesDisplayed={2}
-                      pageCount={productData?.totalPages}
-                      previousLabel="< previous"
-                      pageClassName="page-item"
-                      pageLinkClassName="page-link"
-                      previousClassName="page-item"
-                      previousLinkClassName="page-link"
-                      nextClassName="page-item"
-                      nextLinkClassName="page-link"
-                      breakLabel="..."
-                      breakClassName="page-item"
-                      breakLinkClassName="page-link"
-                      containerClassName="pagination"
-                      activeClassName="active"
-                      renderOnZeroPageCount={null}
-                    />
+                        </thead>
+                        <tbody>
+                          {productData.data.map((product) => (
+                            <tr key={product.id}>
+                              <td>
+                                <Link
+                                  to={`/employee/receptionist/bill/${product.id}`}
+                                  className="text-decoration-none"
+                                >
+                                  {product?.nameModel}
+                                </Link>
+                              </td>
+                              <td>
+                                <Link
+                                  to={`/employee/receptionist/bill/${product.id}`}
+                                  className="text-decoration-none"
+                                >
+                                  {product?.phoneCompany}
+                                </Link>
+                              </td>
+                              <td>{product?.ime}</td>
+                              <td>{product?.defectName}</td>
+                              <td>{product?.location}</td>
+                              <td>{product?.price}</td>
+                              <td>
+                                {product?.status === true ? "OK" : "PENDING"}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <div
+                        className="d-flex justify-content-center mt-3"
+                        id="pagination"
+                      >
+                        <ReactPaginate
+                          nextLabel="next >"
+                          onPageChange={handlePageClick}
+                          pageRangeDisplayed={3}
+                          marginPagesDisplayed={2}
+                          pageCount={productData?.totalPages}
+                          previousLabel="< previous"
+                          pageClassName="page-item"
+                          pageLinkClassName="page-link"
+                          previousClassName="page-item"
+                          previousLinkClassName="page-link"
+                          nextClassName="page-item"
+                          nextLinkClassName="page-link"
+                          breakLabel="..."
+                          breakClassName="page-item"
+                          breakLinkClassName="page-link"
+                          containerClassName="pagination"
+                          activeClassName="active"
+                          renderOnZeroPageCount={null}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <p>Không có sản phẩm nào !!!</p>
+            )}
           </div>
         </div>
       </section>

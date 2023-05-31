@@ -2,9 +2,9 @@ package com.example.hethongquanlysanphamnoibobe.service.warehouseemployeeservice
 
 import com.example.hethongquanlysanphamnoibobe.dto.*;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateComponentsRequest;
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateMaterialRequest;
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateVendorRequest;
+import com.example.hethongquanlysanphamnoibobe.request.CreateComponentsRequest;
+import com.example.hethongquanlysanphamnoibobe.request.CreateMaterialRequest;
+import com.example.hethongquanlysanphamnoibobe.request.CreateVendorRequest;
 import com.example.hethongquanlysanphamnoibobe.entity.Components;
 import com.example.hethongquanlysanphamnoibobe.entity.Material;
 import com.example.hethongquanlysanphamnoibobe.entity.Vendor;
@@ -35,7 +35,7 @@ public class WarehouseEmployeeService {
     @Autowired
     private ICurrentUserLmpl iCurrentUserLmpl;
 
-    // lấy ra danh sách Components có phân trang
+    // lấy ra danh sách Components có phân trang - 1
     public PageDto getListComponents(int page, int pageSize) {
 
         Page<ComponentsDto> componentsDtoPage = componentsRepository.getListComponentPhone(PageRequest.of(page -1 ,pageSize));
@@ -48,7 +48,13 @@ public class WarehouseEmployeeService {
                 componentsDtoPage.getContent()
         );
     }
-    // tạo mới Components
+    // lấy ra linh kiện theo id - 2
+    public Object getComponentsById(Integer id) {
+        return componentsRepository.getComponentsById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not Found with id: " + id);
+        });
+    }
+    // tạo mới Components - 3
     public StatusResponse createComponents(CreateComponentsRequest request) {
         // kiểm tra xem components đã tồn tại hãy chưa
         if (componentsRepository.findByName(request.getName()).isPresent()) {
@@ -73,7 +79,7 @@ public class WarehouseEmployeeService {
         return new StatusResponse(HttpStatus.OK, "Create Components success" , dataResponse);
     }
 
-    // tạo mới Material
+    // tạo mới Material - 4
     public StatusResponse createMaterial(CreateMaterialRequest request) {
         // kiểm tra xem material đã tồn tại hay chưa
         if (materialRepository.findByCode(request.getMaterialCode()).isPresent()) {
@@ -93,7 +99,7 @@ public class WarehouseEmployeeService {
             return new StatusResponse(HttpStatus.OK, "Create Material success" , dataResponse);
 
         }
-        // lấy ra Components theo ComponentsId
+        // lấy ra Components theo ComponentsId - 5
         Components components = componentsRepository.findById(request.getComponentsId()).orElseThrow(() -> {
             throw new NotFoundException("Not Found with id : " + request.getComponentsId());
         });
@@ -105,7 +111,7 @@ public class WarehouseEmployeeService {
         // tạo Material mới
         Material material = Material.builder()
                 .code(request.getMaterialCode())
-                .nameModel(request.getTenModel())
+                .nameModel(request.getNameModel())
                 .quantity(request.getQuantity())
                 .components(components)
                 .vendor(vendor)
@@ -124,7 +130,7 @@ public class WarehouseEmployeeService {
         return new StatusResponse(HttpStatus.OK, "Create Material success" , dataResponse);
     }
 
-    // lấy ra danh sách material all có phân trang
+    // lấy ra danh sách material all có phân trang - 6
     public PageDto getListMaterialAll(int page, int pageSize) {
 
         Page<MaterialDto> materialDtos = materialRepository.getListMaterialAll(PageRequest.of(page - 1, pageSize));
@@ -138,7 +144,7 @@ public class WarehouseEmployeeService {
         );
     }
 
-    // tìm kiếm Material theo Term c phân trang
+    // tìm kiếm Material theo Term c phân trang - 7
     public PageDto searchHistoryMaterial(int page, int pageSize, String term) {
 
         if (term == null || term.trim().isEmpty()) {
@@ -159,10 +165,10 @@ public class WarehouseEmployeeService {
     }
 
 
-    // lấy danh vendor all có phân trang
+    // lấy danh vendor all có phân trang - 8
     public PageDto getListVendorAll(int page, int pageSize) {
 
-        Page<VendorDto> vendorDtos = vendorRepository.getListVendorAll(PageRequest.of(page - 1, pageSize));
+        Page<VendorCountDto> vendorDtos = vendorRepository.getListVendorAll(PageRequest.of(page - 1, pageSize));
 
         return new PageDto(
                 vendorDtos.getNumber() + 1,
@@ -173,7 +179,7 @@ public class WarehouseEmployeeService {
         );
     }
 
-    // tạo mới vendor
+    // tạo mới vendor - 9
     public StatusResponse createVendor(CreateVendorRequest request) {
         // kiểm tra vendor đã tồn tại chưa
         if (vendorRepository.findByName(request.getName()).isPresent()) {
@@ -195,19 +201,19 @@ public class WarehouseEmployeeService {
 
         return new StatusResponse(HttpStatus.OK, "Create Vendor success" , dataResponse);
     }
-    // lấy ra vendor theo id
+    // lấy ra vendor theo id - 10
     public VendorDto getVendorById(Integer id) {
         return vendorRepository.getVendorById(id).orElseThrow(() -> {
             throw new NotFoundException("Not Found With id : " + id);
         });
     }
-    // lấy ra vendor theo name
+    // lấy ra vendor theo name - 11
     public VendorDto getVendorByName(String name) {
         return vendorRepository.getVendorByName(name).orElseThrow(() -> {
             throw new NotFoundException("Not Found With name : " + name);
         });
     }
-    // update lại name vendor
+    // update lại name vendor -- 12
     public Object updateNameVendor(CreateVendorRequest request, Integer id) {
         // kiểm tra vendor đã tồn tại chưa
         if (vendorRepository.findByName(request.getName()).isPresent()) {
@@ -232,7 +238,7 @@ public class WarehouseEmployeeService {
 
         return new StatusResponse(HttpStatus.OK, "update Vendor name success" , dataResponse);
     }
-    // lấy ra danh sách vendor có tính tổng số material theo từng vendor
+    // lấy ra danh sách vendor có tính tổng số material theo từng vendor - 13
     public PageDto getListVendorTotalMaterial(int page, int pageSize) {
 
         Page<VendorTotalMaterialDto> vendorTotalMaterialDtos = materialRepository.getListVendorTotalMaterial(PageRequest.of(page - 1, pageSize));
@@ -245,10 +251,10 @@ public class WarehouseEmployeeService {
                 vendorTotalMaterialDtos.getContent()
         );
     }
-    // lấy danh sách vendot theo id vendor
+    // lấy danh sách vendot theo id vendor - 14
     public PageDto getListVendorById(int page, int pageSize, int vendorId) {
 
-        Page<MaterialByVendorDto> materialByVendorDtos = materialRepository.getListVendorById(PageRequest.of(page - 1, pageSize), vendorId);
+        Page<MaterialDto> materialByVendorDtos = materialRepository.getListVendorById(PageRequest.of(page - 1, pageSize), vendorId);
 
         return new PageDto(
                 materialByVendorDtos.getNumber() + 1,
@@ -258,4 +264,11 @@ public class WarehouseEmployeeService {
                 materialByVendorDtos.getContent()
         );
     }
+    // lấy ra vật lieuejtheo id - 15
+    public MaterialDto getMaterialById(Integer id) {
+        return materialRepository.getMaterialById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not Found with id : " + id);
+        });
+    }
+
 }

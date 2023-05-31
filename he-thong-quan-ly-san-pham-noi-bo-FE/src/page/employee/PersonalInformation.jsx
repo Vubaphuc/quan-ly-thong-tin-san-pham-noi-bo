@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import addressQuery from "../formHTML/address";
-import { getAddress, getEmployees } from "../formHTML/options";
+import { getAddress } from "../formHTML/options";
 import hookFetchQuery from "../hookForm/hook/hookAccount/hookFetchQuery";
 import hookUpdateAvatar from "../hookForm/hook/hookAccount/hookUpdateAvatar";
 import hookPersonalInformation from "../hookForm/hook/hookAccount/hookPersonalInformation";
@@ -14,36 +14,29 @@ function PersonalInformation() {
 
   const { setFiles, handleChangeAvatar } = hookUpdateAvatar();
 
+  const { control, register, handleSubmit, errors, onPersonalInformation } =
+    hookPersonalInformation();
+
   const { provinces } = addressQuery();
 
-  const { control, register, handleSubmit, errors, onPersonalInformation } = hookPersonalInformation();
+  // chọn và hiển thị hình ảnh lên
+  const handleReaderAvatar = (e) => {
+    const file = e.target.files[0];
+    setFiles(file);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const avatarImg = document.getElementById("avatar-img");
+      avatarImg.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  };
 
-    // chọn và hiển thị ảnh lên
-    const handleReaderAvatar = (e) => {
-        const file = e.target.files[0];
+  const addressOptions = getAddress(provinces);
 
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            const avatarImg = document.getElementById("avatar-img");
-            avatarImg.src = reader.result;
-        };
-        reader.readAsDataURL(file);
-    }
-
-
-    
-
-    const addressOptions = getAddress(provinces);
-
-    const defaultAddress = {
-      label: auth.address,
-      value: auth.address
-    }
-
-    const employeeOptions = getEmployees(auth.roles);
-
-
+  const defaultAddress = {
+    label: auth.address,
+    value: auth.address,
+  };
 
 
   return (
@@ -61,7 +54,7 @@ function PersonalInformation() {
                     disabled
                     id="maNhanVien"
                     className="form-control"
-                    defaultValue={auth.maNhanVien}
+                    defaultValue={auth.employeeCode}
                   />
                 </div>
                 <div className="mb-3">
@@ -70,7 +63,7 @@ function PersonalInformation() {
                     type="text"
                     id="fullname"
                     className="form-control"
-                    defaultValue={auth.fullName}
+                    defaultValue={auth.employeeName}
                     {...register("fullName")}
                   />
                 </div>
@@ -92,16 +85,6 @@ function PersonalInformation() {
                     className="form-control"
                     defaultValue={auth.phone}
                     {...register("phone")}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="col-form-label">Loại Nhân Viên</label>
-                  <input
-                    type="text"
-                    id="loai-nhan-vien"
-                    value={employeeOptions}
-                    disabled
-                    className="form-control"
                   />
                 </div>
                 <div className="mb-3">
@@ -149,9 +132,6 @@ function PersonalInformation() {
               </div>
 
               <div className="text-center mt-3">
-                <Link to={"/users"} className="btn btn-secondary btn-back">
-                  Quay lại
-                </Link>
                 <button type="submit" className="btn btn-success" id="btn-save">
                   Cập nhật
                 </button>

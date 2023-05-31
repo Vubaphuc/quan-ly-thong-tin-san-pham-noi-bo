@@ -9,6 +9,7 @@ import { approverOrderMaterialApi } from "./apis/warehouseEmployee/approverOrder
 import { warehouseEmployeeApi } from "./apis/warehouseEmployee/warehouseEmployeeApi";
 import { warrantyEmployeeApi } from "./apis/warrantyEmployee/warrantyEmployeeApi";
 import { engineerApi } from "./apis/engineer/engineerApi";
+import { statisticalApi } from "./apis/admin/statistical/statisticalApi";
 
 
 const store = configureStore ({
@@ -22,7 +23,8 @@ const store = configureStore ({
         [productApi.reducerPath]: productApi.reducer,
         [approverOrderMaterialApi.reducerPath]: approverOrderMaterialApi.reducer,
         [warehouseEmployeeApi.reducerPath]: warehouseEmployeeApi.reducer,
-        [warrantyEmployeeApi.reducerPath]: warrantyEmployeeApi.reducer
+        [warrantyEmployeeApi.reducerPath]: warrantyEmployeeApi.reducer,
+        [statisticalApi.reducerPath]: statisticalApi.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
         authApi.middleware,
@@ -33,7 +35,8 @@ const store = configureStore ({
         productApi.middleware,
         approverOrderMaterialApi.middleware,
         warehouseEmployeeApi.middleware,
-        warrantyEmployeeApi.middleware
+        warrantyEmployeeApi.middleware,
+        statisticalApi.middleware
     ),
 });
 

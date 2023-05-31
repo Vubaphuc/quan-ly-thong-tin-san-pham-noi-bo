@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findUsersByEmail(String email);
     Optional<User> findUsersById(Integer id);
-    Optional<User> findUsersByEmployeeCode(String employeeCode);
+
 
     Optional<User> findByEmail(String name);
 
@@ -21,6 +21,26 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "join u.roles rl " +
             "where rl.name = 'NHANVIENSUACHUA' ")
     List<EmployeeDto> getListEngineer();
+
+    // khu vực nhân viên chung
+    // ###################################################################################################
+
+    Optional<User> findUsersByEmployeeCode(String employeeCode);
+
+    // khu vực nhân viên lễ tân
+    // ###################################################################################################
+
+    // khu vực nhân viên sửa chữa
+    // ###################################################################################################
+
+    // khu vực nhân viên kho
+    // ###################################################################################################
+
+    // khu vực nhân viên bảo hành
+    // ###################################################################################################
+
+    // khu vực ADMIN
+    // ###################################################################################################
 
 
 }

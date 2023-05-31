@@ -32,6 +32,8 @@ public class OrderMaterial {
     // ngày phê duyệt order
     @Column(name = "approval_date")
     private LocalDateTime approvalDate;
+    @Column(name = "isDelete")
+    private boolean isDelete;
     // loại linh kiện
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "components_id")
@@ -50,4 +52,9 @@ public class OrderMaterial {
     @JoinColumn(name = "orderer_id")
     private User orderer;
 
+    @PrePersist
+    public void prePersist() {
+        this.createDate = LocalDateTime.now();
+        this.isDelete = true;
+    }
 }

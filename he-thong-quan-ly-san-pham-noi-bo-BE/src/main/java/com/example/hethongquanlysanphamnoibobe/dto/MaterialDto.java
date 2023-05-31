@@ -12,5 +12,6 @@ public class MaterialDto {
     private String materialCode;
     private String nameModel;
     private String componentName;
+    private String nameVendor;
     private Integer quantity;
 }

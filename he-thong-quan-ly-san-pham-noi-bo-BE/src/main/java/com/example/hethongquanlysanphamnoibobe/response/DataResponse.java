@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class DataResponse {
-    private Object id;
-    private Object name;
-    private Object code;
+    private Integer id;
+    private String name;
+    private String code;
 }

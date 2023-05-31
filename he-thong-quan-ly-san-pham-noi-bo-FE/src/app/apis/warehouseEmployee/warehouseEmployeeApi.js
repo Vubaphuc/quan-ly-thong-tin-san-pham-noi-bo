@@ -17,7 +17,7 @@ export const warehouseEmployeeApi = createApi ({
     }),
     tagTypes: ['Warehouse'],
     endpoints: (builder) => ({
-        getListOrderMaterialStatusFalse: builder.query ({
+        getComponents: builder.query ({
             query: ({page,pageSize}) => `components?page=${page}&pageSize=${pageSize}`,
             providesTags: ['Warehouse'],
         }),
@@ -78,14 +78,22 @@ export const warehouseEmployeeApi = createApi ({
             providesTags: ['Warehouse'],
         }),
         getListVendorById: builder.query ({
-            query: ({page,pageSize, vendorId}) => `warehouse?page=${page}&pageSize=${pageSize}&vendorId=${vendorId}`,
+            query: ({page,pageSize, vendorId}) => `vendor/detail?page=${page}&pageSize=${pageSize}&vendorId=${vendorId}`,
+            providesTags: ['Warehouse'],
+        }),
+        getMaterialById: builder.query ({
+            query: (id) => `material/${id}`,
+            providesTags: ['Warehouse'],
+        }),
+        getComponentsById: builder.query ({
+            query: (id) => `component/${id}`,
             providesTags: ['Warehouse'],
         }),
     }),
 });;
 
 export const { 
-    useGetListOrderMaterialStatusFalseQuery,
+    useGetComponentsQuery,
     useCreateComponentsMutation,
     useCreateMaterialMutation,
     useGetListMaterialAllQuery,
@@ -96,5 +104,7 @@ export const {
     useGetVendorByNameQuery,
     useUpdateNameVendorMutation,
     useGetListVendorByIdQuery,
-    useGetListVendorTotalMaterialQuery
+    useGetListVendorTotalMaterialQuery,
+    useGetMaterialByIdQuery,
+    useGetComponentsByIdQuery
 } = warehouseEmployeeApi;

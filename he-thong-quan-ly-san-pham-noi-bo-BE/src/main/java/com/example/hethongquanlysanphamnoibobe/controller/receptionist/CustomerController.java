@@ -1,6 +1,6 @@
 package com.example.hethongquanlysanphamnoibobe.controller.receptionist;
 
-import com.example.hethongquanlysanphamnoibobe.dto.request.CreateCustomerRequest;
+import com.example.hethongquanlysanphamnoibobe.request.CreateCustomerRequest;
 import com.example.hethongquanlysanphamnoibobe.service.receptionisrservice.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +35,7 @@ public class CustomerController {
             @PathVariable Integer id) {
         return ResponseEntity.ok(customerService.getListProductByCustomerId(id,page,pageSize));
     }
+
     @GetMapping("customer/{id}")
     public ResponseEntity<?> getCustomerById(@PathVariable Integer id) {
         return ResponseEntity.ok(customerService.getCustomerById(id));

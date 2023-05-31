@@ -1,6 +1,6 @@
 package com.example.hethongquanlysanphamnoibobe.controller.warehouseemployee;
 
-import com.example.hethongquanlysanphamnoibobe.dto.request.ApproveOrderMaterialRequest;
+import com.example.hethongquanlysanphamnoibobe.request.ApproveOrderMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.service.warehouseemployeeservice.ApproverOrderMaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

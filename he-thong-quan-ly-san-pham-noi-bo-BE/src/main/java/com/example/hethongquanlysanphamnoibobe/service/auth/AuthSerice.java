@@ -1,6 +1,6 @@
 package com.example.hethongquanlysanphamnoibobe.service.auth;
 
-import com.example.hethongquanlysanphamnoibobe.dto.request.LoginRequest;
+import com.example.hethongquanlysanphamnoibobe.request.LoginRequest;
 import com.example.hethongquanlysanphamnoibobe.entity.User;
 import com.example.hethongquanlysanphamnoibobe.exception.BadRequestException;
 import com.example.hethongquanlysanphamnoibobe.exception.NotFoundException;
@@ -16,8 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import javax.naming.AuthenticationException;
 
 @Service
 public class AuthSerice {

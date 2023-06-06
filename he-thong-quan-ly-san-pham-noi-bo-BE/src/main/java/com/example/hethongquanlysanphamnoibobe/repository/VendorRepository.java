@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface VendorRepository extends JpaRepository<Vendor, Integer> {
@@ -48,9 +49,16 @@ public interface VendorRepository extends JpaRepository<Vendor, Integer> {
             "where vd.name =?1 ")
     Optional<VendorDto> getVendorByName(String name);
 
+
+
     // khu vực nhân viên bảo hành
     // ###################################################################################################
 
     // khu vực ADMIN
     // ###################################################################################################
+    // lấy danh sách vendor
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.VendorDto " +
+            "(vd.id, vd.name) " +
+            "from Vendor vd ")
+    List<VendorDto> findVendorAll();
 }

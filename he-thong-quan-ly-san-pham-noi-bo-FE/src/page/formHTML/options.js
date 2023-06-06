@@ -65,6 +65,7 @@ export const getAddress = (provinces) => {
       };
     });
   }
+
   
   export const getPhoneCompany = () => {
     return [
@@ -81,5 +82,19 @@ export const getAddress = (provinces) => {
     return [
         { label: "OK", value: true },
         { label: "PENDING", value: false },
+    ];
+  }
+
+  export const getCharge = () => {
+    return [
+        { label: "Tính Phí", value: true },
+        { label: "Không Tính Phí", value: false },
+    ];
+  }
+
+  export const getIsRepair = () => {
+    return [
+        { label: "Mới", value: true },
+        { label: "Bảo Hành", value: false },
     ];
   }

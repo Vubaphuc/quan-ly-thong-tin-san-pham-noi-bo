@@ -134,6 +134,9 @@ public class EngineerService {
         if (material.getQuantity() == 0) {
             throw new BadRequestException("material is no longer available");
         }
+        if (request.getQuantity() > material.getQuantity()) {
+            throw new BadRequestException("order quantity exceeds stock quantity");
+        }
 
         Components components = componentsRepository.findByName(request.getComponentsName()).orElseThrow(() -> {
            throw new NotFoundException("Not Found with Component name : " + request.getComponentsName());

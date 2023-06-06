@@ -530,6 +530,46 @@ function Sidebar() {
             <div className="menu-item">
               <h5>
                 <span className="d-inline-block me-1">
+                  <i className="fa-solid fa-explosion"></i>
+                </span>
+                Quản lý
+              </h5>
+              <ul className="m-0 p-0">
+                <li>
+                  <Link to={"/admin/customers"} className="text-decoration-none">
+                    Danh sách Khách hàng
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/admin/materials"} className="text-decoration-none">
+                    Danh sách Vật Liệu
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/admin/orderMaterials"} className="text-decoration-none">
+                    Danh sách Order Vật Liệu
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/admin/products"} className="text-decoration-none">
+                    Danh sách Sản Phẩm
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/admin/employees"} className="text-decoration-none">
+                    Danh sách nhân viên
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/admin/employee/create"} className="text-decoration-none">
+                    Đăng ký Nhân Viên mới
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="menu-item">
+              <h5>
+                <span className="d-inline-block me-1">
                   <i className="fa-solid fa-cookie-bite"></i>
                 </span>
                 Tài Khoản

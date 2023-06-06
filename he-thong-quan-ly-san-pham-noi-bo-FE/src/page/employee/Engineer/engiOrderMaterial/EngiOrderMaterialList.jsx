@@ -26,15 +26,14 @@ function EngiOrderMaterialList() {
     return <h2>Loading....</h2>;
   }
 
-  console.log(trueData);
-  console.log(fasleData);
-
-  const handlePageClickTrue = (page) => {};
-  const handlePageClickfalse = (page) => {};
-
-  const handleStatusChange = (e) => {
-    setStatus(e.target.value);
+  const handlePageClickTrue = (page) => {
+    setPageTrue(page.selected);
   };
+  const handlePageClickfalse = (page) => {
+    setPageFalse(page.selected);
+  };
+
+
 
   return (
     <>
@@ -53,7 +52,7 @@ function EngiOrderMaterialList() {
                         id="statusSelect"
                         className="form-control"
                         value={status}
-                        onChange={handleStatusChange}
+                        onChange={(e) => setStatus(e.target.value)}
                       >
                         <option value="OK">OK</option>
                         <option value="PENDING">PENDING</option>

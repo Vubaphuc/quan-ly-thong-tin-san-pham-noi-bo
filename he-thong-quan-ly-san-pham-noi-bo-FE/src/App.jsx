@@ -60,6 +60,17 @@ import WarrantyProductPendingList from "./page/employee/WarrantyEmployee/product
 import WarrantyProductPendingDetail from "./page/employee/WarrantyEmployee/product/WarrantyProductPendingDetail";
 import AdminPage from "./page/admin/AdminPage";
 import InformationShopPage from "./page/admin/InformationShopPage";
+import CustomerManageList from "./page/admin/customerManage/CustomerManageList";
+import CustomerManageDetail from "./page/admin/customerManage/CustomerManageDetail";
+import MaterialManageList from "./page/admin/materialManage/MaterialManageList";
+import MaterialManageDetail from "./page/admin/materialManage/MaterialManageDetail";
+import OrderMaterialManageList from "./page/admin/orderMaterialManage/OrderMaterialManageList";
+import OrderMaterialManageDetail from "./page/admin/orderMaterialManage/OrderMaterialManageDetail"
+import ProductManageList from "./page/admin/productManage/ProductManageList";
+import ProductManageDetail from "./page/admin/productManage/ProductManageDetail";
+import EmployeeManageList from "./page/admin/employeeManage/EmployeeManageList";
+import EmployeeManageDetail from "./page/admin/employeeManage/EmployeeManageDetail";
+import EmployeeManageCreate from "./page/admin/employeeManage/EmployeManageCreate";
 
 function App() {
   return (
@@ -263,6 +274,19 @@ function App() {
           <Route path="admin" element={<Layout />}>
             <Route index element={<AdminPage />} />
             <Route path="shop" element={<InformationShopPage />} />
+
+            <Route path="customers" element={<CustomerManageList />} />
+            <Route path="customer/:customerId" element={<CustomerManageDetail />} />
+            <Route path="materials" element={<MaterialManageList />} />
+            <Route path="material/:materialId" element={<MaterialManageDetail />} />
+            <Route path="orderMaterials" element={<OrderMaterialManageList />} />
+            <Route path="orderMaterial/:orderMaterialId" element={<OrderMaterialManageDetail />} />
+            <Route path="products" element={<ProductManageList />} />
+            <Route path="product/:productId" element={<ProductManageDetail />} />
+            <Route path="employee/create" element={<EmployeeManageCreate />} />
+            <Route path="employees" element={<EmployeeManageList />} />
+            <Route path="employee/:employeeId" element={<EmployeeManageDetail />} />
+            
             
 
           </Route>

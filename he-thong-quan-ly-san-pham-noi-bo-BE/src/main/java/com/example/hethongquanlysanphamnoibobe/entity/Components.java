@@ -26,6 +26,7 @@ public class Components {
     // nhân viên kho
     @Column(name = "create_date")
     private LocalDateTime createDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_employee_id")
     private User warehouseEmployee;

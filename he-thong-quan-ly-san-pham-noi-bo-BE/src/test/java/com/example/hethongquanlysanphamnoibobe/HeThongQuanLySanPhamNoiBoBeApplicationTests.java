@@ -88,36 +88,46 @@ class HeThongQuanLySanPhamNoiBoBeApplicationTests {
 
     }
 
-//    @Test
-//    void save_linhKien () {
-//
-//        User user = userRepository.findUsersById(1).orElse(null);
-//
-//        List<Components> linhKiens = List.of(
-//                new Components(null,"LCD",12,user),
-//                new Components(null,"BackGlass",12,user),
-//                new Components(null,"Rear",12,user),
-//                new Components(null,"PIN",12,user),
-//                new Components(null,"FRONT",12,user),
-//                new Components(null,"PBA",12,user),
-//                new Components(null,"Sub PBA",12,user),
-//                new Components(null,"SPK",12,user),
-//                new Components(null,"Camera Wide",9,user),
-//                new Components(null,"Camera Ultra Wide",9,user),
-//                new Components(null,"Camera Tele",9,user),
-//                new Components(null,"Camera Bokeh",9,user),
-//                new Components(null,"Front Camera",9,user),
-//                new Components(null,"Camera Macro",9,user),
-//                new Components(null,"Motor",16,user),
-//                new Components(null,"Ant 5G",16,user),
-//                new Components(null,"Power Key",16,user),
-//                new Components(null,"Wifi",18,user),
-//                new Components(null,"USB-C",18,user),
-//                new Components(null,"GPS",18,user)
-//        );
-//
-//        componentsRepository.saveAll(linhKiens);
-//    }
+    @Test
+    void save_linhKien () {
 
+        User user = userRepository.findUsersById(1).orElse(null);
+
+        List<Components> linhKiens = List.of(
+                new Components(null,"LCD",12,null,user),
+                new Components(null,"BackGlass",12,null,user),
+                new Components(null,"Rear",12,null,user),
+                new Components(null,"PIN",12,null,user),
+                new Components(null,"FRONT",12,null,user),
+                new Components(null,"PBA",12,null,user),
+                new Components(null,"Sub PBA",12,null,user),
+                new Components(null,"SPK",12,null,user),
+                new Components(null,"Camera Wide",9,null,user),
+                new Components(null,"Camera Ultra Wide",9,null,user),
+                new Components(null,"Camera Tele",9,null,user),
+                new Components(null,"Camera Bokeh",9,null,user),
+                new Components(null,"Front Camera",9,null,user),
+                new Components(null,"Camera Macro",9,null,user),
+                new Components(null,"Motor",16,null,user),
+                new Components(null,"Ant 5G",16,null,user),
+                new Components(null,"Power Key",16,null,user),
+                new Components(null,"Wifi",18,null,user),
+                new Components(null,"USB-C",18,null,user),
+                new Components(null,"GPS",18,null,user)
+        );
+
+        componentsRepository.saveAll(linhKiens);
+    }
+
+    @Test
+    void save_user2 () {
+
+        Role khoRole = roleRepository.findRoleByName("NHANVIENKHO").orElse(null);
+
+        User user = new User(null, generateCode.generateCode(),"Nguyễn Văn Hải", "hai@gmail.com",passwordEncoder.encode("111"),"0968616076","Hà Nội",null,List.of(khoRole));
+
+        userRepository.save(user);
+
+    }
 
 }

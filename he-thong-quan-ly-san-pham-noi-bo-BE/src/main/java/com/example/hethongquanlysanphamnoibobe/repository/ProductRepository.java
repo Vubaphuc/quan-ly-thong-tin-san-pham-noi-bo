@@ -1,11 +1,13 @@
 package com.example.hethongquanlysanphamnoibobe.repository;
 
 import com.example.hethongquanlysanphamnoibobe.dto.*;
+import com.example.hethongquanlysanphamnoibobe.dto.projection.ProductProjection;
 import com.example.hethongquanlysanphamnoibobe.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -16,6 +18,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Optional<Product> findProductByIME(String IME);
+    Optional<Product> findByCustomer_Id(Integer id);
 
 
     @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ProductDto " +
@@ -361,9 +364,24 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Optional<ProductAndEngineerDto> findProductPendingEngineerById(Integer id);
 
 
+
+
     // khu vực ADMIN
     // ###########################################################################################################
 
+    @Query("select p from Product p where p.IME like %?1% ")
+    Page<ProductProjection> findProductAlls(Pageable pageable, String term);
 
+    @Query("select p from Product p where p.inputDate >= :startDate and p.inputDate < :endDate ")
+    Page<ProductProjection> findProductByStarDateAndEndDate(Pageable pageable,@Param("startDate") String startDate,@Param("endDate") String endDate);
+
+
+    @Query("select p from Product p where p.id = ?1 ")
+    Optional<ProductProjection> findProductProjectionById(Integer id);
+
+
+    @Modifying
+    @Query("delete from Product p where p.id = ?1 ")
+    void deleteById(Integer id);
 
 }

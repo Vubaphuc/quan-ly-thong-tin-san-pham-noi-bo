@@ -50,9 +50,8 @@ public class AuthSerice {
             String jwtToken = jwtUtils.generateToken(userDetails);
 
             // Tìm kiếm user
-            User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> {
-                throw new NotFoundException("Not found user");
-            });
+            User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() ->
+                    new NotFoundException("Not found user"));
 
             return new AuthResponse(
                     UserMapper.toUserDto(user),

@@ -1,18 +1,18 @@
 package com.example.hethongquanlysanphamnoibobe.repository;
 
-import com.example.hethongquanlysanphamnoibobe.dto.HistoryMaterialDto;
-import com.example.hethongquanlysanphamnoibobe.dto.MaterialByVendorDto;
-import com.example.hethongquanlysanphamnoibobe.dto.MaterialDto;
-import com.example.hethongquanlysanphamnoibobe.dto.VendorTotalMaterialDto;
+import com.example.hethongquanlysanphamnoibobe.dto.*;
+
+import com.example.hethongquanlysanphamnoibobe.dto.projection.MaterialInfo;
+import com.example.hethongquanlysanphamnoibobe.dto.projection.MaterialProjection;
 import com.example.hethongquanlysanphamnoibobe.entity.Material;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface MaterialRepository extends JpaRepository<Material, Integer> {
@@ -87,4 +87,21 @@ public interface MaterialRepository extends JpaRepository<Material, Integer> {
 
     // khu vực ADMIN
     // ###################################################################################################
+
+    // danh sách materrial projection
+    @Query("select m from Material m where m.code like %?1% ")
+    Page<MaterialProjection> findMaterials(Pageable pageable, String term);
+    // lấy ra Material Projection theo id
+    @Query("select m from Material m where m.id = ?1 ")
+    Optional<MaterialProjection> findMaterialById(Integer id);
+
+    // xóa Material
+    @Modifying
+    @Query("delete from Material m where m.id = :id ")
+    void deleteById(@Param("id") Integer id);
+
+    @Query("select m from Material m where m.quantity > 0 ")
+    List<MaterialInfo> findMaterialProjectionAll();
+
+    // lấy vạt liệu theo id
 }

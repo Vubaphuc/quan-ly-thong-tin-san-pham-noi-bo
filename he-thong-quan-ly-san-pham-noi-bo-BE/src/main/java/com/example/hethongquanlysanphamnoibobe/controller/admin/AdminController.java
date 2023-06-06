@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("admin/api/v1")
 public class AdminController {
     @Autowired
     private EngineerProductPendingViewRepository engineerProductPendingViewRepository;
@@ -19,6 +19,6 @@ public class AdminController {
 
     @GetMapping("products")
     public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(engineerProductPendingViewRepository.findTotalProductEngineerAll());
+        return null;
     }
 }

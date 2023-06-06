@@ -62,26 +62,26 @@ public class Product {
     private LocalDateTime finishDate;
 
     // nhân viên nhận sản phẩm. có thể là nhân viên lễ tân hoặc bảo hành
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "receptionists_id")
     private User receptionists;
 
     // nhân viên sửa chữa (kỹ sư)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "engineer_id")
     private User engineer;
 
 
     // thông tin khách hàng
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     private Customer customer;
     // loại linh kiện sửa
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "components_id")
     private Components components;
     // người trả sản phẩm
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "product_payer_id")
     private User productPayer;
 

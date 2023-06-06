@@ -10,6 +10,10 @@ import { warehouseEmployeeApi } from "./apis/warehouseEmployee/warehouseEmployee
 import { warrantyEmployeeApi } from "./apis/warrantyEmployee/warrantyEmployeeApi";
 import { engineerApi } from "./apis/engineer/engineerApi";
 import { statisticalApi } from "./apis/admin/statistical/statisticalApi";
+import { customerManageApi } from "./apis/admin/manage/CustomerManageApi";
+import { materialManageApi } from "./apis/admin/manage/materialManageApi";
+import { productManageApi } from "./apis/admin/manage/productManageApi";
+import { employeeManageApi } from "./apis/admin/manage/employeeManageApi";
 
 
 const store = configureStore ({
@@ -24,7 +28,11 @@ const store = configureStore ({
         [approverOrderMaterialApi.reducerPath]: approverOrderMaterialApi.reducer,
         [warehouseEmployeeApi.reducerPath]: warehouseEmployeeApi.reducer,
         [warrantyEmployeeApi.reducerPath]: warrantyEmployeeApi.reducer,
-        [statisticalApi.reducerPath]: statisticalApi.reducer
+        [statisticalApi.reducerPath]: statisticalApi.reducer,
+        [customerManageApi.reducerPath]: customerManageApi.reducer,
+        [materialManageApi.reducerPath]: materialManageApi.reducer,
+        [productManageApi.reducerPath]: productManageApi.reducer,
+        [employeeManageApi.reducerPath]: employeeManageApi.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
         authApi.middleware,
@@ -36,7 +44,11 @@ const store = configureStore ({
         approverOrderMaterialApi.middleware,
         warehouseEmployeeApi.middleware,
         warrantyEmployeeApi.middleware,
-        statisticalApi.middleware
+        statisticalApi.middleware,
+        customerManageApi.middleware,
+        materialManageApi.middleware,
+        productManageApi.middleware,
+        employeeManageApi.middleware
     ),
 });
 

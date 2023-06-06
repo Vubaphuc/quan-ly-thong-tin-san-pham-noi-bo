@@ -43,11 +43,11 @@ function AdminPage() {
 
   console.log(productData)
 
-  const labels = productData.map((product) => product.employeeName);
+  const labels = ["Tài", "Quang"];
 
 
-  const ok = productData.map((product) => product.totalProductPending);
-  const pending = productData.map((product) => product.totalProductOk);
+  const ok = [17,18]
+  const pending = [1,2]
 
   const data = {
     labels,

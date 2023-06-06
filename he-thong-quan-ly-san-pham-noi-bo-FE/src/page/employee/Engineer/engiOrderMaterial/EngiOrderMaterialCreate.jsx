@@ -25,7 +25,7 @@ function EngiOrderMaterialCreate() {
             <div className="row py-2">
               <div className="col-6">
                 <Link
-                  to={"/nhan-vien/sua-chua/vat-lieu"}
+                  to={"/employee/engineer/materials"}
                   className="btn btn-default"
                 >
                   <i className="fas fa-chevron-left"></i> Quay lại

@@ -45,7 +45,21 @@ export const employeeApi = createApi ({
         }),
         getListEngineer: builder.query ({
             query: () => "engineer",
+            providesTags: ['Avatar'],
         }),
+        findReceptionistAll: builder.query ({
+            query: () => "receptionist",
+            providesTags: ['Avatar'],
+        }),
+        findWarehouseEmployeeAll: builder.query ({
+            query: () => "warehouse-employee",
+            providesTags: ['Avatar'],
+        }),
+        findReceptionistAndWarrantyEmployeeAll: builder.query ({
+            query: () => "receive-pay",
+            providesTags: ['Avatar']
+        }),
+        
     }),
 });;
 
@@ -54,5 +68,8 @@ export const {
     useUpdatePersonalInformationMutation,
     useGetAvatarQuery,
     useUpdateAvatarMutation,
-    useGetListEngineerQuery
+    useGetListEngineerQuery,
+    useFindReceptionistAllQuery,
+    useFindWarehouseEmployeeAllQuery,
+    useFindReceptionistAndWarrantyEmployeeAllQuery
 } = employeeApi;

@@ -2,13 +2,16 @@ package com.example.hethongquanlysanphamnoibobe.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -35,6 +38,9 @@ public class User implements UserDetails {
     private String phoneNumber;
     @Column(name = "address")
     private String address;
+    @Column(name = "enabled")
+    private boolean enabled;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avatar")
@@ -78,6 +84,12 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
+
+    @PrePersist
+    public void prePersist() {
+        this.enabled = true; // Đặt giá trị mặc định cho enabled là true khi tạo mới
+    }
+
 }

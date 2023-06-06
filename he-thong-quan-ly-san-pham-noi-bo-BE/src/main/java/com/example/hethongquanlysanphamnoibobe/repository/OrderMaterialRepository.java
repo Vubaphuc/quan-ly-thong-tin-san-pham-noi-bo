@@ -2,12 +2,14 @@ package com.example.hethongquanlysanphamnoibobe.repository;
 
 import com.example.hethongquanlysanphamnoibobe.dto.HistoryOrderMaterialDto;
 import com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto;
+import com.example.hethongquanlysanphamnoibobe.dto.projection.OrderMaterialProjection;
 import com.example.hethongquanlysanphamnoibobe.entity.OrderMaterial;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -99,9 +101,24 @@ public interface OrderMaterialRepository extends JpaRepository<OrderMaterial, In
 
 
 
+
+
     // khu vực nhân viên bảo hành
     // ###################################################################################################
 
     // khu vực ADMIN
     // ###################################################################################################
+
+    @Query("select od from OrderMaterial od where od.isDelete = false and od.orderCode like %?1% ")
+    Page<OrderMaterialProjection> findOrderMaterialsAll(Pageable pageable, String term);
+
+    @Query("select od from OrderMaterial od where od.isDelete = true and od.orderCode like %?1% ")
+    Page<OrderMaterialProjection> findOrderMaterialsIsDeleteTrueAll(Pageable pageable, String term);
+
+    @Query("select od from OrderMaterial od where od.id = ?1 ")
+    Optional<OrderMaterialProjection> findOrderMaterialById(Integer id);
+
+    @Modifying
+    @Query("delete from OrderMaterial od where od.id = ?1 ")
+    void deleteById(Integer id);
 }

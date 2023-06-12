@@ -23,6 +23,9 @@ function WareMaterialDetail() {
               <Link to={"/employee/warehouse"} className="btn btn-default">
                 <i className="fas fa-chevron-left"></i> Quay lại
               </Link>
+              <Link to={`/employee/warehouse/update-material/${materialId}`} className="btn btn-info px-4">
+                Cập Nhật
+              </Link>
             </div>
           </div>
           <div className="row">

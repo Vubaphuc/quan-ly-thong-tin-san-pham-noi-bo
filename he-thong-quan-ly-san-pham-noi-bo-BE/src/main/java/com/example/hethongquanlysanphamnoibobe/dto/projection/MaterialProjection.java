@@ -2,6 +2,7 @@ package com.example.hethongquanlysanphamnoibobe.dto.projection;
 
 
 import com.example.hethongquanlysanphamnoibobe.entity.Material;
+import jakarta.persistence.Column;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -15,12 +16,18 @@ public interface MaterialProjection {
     Integer getId();
     String getCode();
     String getNameModel();
-    Integer getQuantity();
+    int getImportQuantity();
+    int getExportQuantity();
+    int getRemainingQuantity();
+
     LocalDateTime getCreateDate();
     LocalDateTime getUpdateDate();
+    double getPrice();
+    boolean getDelete();
     EmployeeInfo getWarehouseEmployee();
     VendorInfo getVendor();
     ComponentInfo getComponents();
+
 
     @RequiredArgsConstructor
     class MaterialImpl implements MaterialProjection {
@@ -42,9 +49,25 @@ public interface MaterialProjection {
         }
 
         @Override
-        public Integer getQuantity() {
-            return material.getQuantity();
+        public int getImportQuantity() {
+            return material.getImportQuantity();
         }
+
+        @Override
+        public int getExportQuantity() {
+            return material.getExportQuantity();
+        }
+
+        @Override
+        public int getRemainingQuantity() {
+            return material.getRemainingQuantity();
+        }
+
+        @Override
+        public boolean getDelete() {
+            return material.isDelete();
+        }
+
 
         @Override
         public LocalDateTime getCreateDate() {
@@ -54,6 +77,11 @@ public interface MaterialProjection {
         @Override
         public LocalDateTime getUpdateDate() {
             return material.getUpdateDate();
+        }
+
+        @Override
+        public double getPrice() {
+            return material.getPrice();
         }
 
         @Override

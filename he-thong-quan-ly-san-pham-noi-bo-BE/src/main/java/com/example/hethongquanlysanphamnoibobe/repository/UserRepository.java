@@ -72,5 +72,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select u from User u where u.id = ?1 ")
     Optional<EmployeeProjection> findEmployeeById(Integer id);
 
+    @Query("select u from User u join u.roles rl where rl.name = 'NHANVIENSUACHUA' ")
+    List<User> findEmployeeEngineerAll();
+
 
 }

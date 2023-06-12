@@ -59,22 +59,19 @@ public class ApproverOrderMaterialService {
     }
     // lấy 1 order Material theo ID - 3
     public OrderMaterialDto getOrderMaterialById(Integer id) {
-        return orderMaterialRepository.getOrderMaterialById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id : " + id);
-        });
+        return orderMaterialRepository.getOrderMaterialById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found with id : " + id));
     }
 
     // phê duyệt order material cho nhân viên sửa chữa - 4
     public StatusResponse approveOrderMaterial(ApproveOrderMaterialRequest request, Integer id) {
 
         // lấy ra order material đang chờ phê duyệt theo
-        OrderMaterial orderMaterial = orderMaterialRepository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found With id : " + id);
-        });
+        OrderMaterial orderMaterial = orderMaterialRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found With id : " + id));
         // lấy ra vật liệu theo code
-        Material material = materialRepository.findByCode(request.getMaterialCode()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id : " + id);
-        });
+        Material material = materialRepository.findByCodeAndDeleteTrue(request.getMaterialCode())
+                .orElseThrow(() -> new NotFoundException("Not Found with id : " + id));
         // kiểm tra order đã phê duyệt chưa
         if (orderMaterial.getApprover() != null) {
             throw new BadRequestException("Order has been approved");
@@ -86,7 +83,7 @@ public class ApproverOrderMaterialService {
         // lưu ;lại lên csdl
         orderMaterialRepository.save(orderMaterial);
         // trừ số lượng vật liệu trong kho
-        material.setQuantity(material.getQuantity() - request.getQuantity());
+        material.setExportQuantity(material.getExportQuantity() + request.getQuantity());
         // lưu lại vật liệu lên csdl
         materialRepository.save(material);
 

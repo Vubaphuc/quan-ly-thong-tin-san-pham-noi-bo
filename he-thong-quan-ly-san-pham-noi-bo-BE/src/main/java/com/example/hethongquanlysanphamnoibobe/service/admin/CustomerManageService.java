@@ -45,27 +45,26 @@ public class CustomerManageService {
 
     // lấy ra khách hàng theo id
     public CustomerProjection findCustomerById(Integer id) {
-        return customerRepository.findCustomerAndReceptionistById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found With Id: " + id);
-        });
+        return customerRepository.findCustomerAndReceptionistById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found With Id: " + id));
     }
 
 
     // cập nhật thông tin khách hàng và thông tin người đăng ký khách hàng
     public StatusResponse updateCustomerById(AUpdateCustomerRequest request, Integer id) {
-
-        Customer customer = customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Not Found With id: " + id));
-
-        User user = userRepository.findUsersByEmployeeCode(request.getEmployeeCode()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found With employee Code: " + request.getEmployeeCode());
-        });
-
+        // lấy ra khác hàng theo id
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found With id: " + id));
+        // lấy ra thông tin nhân viên theo mã nhân viên
+        User user = userRepository.findUsersByEmployeeCode(request.getEmployeeCode())
+                .orElseThrow(() -> new NotFoundException("Not Found With employee Code: " + request.getEmployeeCode()));
+        // cập nhật lại thông tin khách hàng
         customer.setFullName(request.getFullName());
         customer.setEmail(request.getEmail());
         customer.setAddress(request.getAddress());
         customer.setPhoneNumber(request.getPhone());
         customer.setReceptionists(user);
-
+        // lưu lại
         customerRepository.save(customer);
 
         return new StatusResponse(HttpStatus.OK, "Cập Nhật Thành Công", DataMapper.toDataResponse(customer.getId(), customer.getFullName(), customer.getPhoneNumber()));
@@ -73,13 +72,13 @@ public class CustomerManageService {
 
     // xóa khách hàng theo id.
     public StatusResponse deleteCustomerById(Integer id) {
-
+        // lấy ra khách hàng theo id
         Customer customer = customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Not Found With id: " + id));
-
+        // kiểm tra khách hàng có sản phẩm nào sửa trong cửa hàng không
         if (productRepository.findByCustomer_Id(customer.getId()).isPresent()) {
             throw new BadRequestException("Customer has product information so it can't be deleted");
         }
-
+        // xóa khách hàng nếu không có sản phẩm nào
         customerRepository.deleteById(customer.getId());
 
         return new

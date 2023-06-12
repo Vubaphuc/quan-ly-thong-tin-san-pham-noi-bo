@@ -15,7 +15,7 @@ function WareVendorCreate() {
           <form onSubmit={handleSubmit(onVendorCreate)}>
             <div className="row py-2">
               <div className="col-6">
-                <Link to={"/employee/warehouse"} className="btn btn-default">
+                <Link to={"/employee/warehouse/vendors"} className="btn btn-default">
                   <i className="fas fa-chevron-left"></i> Quay lại
                 </Link>
                 <button type="submit" className="btn btn-info px-4">

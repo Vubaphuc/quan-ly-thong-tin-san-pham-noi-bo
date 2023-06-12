@@ -12,7 +12,6 @@ import lombok.Setter;
 public class AUpdateMaterialRequest {
     private String code;
     private String nameModel;
-    private Integer quantity;
     private String employeeCode;
     private Integer componentId;
     private Integer vendorId;

@@ -15,4 +15,5 @@ public class CreateMaterialRequest {
     private Integer venderId;
     private Integer componentsId;
     private Integer quantity;
+    private double price;
 }

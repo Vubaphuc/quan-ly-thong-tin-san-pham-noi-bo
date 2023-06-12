@@ -1,6 +1,7 @@
 package com.example.hethongquanlysanphamnoibobe.repository;
 
 import com.example.hethongquanlysanphamnoibobe.dto.GuaranteeDto;
+import com.example.hethongquanlysanphamnoibobe.dto.projection.GuaranteeProjection;
 import com.example.hethongquanlysanphamnoibobe.entity.Guarantee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,9 @@ public interface GuaranteeRepository extends JpaRepository<Guarantee, Integer> {
             "where (p.IME like %?1% or g.guaranteeCode like %?1% )" +
             "order by g.expirationDate desc ")
     Page<GuaranteeDto> findGuaranteeAll(Pageable pageable, String term);
+
+    @Query("select g from Guarantee g where g.guaranteeCode = ?1 ")
+    Optional<GuaranteeProjection> searchGuaranteeByGuaranteeCode(String code);
 
 
     // khu vực nhân viên lễ tân

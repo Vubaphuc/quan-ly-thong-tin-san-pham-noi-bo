@@ -50,17 +50,15 @@ public class ProductManageService {
 
     // lấy ra sản phẩm theo id
     public ProductProjection findProductProjectionById(Integer id) {
-        return productRepository.findProductProjectionById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id: " + id);
-        });
+        return productRepository.findProductProjectionById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
     }
 
     // cập nhật thông tin theo id
     public StatusResponse updateProductById(AUpdateProductRequest request, Integer id) {
         // lấy ra sản phẩm theo id
-        Product product = productRepository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found With id: " + id);
-        });
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found With id: " + id));
         // kiểm tra sản phẩm đã hoàn thành chưa
         if (product.getFinishDate() != null) {
             throw new BadRequestException("Products that have been repaired are not allowed to be repaired");
@@ -68,26 +66,23 @@ public class ProductManageService {
         // lấy ra nhân viên sửa chữa theo employee code
         User employeeEngineer;
         if (request.getEmployeeEngineerCode() != "") {
-            employeeEngineer = userRepository.findUsersByEmployeeCode(request.getEmployeeEngineerCode()).orElseThrow(() -> {
-                throw new NotFoundException("Not Found with employee Engineer code: " + request.getEmployeeEngineerCode());
-            });
+            employeeEngineer = userRepository.findUsersByEmployeeCode(request.getEmployeeEngineerCode())
+                    .orElseThrow(() -> new NotFoundException("Not Found with employee Engineer code: " + request.getEmployeeEngineerCode()));
         } else {
             employeeEngineer = product.getEngineer();
         }
 
         // lấy ra nhân viên nhập sản phẩm theo employee code
-        User employeeRecep = userRepository.findUsersByEmployeeCode(request.getEmployeeRecepCode()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found With employee Code: " + request.getEmployeeRecepCode());
-        });
+        User employeeRecep = userRepository.findUsersByEmployeeCode(request.getEmployeeRecepCode())
+                .orElseThrow(() -> new NotFoundException("Not Found With employee Code: " + request.getEmployeeRecepCode()));
 
         // lấy ra nhân viên Trả sản phẩm theo employee code
         User employeePayer;
         if (request.getEmployeePayerCode() == null) {
             employeePayer = product.getProductPayer();
         } else {
-            employeePayer = userRepository.findUsersByEmployeeCode(request.getEmployeePayerCode()).orElseThrow(() -> {
-                throw new NotFoundException("Not Found with employee player code: " + request.getEmployeePayerCode());
-            });
+            employeePayer = userRepository.findUsersByEmployeeCode(request.getEmployeePayerCode())
+                    .orElseThrow(() -> new NotFoundException("Not Found with employee player code: " + request.getEmployeePayerCode()));
 
         }
         // lấy ra linh kiện theo id
@@ -95,12 +90,12 @@ public class ProductManageService {
         if (request.getComponentId() == null) {
             components = product.getComponents();
         } else {
-            components = componentsRepository.findById(request.getComponentId()).orElseThrow(() -> {
-                throw new NotFoundException("Not Found With id: " + request.getComponentId());
-            });
+            components = componentsRepository.findById(request.getComponentId())
+                    .orElseThrow(() -> new NotFoundException("Not Found With id: " + request.getComponentId()));
         }
         // cập nhật thông tin
         if (request.isStatus()) {
+
             product.setProductPayer(iCurrentUserLmpl.getUser());
             product.setEngineer(employeeEngineer);
             product.setFinishDate(LocalDateTime.now());
@@ -112,7 +107,6 @@ public class ProductManageService {
             product.setPrice(request.getPrice());
             product.setCharge(request.isCharge());
             product.setRepair(request.isRepair());
-            product.setStatus(request.isStatus());
             product.setDefectName(request.getDefectName());
             product.setIME(request.getIme());
             product.setNote(request.getNote());
@@ -122,6 +116,7 @@ public class ProductManageService {
             productRepository.save(product);
 
         } else {
+
             product.setProductPayer(employeePayer);
             product.setEngineer(employeeEngineer);
             product.setReceptionists(employeeRecep);
@@ -131,7 +126,6 @@ public class ProductManageService {
             product.setPrice(request.getPrice());
             product.setCharge(request.isCharge());
             product.setRepair(request.isRepair());
-            product.setStatus(request.isStatus());
             product.setDefectName(request.getDefectName());
             product.setIME(request.getIme());
             product.setNote(request.getNote());
@@ -152,7 +146,7 @@ public class ProductManageService {
         Product product = productRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException("Not Found With id: " + id);
         });
-
+        // kiểm tra sản phẩm đã hoàn thành chưa
         if (product.getFinishDate() != null) {
             throw new BadRequestException("The product has been repaired. Can not delete");
         }

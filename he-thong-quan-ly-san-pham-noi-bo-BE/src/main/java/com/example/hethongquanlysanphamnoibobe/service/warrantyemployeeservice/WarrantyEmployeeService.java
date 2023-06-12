@@ -2,6 +2,7 @@ package com.example.hethongquanlysanphamnoibobe.service.warrantyemployeeservice;
 
 import com.example.hethongquanlysanphamnoibobe.dto.*;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
+import com.example.hethongquanlysanphamnoibobe.dto.projection.ProductInfo;
 import com.example.hethongquanlysanphamnoibobe.entity.Bill;
 import com.example.hethongquanlysanphamnoibobe.entity.Customer;
 import com.example.hethongquanlysanphamnoibobe.entity.Product;
@@ -51,18 +52,16 @@ public class WarrantyEmployeeService {
     }
     // lấy ra khách hàng theo id
     public CustomerDto getCustomerById(Integer id) {
-        return customerRepository.getCustomerById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id: " + id);
-        });
+        return customerRepository.getCustomerById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
     }
     // tạo sản phẩm bảo hành mới có tính phí
     public StatusResponse createProductCharge(CreateProductChargeRequest requet) {
         // lấy ra khách hàng theo id
-        Customer customer = customerRepository.findCustomerById(requet.getCustomerId()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id " + requet.getCustomerId());
-        });
-
-        if (!productRepository.findProductByIME(requet.getIme()).get().isStatus()) {
+        Customer customer = customerRepository.findCustomerById(requet.getCustomerId())
+                .orElseThrow(() -> new NotFoundException("Not Found with id " + requet.getCustomerId()));
+        // kiểm tra sa phẩm đã hoàn thành sửa chữa chưa
+        if ((productRepository.findProductByIME(requet.getIme()).get().getStatus() != Product.ProductStatus.DELIVERED)) {
             throw new BadRequestException("The product has not been repaired. No warranty");
         }
         // tạo sản phẩm mới
@@ -81,14 +80,17 @@ public class WarrantyEmployeeService {
         // lưu vào csdl
         productRepository.save(product);
 
-        return new StatusResponse(HttpStatus.OK, "Create a successful new produc", DataMapper.toDataResponse(product.getId(), product.getIME(), product.getNameModel()));
+        return new StatusResponse(HttpStatus.CREATED, "Create a successful new produc", DataMapper.toDataResponse(product.getId(), product.getIME(), product.getNameModel()));
     }
     // tạo sản phẩm bảo hành mới không tính phí
     public StatusResponse createProductNoCharge(CreateProductNoChargeRequest requet) {
         // lấy ra khách hàng theo id
-        Customer customer = customerRepository.findCustomerById(requet.getCustomerId()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id " + requet.getCustomerId());
-        });
+        Customer customer = customerRepository.findCustomerById(requet.getCustomerId())
+                .orElseThrow(() -> new NotFoundException("Not Found with id " + requet.getCustomerId()));
+        // kiểm tra sa phẩm đã hoàn thành sửa chữa chưa
+        if (productRepository.findProductByIME(requet.getIme()).get().getStatus() != Product.ProductStatus.DELIVERED) {
+            throw new BadRequestException("The product has not been repaired. No warranty");
+        }
         // tạo sản phẩm mới
         Product product = Product.builder()
                 .phoneCompany(requet.getPhoneCompany())
@@ -104,7 +106,7 @@ public class WarrantyEmployeeService {
                 .build();
         // lưu vào csdl
         productRepository.save(product);
-        return new StatusResponse(HttpStatus.OK, "Create a successful new produc", DataMapper.toDataResponse(product.getId(), product.getIME(), product.getNameModel()));
+        return new StatusResponse(HttpStatus.CREATED, "Create a successful new produc", DataMapper.toDataResponse(product.getId(), product.getIME(), product.getNameModel()));
     }
 
     // lấy danh sách sản phẩm đang pending chưa đăng ký người sửa chưaax
@@ -128,22 +130,19 @@ public class WarrantyEmployeeService {
         return productRepository.getListHistoryProductByIME(IME);
     }
     // lấy danh sách sản phẩm theo id
-    public HistoryProductDto getproductById(Integer id) {
-        return productRepository.getproductById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id a " + id);
-        });
+    public ProductInfo getproductById(Integer id) {
+        return productRepository.getproductById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found with id a " + id));
     }
 
     // đăng ký nhân viên sửa chữa
     public StatusResponse updateEngineerInformationByProduct(InformationEngineerRequest request) {
         // lấy ra user engineer theo employee code
-        User user = userRepository.findUsersByEmployeeCode(request.getEmployeeCode()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with employee code: " + request.getEmployeeCode());
-        });
+        User user = userRepository.findUsersByEmployeeCode(request.getEmployeeCode())
+                .orElseThrow(() -> new NotFoundException("Not Found with employee code: " + request.getEmployeeCode()));
         // lấy ra pproduct theo id
-        Product product = productRepository.findProductById(request.getProductId()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id: " + request.getProductId());
-        });
+        Product product = productRepository.findProductById(request.getProductId())
+                .orElseThrow(() -> new NotFoundException("Not Found with id: " + request.getProductId()));
         // thêm thông tin engineer
         product.setEngineer(user);
         product.setTransferDate(LocalDateTime.now());
@@ -172,9 +171,8 @@ public class WarrantyEmployeeService {
     // tạo hóa đơn mới - 7
     public StatusResponse warrantyCreateBill(CreateBillRequest request) {
         // lấy ra sản phẩm theo id
-       Product product = productRepository.findProductById_Eng(request.getProductId()).orElseThrow(() -> {
-           throw new NotFoundException("Not Found with id: " + request.getProductId());
-       });
+       Product product = productRepository.findProductById_Eng(request.getProductId())
+               .orElseThrow(() -> new NotFoundException("Not Found with id: " + request.getProductId()));
 
         // kiểm tra sản phẩm đã hoàn thành chưa
         if (product.getFinishDate() != null) {
@@ -237,25 +235,22 @@ public class WarrantyEmployeeService {
     }
     // láy sản phẩm pending chỗ nhân viên sửa chữa theo id
     public ProductAndEngineerDto findProductPendingEngineerById(Integer id) {
-        return productRepository.findProductPendingEngineerById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found With id : " + id);
-        });
+        return productRepository.findProductPendingEngineerById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found With id : " + id));
     }
 
     public StatusResponse updateEngineerProductById(UpdateInformationEngineerRequest request, Integer id) {
-
-        Product product = productRepository.findProductById_Warranty(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id: " + id);
-        });
-
-        if (product.isStatus()) {
+        // lấy ra sản phẩm theo id
+        Product product = productRepository.findProductById_Warranty(id)
+                .orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
+        // kiểm tra sản phẩm đã hoàn thành sửa chữa chưa
+        if (product.getStatus() == Product.ProductStatus.REPAIRED) {
             throw new BadRequestException("The product has been output. Can not change");
         }
-
-        User engineer = userRepository.findUsersByEmployeeCode(request.getEmployeeCode()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with code: " + request.getEmployeeCode());
-        });
-
+        // lấy ra nhân viên sủa chữa theo mã nhân viên
+        User engineer = userRepository.findUsersByEmployeeCode(request.getEmployeeCode())
+                .orElseThrow(() -> new NotFoundException("Not Found with code: " + request.getEmployeeCode()));
+        // cập nhật nhân viên sửa chữa
         product.setEngineer(engineer);
         productRepository.save(product);
 

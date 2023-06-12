@@ -55,9 +55,8 @@ public class MaterialManageService {
 
     // lấy vật liệu theo id
     public MaterialProjection findMaterialById(Integer id) {
-        return materialRepository.findMaterialById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id: " + id);
-        });
+        return materialRepository.findMaterialById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
     }
 
     // lấy danh sách vendor
@@ -73,25 +72,20 @@ public class MaterialManageService {
     // cập nhật material theo id
     public StatusResponse updateMaterialById(AUpdateMaterialRequest request, Integer id) {
         // lấy ra vật liệu theo id
-        Material material = materialRepository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id: " + id);
-        });
+        Material material = materialRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
         // lấy ra user theo employeeCode
-        User user = userRepository.findUsersByEmployeeCode(request.getEmployeeCode()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found With employee code: " + request.getEmployeeCode());
-        });
+        User user = userRepository.findUsersByEmployeeCode(request.getEmployeeCode())
+                .orElseThrow(() -> new NotFoundException("Not Found With employee code: " + request.getEmployeeCode()));
         // lấy ra component theo id
-        Components components = componentsRepository.findById(request.getComponentId()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found With id: " + request.getComponentId());
-        });
+        Components components = componentsRepository.findById(request.getComponentId())
+                .orElseThrow(() -> new NotFoundException("Not Found With id: " + request.getComponentId()));
         // lấy ra vendor theo id
-        Vendor vendor = vendorRepository.findById(id).orElseThrow(() -> {
-           throw new NotFoundException("Not Found With id: " + request.getVendorId());
-        });
+        Vendor vendor = vendorRepository.findById(request.getVendorId()).orElseThrow(() -> new NotFoundException("Not Found Vender by id:" + request.getVendorId()));
+
         // cập nhật thay đổi
         material.setCode(request.getCode());
         material.setNameModel(request.getNameModel());
-        material.setQuantity(request.getQuantity());
         material.setWarehouseEmployee(user);
         material.setComponents(components);
         material.setVendor(vendor);
@@ -107,11 +101,10 @@ public class MaterialManageService {
     // xóa material theo id
     public StatusResponse deleteMaterialById(Integer id) {
         // lấy ra vật liệu theo id
-        Material material = materialRepository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id: " + id);
-        });
+        Material material = materialRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
         // kiểm tra xem vật liệu còn hàng không
-        if (material.getQuantity() > 0 ) {
+        if (material.getRemainingQuantity() > 0 ) {
             throw new BadRequestException("Materials are still in stock. Can not delete");
         }
         // xóa
@@ -181,6 +174,19 @@ public class MaterialManageService {
         // lấy ra vật liệu theo id
         Material material = materialRepository.findById(request.getMaterialId()).orElseThrow(() -> new NotFoundException("Not Found With id: " + request.getMaterialId()));
 
+
+        // nếu chuyển trạng thái order thì cập nhật lại
+        if (request.isStatus()) {
+            // cập nhật lại số lượng
+            material.setExportQuantity(material.getExportQuantity() + request.getOrderQuantity());
+            // lưu lại
+            materialRepository.save(material);
+            // cập nhật thông tin order vật liệu
+            orderMaterial.setApprover(iCurrentUserLmpl.getUser());
+            orderMaterial.setApprovalDate(LocalDateTime.now());
+            orderMaterialRepository.save(orderMaterial);
+        }
+
         // update thông tin mới
         orderMaterial.setOrderCode(request.getOrderCode());
         orderMaterial.setQuantity(request.getOrderQuantity());
@@ -193,15 +199,6 @@ public class MaterialManageService {
         // lưu lại
         orderMaterialRepository.save(orderMaterial);
 
-        if (request.isStatus()) {
-            material.setQuantity(material.getQuantity() - request.getOrderQuantity());
-            materialRepository.save(material);
-
-            orderMaterial.setApprover(iCurrentUserLmpl.getUser());
-            orderMaterial.setApprovalDate(LocalDateTime.now());
-            orderMaterialRepository.save(orderMaterial);
-        }
-
         return new StatusResponse(HttpStatus.OK,
                 "Update success",
                 DataMapper.toDataResponse(orderMaterial.getId(), orderMaterial.getOrderCode(), orderMaterial.getOrderer().getEmployeeName()));
@@ -209,15 +206,13 @@ public class MaterialManageService {
 
 
     public StatusResponse deleteOrderMaterialById(Integer id) {
-
-        OrderMaterial orderMaterial = orderMaterialRepository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found With id: " + id);
-        });
-
+        // lấy ra order vật liệu theo id
+        OrderMaterial orderMaterial = orderMaterialRepository.findById(id).orElseThrow(() -> new NotFoundException("Not Found With id: " + id));
+        // kiểm tra order đã hủy hoặc vẫn đang pending chưa
         if (orderMaterial.isDelete() || !orderMaterial.isStatus()) {
             throw new BadRequestException("Order has been completed. Can not delete");
         }
-
+        // nếu đã hủy hoặc đang pending thì cho xóa
         orderMaterialRepository.deleteById(orderMaterial.getId());
 
         return new StatusResponse(HttpStatus.NO_CONTENT,

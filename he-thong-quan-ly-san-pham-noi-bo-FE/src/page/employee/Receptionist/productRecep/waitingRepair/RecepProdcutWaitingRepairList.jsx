@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import { useGetListProductsPendingQuery } from "../../../../app/apis/receptionist/productApi";
+import { useGetListProductsPendingQuery } from "../../../../../app/apis/receptionist/productApi";
 
-function RecepProdcutPendingList() {
+function RecepProdcutWaitingRepairList() {
   const [term, setTerm] = useState("");
   const [page, setPage] = useState(0);
   const { data: productData, isLoading: productLoading } =
@@ -123,4 +123,4 @@ function RecepProdcutPendingList() {
   );
 }
 
-export default RecepProdcutPendingList;
+export default RecepProdcutWaitingRepairList;

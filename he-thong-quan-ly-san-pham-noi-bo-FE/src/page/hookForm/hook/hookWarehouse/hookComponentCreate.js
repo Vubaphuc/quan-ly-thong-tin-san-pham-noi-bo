@@ -22,7 +22,7 @@ const hookComponentCreate = () => {
         .then(() => {
             toast.success("Đăng Ký Thành Công");
             setTimeout(() => {
-                navigate("/employee/warehouse");
+                navigate("/employee/warehouse/components");
             },2000)                             
             
         })

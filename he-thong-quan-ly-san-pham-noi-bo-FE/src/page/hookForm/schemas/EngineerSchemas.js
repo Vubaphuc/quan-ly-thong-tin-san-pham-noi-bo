@@ -12,7 +12,7 @@ export const updateInformationProductRepair = yup.object({
 export const orderMaterialCreateSchema = yup.object({
   quantity: yup
     .number()
-    .positive()
+    .positive("Số lượng phải lớn hơn 0")
     .integer("số lượng phải là số nguyên")
     .required("số lượng không được để trống"),
 });

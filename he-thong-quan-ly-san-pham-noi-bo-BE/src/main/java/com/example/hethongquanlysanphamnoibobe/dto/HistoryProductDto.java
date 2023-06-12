@@ -2,6 +2,7 @@ package com.example.hethongquanlysanphamnoibobe.dto;
 
 import com.example.hethongquanlysanphamnoibobe.entity.Components;
 import com.example.hethongquanlysanphamnoibobe.entity.Customer;
+import com.example.hethongquanlysanphamnoibobe.entity.Product;
 import com.example.hethongquanlysanphamnoibobe.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,7 +26,7 @@ public class HistoryProductDto {
     // tên lỗi
     private String defectName;
     // trạng thái sản phẩm status = false: đang pending chờ sửa, status = true: đã sửa xong;
-    private boolean status;
+    private Product.ProductStatus status;
     // nếu charge = false và isRepair = true :  là hàng bảo hành không tính phí => price = 0;
     // nếu charge = true và isRepair = true : là hàng bảo hành có tính phí => price = người dùng nhập
     private double price;

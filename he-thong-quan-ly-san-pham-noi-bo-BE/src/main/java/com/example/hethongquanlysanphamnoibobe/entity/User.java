@@ -40,8 +40,6 @@ public class User implements UserDetails {
     private String address;
     @Column(name = "enabled")
     private boolean enabled;
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avatar")
     private Image avatar;

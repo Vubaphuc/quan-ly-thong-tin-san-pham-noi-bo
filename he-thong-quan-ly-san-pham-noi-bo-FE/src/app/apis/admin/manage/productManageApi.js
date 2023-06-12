@@ -45,6 +45,7 @@ export const productManageApi = createApi ({
 
 export const { 
     useLazyFindProductAllsQuery,
+    useFindProductAllsQuery,
     useFindProductProjectionByIdQuery,
     useUpdateProductByIdMutation,
     useDeleteProductByIdMutation

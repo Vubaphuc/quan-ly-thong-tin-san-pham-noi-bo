@@ -14,41 +14,39 @@ const hookUpdateAvatar = () => {
 
   const handleChangeAvatar = async () => {
 
-      const formData = new FormData();
+    const formData = new FormData();
 
-      formData.append("avatar", files);
+    formData.append("avatar", files);
 
-      try {
+    try {
 
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
 
-        const rs = await axios.post(
-          "http://localhost:8080/api/v1/employee/upload-avatar",
-          formData,
-          {
-            headers
+      const rs = await axios.post(
+        "http://localhost:8080/nhan-vien/upload-avatar",
+        formData,
+        {
+          headers
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        }
+      );
+      
 
-        
+      navigate("/nhan-vien/thong-tin/tai-khoan")
 
-        navigate("/employee/personal-information")
-        const avatarImg = document.getElementById("avatar-employee");
-        avatarImg.src = "https://haycafe.vn/wp-content/uploads/2022/02/Avatar-trang-den.png";
+    } catch (error) {
 
-      } catch (error) {
+      console.log(error);
+      
+    }
+  };
 
-        console.log(error);
-        
-      }
-    };
 
 
 

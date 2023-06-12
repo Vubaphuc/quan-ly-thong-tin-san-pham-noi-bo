@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import { useGetPageProductNewCreateQuery } from "../../../../app/apis/receptionist/productApi";
+import { useFindProductWaitingRepairAllQuery } from "../../../../app/apis/receptionist/productApi";
 
 function RecepProductList() {
   const [term, setTerm] = useState("");
   const [page, setPage] = useState(0);
 
   const { data: productData, isLoading: productLoading } =
-    useGetPageProductNewCreateQuery({
+    useFindProductWaitingRepairAllQuery({
       page: page + 1,
       pageSize: 10,
       term: term,

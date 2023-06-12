@@ -2,7 +2,9 @@ package com.example.hethongquanlysanphamnoibobe.repository;
 
 import com.example.hethongquanlysanphamnoibobe.dto.HistoryOrderMaterialDto;
 import com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto;
+import com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialInfo;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.OrderMaterialProjection;
+import com.example.hethongquanlysanphamnoibobe.entity.Material;
 import com.example.hethongquanlysanphamnoibobe.entity.OrderMaterial;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface OrderMaterialRepository extends JpaRepository<OrderMaterial, Integer> {
@@ -121,4 +124,28 @@ public interface OrderMaterialRepository extends JpaRepository<OrderMaterial, In
     @Modifying
     @Query("delete from OrderMaterial od where od.id = ?1 ")
     void deleteById(Integer id);
+
+
+    // tổng số tiền vật liệu order ngày hôm nay
+    @Query("select coalesce(sum(od.quantity * m.price), 0) from OrderMaterial od join od.material m where od.isStatus = true and function('DATE', od.approvalDate) = current_date ")
+    long totalPriceMaterialOrderToday();
+
+    // tổng số tiền vật liệu đã order theo tháng
+    @Query("select coalesce(sum(od.quantity * m.price), 0) from OrderMaterial od join od.material m where month(od.approvalDate) = month(current_date) and year(od.approvalDate) = year(current_date) and od.isStatus = true ")
+    long totalPriceMaterialOrderThisMonth();
+
+    // tổng số lượng đã export material trong ngày hôm nay
+    @Query("select coalesce(sum(od.quantity), 0) from OrderMaterial od where od.isStatus = true and function('DATE', od.approvalDate) = current_date ")
+    long totalQuantityExportMaterialToday();
+    // tổng số lượng material đã order trong tháng này
+    @Query("select coalesce(sum(od.quantity), 0) from OrderMaterial od where od.isStatus = true and month(od.approvalDate) = month(current_date) ")
+    long totalQuantityExportMaterialThisMonth();
+    // danh sách tổng số lượng export material theo mã vật liệu
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialInfo" +
+            "(m.code, cp.name, coalesce(sum(od.quantity), 0)) from OrderMaterial od " +
+            "join od.material m " +
+            "join od.components cp " +
+            "where od.isStatus = true " +
+            "group by m.code, cp.name ")
+    Page<OrderMaterialInfo> findListTotalQuantityExportMaterialByMaterialCode(Pageable pageable);
 }

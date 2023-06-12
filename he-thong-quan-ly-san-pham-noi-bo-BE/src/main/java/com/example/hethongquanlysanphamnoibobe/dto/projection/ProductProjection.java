@@ -16,7 +16,7 @@ public interface ProductProjection {
     String getPhoneCompany();
     String getIME();
     String getDefectName();
-    boolean getStatus();
+    String getStatus();
     double getPrice();
     boolean getIsRepair();
     LocalDateTime getInputDate();
@@ -62,8 +62,8 @@ public interface ProductProjection {
         }
 
         @Override
-        public boolean getStatus() {
-            return product.isStatus();
+        public String getStatus() {
+            return product.getStatus().getStatus();
         }
 
         @Override

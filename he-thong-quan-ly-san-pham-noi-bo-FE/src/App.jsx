@@ -25,7 +25,6 @@ import RecepBillList from "./page/employee/Receptionist/BillRecep/RecepBillList"
 import RecepBillCreate from "./page/employee/Receptionist/BillRecep/RecepBillCreate";
 import RecepBillDetail from "./page/employee/Receptionist/BillRecep/RecepBillDetail";
 import RecepSearchHistoryProduct from "./page/employee/Receptionist/RecepSearchHistoryProduct";
-import RecepRegisterInformationEngineerProduct from "./page/employee/Receptionist/productRecep/RecepRegisterInformationEngineerProduct";
 import EngiInformationProdcutRepair from "./page/employee/Engineer/engiProduct/EngiInformationProdcutRepair";
 import WareComponentCreate from "./page/employee/WarehouseEmployee/components/WareComponentCreate";
 import WareComponentList from "./page/employee/WarehouseEmployee/components/WareComponentList";
@@ -48,8 +47,6 @@ import WarrantyBillCreate from "./page/employee/WarrantyEmployee/bill/WarrantyBi
 import WarrantyProductDetail from "./page/employee/WarrantyEmployee/product/WarrantyProductDetail";
 import WarrantyProductCreate from "./page/employee/WarrantyEmployee/product/WarrantyProductCreate";
 import WarrantyCustomerList from "./page/employee/WarrantyEmployee/customer/WarrantyCustomerList";
-import RecepProdcutPendingList from "./page/employee/Receptionist/productRecep/RecepProdcutPendingList";
-import RecepProductPendingDetail from "./page/employee/Receptionist/productRecep/RecepProductPendingDetail";
 import WarrantyProductList from "./page/employee/WarrantyEmployee/product/WarrantyProductList";
 import WarrantySearchHistoryProductList from "./page/employee/WarrantyEmployee/search/WarrantySearchHistoryProductList";
 import RecepGuaranteeCreate from "./page/employee/Receptionist/guarantee/RecepGuaranteeCreate";
@@ -71,6 +68,12 @@ import ProductManageDetail from "./page/admin/productManage/ProductManageDetail"
 import EmployeeManageList from "./page/admin/employeeManage/EmployeeManageList";
 import EmployeeManageDetail from "./page/admin/employeeManage/EmployeeManageDetail";
 import EmployeeManageCreate from "./page/admin/employeeManage/EmployeManageCreate";
+import MaterialPage from "./page/admin/statistics/MaterialPage";
+import ProductPage from "./page/admin/statistics/ProductPage";
+import WareUpdateMaterial from "./page/employee/WarehouseEmployee/material/WareUpdateMaterial";
+import RecepProdcutWaitingRepairList from "./page/employee/Receptionist/productRecep/waitingRepair/RecepProdcutWaitingRepairList";
+import RecepProdcutWaitingRepairDetail from "./page/employee/Receptionist/productRecep/waitingRepair/RecepProdcutWaitingRepairDetail";
+import RecepRegisterInformationEngineerProduct from "./page/employee/Receptionist/productRecep/waitingRepair/RecepRegisterInformationEngineerProduct";
 
 function App() {
   return (
@@ -93,14 +96,20 @@ function App() {
                   path="customer/:customerId"
                   element={<RecepCustomerDetail />}
                 />
+
+
                 <Route path="products" element={<RecepProductList />} />
                 <Route
                   path="products/pending"
-                  element={<RecepProdcutPendingList />}
-                />
+                  element={<RecepProdcutWaitingRepairList />}
+                />           
                 <Route
                   path="products/pending/:productId"
-                  element={<RecepProductPendingDetail />}
+                  element={<RecepProdcutWaitingRepairDetail />}
+                />
+                <Route
+                  path="register/:productId"
+                  element={<RecepRegisterInformationEngineerProduct />}
                 />
                 <Route
                   path="product/:productId"
@@ -110,14 +119,16 @@ function App() {
                   path="products/create/:customerId"
                   element={<RecepProductCreate />}
                 />
+
+
+
+
+
                 <Route path="bills" element={<RecepBillList />} />
                 <Route path="bill/create" element={<RecepBillCreate />} />
                 <Route path="bill/:productId" element={<RecepBillDetail />} />
                 <Route path="search" element={<RecepSearchHistoryProduct />} />
-                <Route
-                  path="register/:productId"
-                  element={<RecepRegisterInformationEngineerProduct />}
-                />
+              
 
                 <Route
                   path="guarantee/create"
@@ -187,7 +198,7 @@ function App() {
                   path="material/:materialId"
                   element={<WareMaterialDetail />}
                 />
-
+                <Route path="update-material/:materialId" element={<WareUpdateMaterial />} />
                 <Route
                   path="orderMaterials"
                   element={<WareOrderMaterialList />}
@@ -270,26 +281,28 @@ function App() {
           </Route>
 
           {/* admin */}
-          <Route element={<AuthorizeRoutes requireRoles={["ADMIN"]} /> }>
-          <Route path="admin" element={<Layout />}>
-            <Route index element={<AdminPage />} />
-            <Route path="shop" element={<InformationShopPage />} />
+          <Route element={<AuthorizeRoutes requireRoles={["ADMIN"]} />}>
+            <Route path="admin" element={<Layout />}>
+              <Route index element={<AdminPage />} />
+              <Route path="shop" element={<InformationShopPage />} />
 
-            <Route path="customers" element={<CustomerManageList />} />
-            <Route path="customer/:customerId" element={<CustomerManageDetail />} />
-            <Route path="materials" element={<MaterialManageList />} />
-            <Route path="material/:materialId" element={<MaterialManageDetail />} />
-            <Route path="orderMaterials" element={<OrderMaterialManageList />} />
-            <Route path="orderMaterial/:orderMaterialId" element={<OrderMaterialManageDetail />} />
-            <Route path="products" element={<ProductManageList />} />
-            <Route path="product/:productId" element={<ProductManageDetail />} />
-            <Route path="employee/create" element={<EmployeeManageCreate />} />
-            <Route path="employees" element={<EmployeeManageList />} />
-            <Route path="employee/:employeeId" element={<EmployeeManageDetail />} />
-            
-            
+              <Route path="customers" element={<CustomerManageList />} />
+              <Route path="customer/:customerId" element={<CustomerManageDetail />} />
+              <Route path="materials" element={<MaterialManageList />} />
+              <Route path="material/:materialId" element={<MaterialManageDetail />} />
+              <Route path="orderMaterials" element={<OrderMaterialManageList />} />
+              <Route path="orderMaterial/:orderMaterialId" element={<OrderMaterialManageDetail />} />
+              <Route path="products" element={<ProductManageList />} />
+              <Route path="product/:productId" element={<ProductManageDetail />} />
+              <Route path="employee/create" element={<EmployeeManageCreate />} />
+              <Route path="employees" element={<EmployeeManageList />} />
+              <Route path="employee/:employeeId" element={<EmployeeManageDetail />} />
+              <Route path="material-manage" element={<MaterialPage />} />
+              <Route path="product-manage" element={<ProductPage />} />
 
-          </Route>
+
+
+            </Route>
           </Route>
 
 
@@ -300,6 +313,10 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route path="/" element={<Customer />} />
+    
+
+        {/* test layout moi */}
+
 
         {/* Trang chế độ khách */}
         {/* <Route path="/khach" /> */}

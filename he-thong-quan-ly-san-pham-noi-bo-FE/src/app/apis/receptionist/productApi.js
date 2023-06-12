@@ -18,8 +18,8 @@ export const productApi = createApi ({
     tagTypes: ['Receptionist'],
     endpoints: (builder) => ({
         // danh sách sản phẩm mới thêm mới
-        getPageProductNewCreate: builder.query ({
-            query: ({page,pageSize,term}) => `product-new?page=${page}&pageSize=${pageSize}&term=${term}`,
+        findProductWaitingRepairAll: builder.query ({
+            query: ({page,pageSize,term}) => `product-waiting?page=${page}&pageSize=${pageSize}&term=${term}`,
             providesTags: ['Receptionist'],
         }),
         // lấy sản phẩm theo id
@@ -109,7 +109,7 @@ export const productApi = createApi ({
 });;
 
 export const { 
-    useGetPageProductNewCreateQuery,
+    useFindProductWaitingRepairAllQuery,
     useGetProductByIdQuery,
     useUpdateEngineerInformationByProductMutation,
     useLazyGetPageProductStatusOKQuery,

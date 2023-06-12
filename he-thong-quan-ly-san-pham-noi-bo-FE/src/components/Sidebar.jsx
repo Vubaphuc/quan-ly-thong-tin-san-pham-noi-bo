@@ -12,591 +12,240 @@ function Sidebar() {
   };
 
   return (
-    <div className="sidebar">
-      <div className="logo d-flex justify-content-center align-items-center">
-        {isShowMenu(roles, ["ADMIN"]) && (
-          <h3 className="fs-4 text-white">ADMIN</h3>
-        )}
-        {isShowMenu(roles, ["NHANVIENLETAN"]) && (
-          <h3 className="fs-4 text-white">Nhân Viên Lễ Tân</h3>
-        )}
-        {isShowMenu(roles, ["NHANVIENSUACHUA"]) && (
-          <h3 className="fs-4 text-white">Nhân viên sửa chữa</h3>
-        )}
-        {isShowMenu(roles, ["NHANVIENKHO"]) && (
-          <h3 className="fs-4 text-white">Nhân viên Kho</h3>
-        )}
-        {isShowMenu(roles, ["NHANVIENBAOHANH"]) && (
-          <h3 className="fs-4 text-white">Nhân viên Bảo Hành</h3>
-        )}
-      </div>
-      <div className="menu">
-        <div className="menu-item">
-          <ul className="m-0 p-0">
-            {isShowMenu(roles, ["NHANVIENLETAN"]) && (
-              <>
-                <div className="menu-item">
-                  <h5>
-                    <span className="d-inline-block me-1">
-                      <i className="fa-solid fa-layer-group"></i>
-                    </span>
-                    Quản lý Sản Phẩm
-                  </h5>
-                  <ul className="m-0 p-0">
-                    <li>
-                      <Link
-                        to={"/employee/receptionist"}
-                        className="text-decoration-none"
-                      >
-                        Danh sách sản phẩm
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={"/employee/receptionist/products/pending"}
-                        className="text-decoration-none"
-                      >
-                        Danh sách sản phẩm Pending
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={"/employee/receptionist/products"}
-                        className="text-decoration-none"
-                      >
-                        Đăng ký nhân viên sửa
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={"/employee/receptionist/search"}
-                        className="text-decoration-none"
-                      >
-                        Tìm kiếm sản phẩm
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div className="menu-item">
-                  <h5>
-                    <span className="d-inline-block me-1">
-                      <i className="fa-solid fa-explosion"></i>
-                    </span>
-                    Quản lý Khách Hàng
-                  </h5>
-                  <ul className="m-0 p-0">
-                    <li>
-                      <Link
-                        to={"/employee/receptionist/customers"}
-                        className="text-decoration-none"
-                      >
-                        Danh sách khách hàng
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={"/employee/receptionist/customer/create"}
-                        className="text-decoration-none"
-                      >
-                        Đăng ký khách hàng
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div className="menu-item">
-                  <h5>
-                    <span className="d-inline-block me-1">
-                      <i className="fa-solid fa-explosion"></i>
-                    </span>
-                    Quản lý Bảo Hành
-                  </h5>
-                  <ul className="m-0 p-0">
-                    <li>
-                      <Link
-                        to={"/employee/receptionist/guarantees"}
-                        className="text-decoration-none"
-                      >
-                        Danh sách bảo hành
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={"/employee/receptionist/guarantee/create"}
-                        className="text-decoration-none"
-                      >
-                        Đăng Ký Bảo Hành
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div className="menu-item">
-                  <h5>
-                    <span className="d-inline-block me-1">
-                      <i className="fa-solid fa-explosion"></i>
-                    </span>
-                    Quản lý Hóa đơn
-                  </h5>
-                  <ul className="m-0 p-0">
-                    <li>
-                      <Link
-                        to={"/employee/receptionist/bills"}
-                        className="text-decoration-none"
-                      >
-                        Danh sách hóa đơn
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div className="menu-item">
-                  <h5>
-                    <span className="d-inline-block me-1">
-                      <i className="fa-solid fa-user"></i>
-                    </span>
-                    Tài Khoản
-                  </h5>
-                  <ul className="m-0 p-0">
-                    <li>
-                      <Link
-                        to={"/employee/personal-information"}
-                        className="text-decoration-none"
-                      >
-                        Thông tin tài khoản
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={"/employee/change-password"}
-                        className="text-decoration-none"
-                      >
-                        Đổi mật khẩu
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              </>
-            )}
 
-            {isShowMenu(roles, ["NHANVIENSUACHUA"]) && (
-              <>
-                <div className="menu-item">
-                  <h5>
-                    <span className="d-inline-block me-1">
-                      <i className="fa-solid fa-explosion"></i>
-                    </span>
-                    Quản lý Sản Phẩm
-                  </h5>
-                  <ul className="m-0 p-0">
-                    <li>
-                      <Link
-                        to={"/employee/engineer"}
-                        className="text-decoration-none"
-                      >
-                        Danh sách Sản Phẩm
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div className="menu-item">
-                  <h5>
-                    <span className="d-inline-block me-1">
-                      <i className="fa-solid fa-explosion"></i>
-                    </span>
-                    Quản lý Oder
-                  </h5>
-                  <ul className="m-0 p-0">
-                    <li>
-                      <Link
-                        to={"/employee/engineer/orders"}
-                        className="text-decoration-none"
-                      >
-                        Danh sách Oder
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div className="menu-item">
-                  <h5>
-                    <span className="d-inline-block me-1">
-                      <i className="fa-solid fa-explosion"></i>
-                    </span>
-                    Vật liệu
-                  </h5>
-                  <ul className="m-0 p-0">
-                    <li>
-                      <Link
-                        to={"/employee/engineer/materials"}
-                        className="text-decoration-none"
-                      >
-                        Danh sách Vật Liệu
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div className="menu-item">
-                  <h5>
-                    <span className="d-inline-block me-1">
-                      <i className="fa-solid fa-cookie-bite"></i>
-                    </span>
-                    Tài Khoản
-                  </h5>
-                  <ul className="m-0 p-0">
-                    <li>
-                      <Link
-                        to={"/employee/personal-information"}
-                        className="text-decoration-none"
-                      >
-                        Thông tin tài khoản
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={"/employee/change-password"}
-                        className="text-decoration-none"
-                      >
-                        Đổi mật khẩu
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              </>
+    <>
+      <div className="sidebar">
+        <nav className="navbar navbar-dark">
+          <div className="logo d-flex justify-content-center align-items-center">
+            {isShowMenu(roles, ["ADMIN"]) && (
+              <h4 className="fs-4 text-white">ADMIN</h4>
             )}
-          </ul>
-        </div>
-        {isShowMenu(roles, ["NHANVIENKHO"]) && (
-          <>
-            <div className="menu-item">
-              <h5>
-                <span className="d-inline-block me-1">
-                  <i className="fa-solid fa-explosion"></i>
-                </span>
-                Quản lý Vật liệu
-              </h5>
-              <ul className="m-0 p-0">
-                <li>
-                  <Link
-                    to={"/employee/warehouse"}
-                    className="text-decoration-none"
-                  >
-                    Danh sách Vật liệu
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/warehouse/material/create"}
-                    className="text-decoration-none"
-                  >
-                    Đăng ký vật liệu
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/warehouse/components"}
-                    className="text-decoration-none"
-                  >
-                    Danh Sách Linh Kiện
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/warehouse/component/create"}
-                    className="text-decoration-none"
-                  >
-                    Đăng ký Linh Kiện Mới
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/warehouse/search/material"}
-                    className="text-decoration-none"
-                  >
-                    Tìm kiếm vật liệu
-                  </Link>
-                </li>
-              </ul>
+            {isShowMenu(roles, ["NHANVIENLETAN"]) && (
+              <h4 className="fs-4 text-white">Nhân Viên Lễ Tân</h4>
+            )}
+            {isShowMenu(roles, ["NHANVIENSUACHUA"]) && (
+              <h4 className="fs-4 text-white">Nhân viên sửa chữa</h4>
+            )}
+            {isShowMenu(roles, ["NHANVIENKHO"]) && (
+              <h4 className="fs-4 text-white">Nhân viên Kho</h4>
+            )}
+            {isShowMenu(roles, ["NHANVIENBAOHANH"]) && (
+              <h4 className="fs-4 text-white">Nhân viên Bảo Hành</h4>
+            )}
+          </div>
+          {isShowMenu(roles, ["NHANVIENLETAN"]) && (
+            <div className="navbar-nav w-100">
+              <Link to={"/employee/receptionist"} className="nav-item nav-link active"><i className="fa fa-tachometer-alt me-2"></i>Dashboard</Link>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-th me-2"></i>Quản lý Sản Phẩm</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/receptionist"} className="dropdown-item">Danh sách sản phẩm</Link>
+                  <Link to={"/employee/receptionist/products/pending"} className="dropdown-item"> Danh sách sản phẩm Pending</Link>
+                  <Link to={"/employee/receptionist/products"} className="dropdown-item">Đăng ký nhân viên sửa</Link>
+                  <Link to={"/employee/receptionist/search"} className="dropdown-item">Tìm kiếm sản phẩm</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-laptop me-2"></i>Quản lý Khách Hàng</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/receptionist/customers"} className="dropdown-item">Danh sách khách hàng</Link>
+                  <Link to={"/employee/receptionist/customer/create"} className="dropdown-item">Đăng ký khách hàng</Link>
+                </div>
+              </div>              
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-keyboard me-2"></i>Quản lý Bảo Hành</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/receptionist/guarantees"} className="dropdown-item">Danh sách bảo hành</Link>
+                  <Link to={"/employee/receptionist/guarantee/create"} className="dropdown-item">Đăng Ký Bảo Hành</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-keyboard me-2"></i>Quản lý Hóa đơn</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/receptionist/bills"} className="dropdown-item">Danh sách hóa đơn</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a
+                  href="#"
+                  className="nav-link dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                >
+                  <i className="far fa-file-alt me-2"></i>
+                  Tài khoản
+                </a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/personal-information"} className="dropdown-item">Thông tin tài khoản</Link>
+                  <Link to={"/employee/change-password"} className="dropdown-item">Đổi Mật khẩu</Link>
+                </div>
+              </div>
             </div>
-            <div className="menu-item">
-              <h5>
-                <span className="d-inline-block me-1">
-                  <i className="fa-solid fa-explosion"></i>
-                </span>
-                Quản lý Oder
-              </h5>
-              <ul className="m-0 p-0">
-                <li>
-                  <Link
-                    to={"/employee/warehouse/orderMaterials"}
-                    className="text-decoration-none"
-                  >
-                    Danh sách oder vật liệu
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/warehouse/search/order"}
-                    className="text-decoration-none"
-                  >
-                    Tìm kiếm oder
-                  </Link>
-                </li>
-              </ul>
+          )}
+          {isShowMenu(roles, ["NHANVIENSUACHUA"]) && (
+            <div className="navbar-nav w-100">
+              <Link to={"/employee/engineer"} className="nav-item nav-link active"><i className="fa fa-tachometer-alt me-2"></i>Dashboard</Link>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-th me-2"></i>Sản Phẩm</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/engineer"} className="dropdown-item">Danh sách Sản Phẩm</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-laptop me-2"></i>Quản lý Oder</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/engineer/orders"} className="dropdown-item">Danh sách Oder</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-keyboard me-2"></i>Vật liệu</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/engineer/materials"} className="dropdown-item">Danh sách Vật Liệu</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a
+                  href="#"
+                  className="nav-link dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                >
+                  <i className="far fa-file-alt me-2"></i>
+                  Thông tin tài khoản
+                </a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/personal-information"} className="dropdown-item">Thông tin tài khoản</Link>
+                  <Link to={"/employee/change-password"} className="dropdown-item">Đổi Mật khẩu</Link>
+                </div>
+              </div>
             </div>
-            <div className="menu-item">
-              <h5>
-                <span className="d-inline-block me-1">
-                  <i className="fa-solid fa-explosion"></i>
-                </span>
-                Quản lý Vender
-              </h5>
-              <ul className="m-0 p-0">
-                <li>
-                  <Link
-                    to={"/employee/warehouse/vendors"}
-                    className="text-decoration-none"
-                  >
-                    Danh sách Vender
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/warehouse/vendor/create"}
-                    className="text-decoration-none"
-                  >
-                    Thêm Vender Mới
-                  </Link>
-                </li>
-              </ul>
+          )}
+          {isShowMenu(roles, ["NHANVIENKHO"]) && (
+            <div className="navbar-nav w-100">
+              <Link to={"/employee/warehouse"} className="nav-item nav-link active"><i className="fa fa-tachometer-alt me-2"></i>Dashboard</Link>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-th me-2"></i>Quản lý Vật liệu</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/warehouse"} className="dropdown-item">Danh sách Vật liệu</Link>
+                  <Link to={"/employee/warehouse/material/create"} className="dropdown-item">Đăng ký vật liệu</Link>
+                  <Link to={"/employee/warehouse/search/material"} className="dropdown-item">Tìm kiếm vật liệu</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-laptop me-2"></i>Linh Kiện</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/warehouse/components"} className="dropdown-item">Danh Sách Linh Kiện</Link>
+                  <Link to={"/employee/warehouse/component/create"} className="dropdown-item">Đăng ký Linh Kiện Mới</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-keyboard me-2"></i>Quản lý Oder</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/warehouse/orderMaterials"} className="dropdown-item">Danh sách oder vật liệu</Link>
+                  <Link to={"/employee/warehouse/search/order"} className="dropdown-item">Tìm kiếm oder</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-keyboard me-2"></i>Quản lý Vender</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/warehouse/vendors"} className="dropdown-item">Danh sách Vender</Link>
+                  <Link to={"/employee/warehouse/vendor/create"} className="dropdown-item">Thêm Vender Mới</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a
+                  href="#"
+                  className="nav-link dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                >
+                  <i className="far fa-file-alt me-2"></i>
+                  Tài khoản
+                </a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/personal-information"} className="dropdown-item">Thông tin tài khoản</Link>
+                  <Link to={"/employee/change-password"} className="dropdown-item">Đổi Mật khẩu</Link>
+                </div>
+              </div>
             </div>
-            <div className="menu-item">
-              <h5>
-                <span className="d-inline-block me-1">
-                  <i className="fa-solid fa-cookie-bite"></i>
-                </span>
-                Tài Khoản
-              </h5>
-              <ul className="m-0 p-0">
-                <li>
-                  <Link
-                    to={"/employee/personal-information"}
-                    className="text-decoration-none"
-                  >
-                    Thông tin tài khoản
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/change-password"}
-                    className="text-decoration-none"
-                  >
-                    Đổi mật khẩu
-                  </Link>
-                </li>
-              </ul>
+          )}
+          {isShowMenu(roles, ["NHANVIENBAOHANH"]) && (
+            <div className="navbar-nav w-100">
+              <Link to={"/employee/warranty"} className="nav-item nav-link active"><i className="fa fa-tachometer-alt me-2"></i>Dashboard</Link>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-th me-2"></i>Quản lý Bảo hành</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/warranty"} className="dropdown-item">Danh sách bảo hành</Link>
+                  <Link to={"/employee/warranty/customeries"} className="dropdown-item">Danh Sách Khách hàng</Link>
+                  <Link to={"/employee/warranty/products"} className="dropdown-item">Chuyển Sản Phẩm Bảo Hành</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-laptop me-2"></i>Danh sách hóa đơn và bảo hành</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/warranty/bills"} className="dropdown-item">Danh sách hóa đơn</Link>
+                  <Link to={"/employee/warranty/guarantees"} className="dropdown-item">Danh sách bảo hành</Link>
+                </div>
+              </div>         
+              <div className="nav-item dropdown">
+                <a
+                  href="#"
+                  className="nav-link dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                >
+                  <i className="far fa-file-alt me-2"></i>
+                  Tài khoản
+                </a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/personal-information"} className="dropdown-item">Thông tin tài khoản</Link>
+                  <Link to={"/employee/change-password"} className="dropdown-item">Đổi Mật khẩu</Link>
+                </div>
+              </div>
             </div>
-          </>
-        )}
-        {isShowMenu(roles, ["NHANVIENBAOHANH"]) && (
-          <>
-            <div className="menu-item">
-              <h5>
-                <span className="d-inline-block me-1">
-                  <i className="fa-solid fa-explosion"></i>
-                </span>
-                Quản lý Bảo hành
-              </h5>
-              <ul className="m-0 p-0">
-                <li>
-                  <Link
-                    to={"/employee/warranty"}
-                    className="text-decoration-none"
-                  >
-                    Danh sách bảo hành
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/warranty/customeries"}
-                    className="text-decoration-none"
-                  >
-                    Danh Sách Khách hàng
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/warranty/products"}
-                    className="text-decoration-none"
-                  >
-                    Chuyển Sản Phẩm Bảo Hành
-                  </Link>
-                </li>
-              </ul>
+          )}
+          {isShowMenu(roles, ["ADMIN"]) && (
+            <div className="navbar-nav w-100">
+              <Link to={"/admin"} className="nav-item nav-link active"><i className="fa fa-tachometer-alt me-2"></i>Dashboard</Link>
+              <Link to={"/admin/shop"} className="nav-item nav-link chart" ><i className="fa fa-chart-bar me-2"></i>Charts</Link>
+              <Link to={"/admin/material-manage"} className="nav-item nav-link material" ><i className="fa fa-chart-bar me-2"></i>Material</Link>
+              <Link to={"/admin/product-manage"} className="nav-item nav-link product" ><i className="fa fa-chart-bar me-2"></i>Product</Link>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-th me-2"></i>Khách Hàng</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/admin/customers"} className="dropdown-item">Danh sách Khách hàng</Link>
+                  <Link to={"/admin/products"} className="dropdown-item">Danh sách Sản Phẩm</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-laptop me-2"></i>Vật Liệu</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/admin/materials"} className="dropdown-item">Danh sách Vật Liệu</Link>
+                  <Link to={"/admin/orderMaterials"} className="dropdown-item">Danh sách Order Vật Liệu</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-keyboard me-2"></i>Nhân Viên</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/admin/employees"} className="dropdown-item">Danh sách nhân viên</Link>
+                  <Link to={"/admin/employee/create"} className="dropdown-item">Đăng ký Nhân Viên mới</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
+                <a
+                  href="#"
+                  className="nav-link dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                >
+                  <i className="far fa-file-alt me-2"></i>
+                  Thông tin tài khoản
+                </a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/personal-information"} className="dropdown-item">Thông tin tài khoản</Link>
+                  <Link to={"/employee/change-password"} className="dropdown-item">Đổi Mật khẩu</Link>
+                </div>
+              </div>
             </div>
-            <div className="menu-item">
-              <h5>
-                <span className="d-inline-block me-1">
-                  <i className="fa-solid fa-explosion"></i>
-                </span>
-                Quản lý Sản Phẩm
-              </h5>
-              <ul className="m-0 p-0">
-                <li>
-                  <Link
-                    to={"/employee/warranty/product/pending"}
-                    className="text-decoration-none"
-                  >
-                    Danh Sách sản phẩm Pending
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/warranty/search/products"}
-                    className="text-decoration-none"
-                  >
-                    Tìm Kiếm Lịch Sử Sản Phẩm
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="menu-item">
-              <h5>
-                <span className="d-inline-block me-1">
-                  <i className="fa-solid fa-explosion"></i>
-                </span>
-                Danh sách hóa đơn và bảo hành
-              </h5>
-              <ul className="m-0 p-0">
-                <li>
-                  <Link
-                    to={"/employee/warranty/bills"}
-                    className="text-decoration-none"
-                  >
-                    Danh sách hóa đơn
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/warranty/guarantees"}
-                    className="text-decoration-none"
-                  >
-                    Danh sách bảo hành
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="menu-item">
-              <h5>
-                <span className="d-inline-block me-1">
-                  <i className="fa-solid fa-cookie-bite"></i>
-                </span>
-                Tài Khoản
-              </h5>
-              <ul className="m-0 p-0">
-                <li>
-                  <Link
-                    to={"/employee/personal-information"}
-                    className="text-decoration-none"
-                  >
-                    Thông tin tài khoản
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/change-password"}
-                    className="text-decoration-none"
-                  >
-                    Đổi mật khẩu
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </>
-        )}
-        {isShowMenu(roles, ["ADMIN"]) && (
-          <>
-            <div className="menu-item">
-              <h5>
-                <span className="d-inline-block me-1">
-                  <i className="fa-solid fa-explosion"></i>
-                </span>
-                Quản lý danh mục
-              </h5>
-              <ul className="m-0 p-0">
-                <li>
-                  <Link to={"/admin/shop"} className="text-decoration-none">
-                    Danh sách danh mục
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="menu-item">
-              <h5>
-                <span className="d-inline-block me-1">
-                  <i className="fa-solid fa-explosion"></i>
-                </span>
-                Quản lý
-              </h5>
-              <ul className="m-0 p-0">
-                <li>
-                  <Link to={"/admin/customers"} className="text-decoration-none">
-                    Danh sách Khách hàng
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/admin/materials"} className="text-decoration-none">
-                    Danh sách Vật Liệu
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/admin/orderMaterials"} className="text-decoration-none">
-                    Danh sách Order Vật Liệu
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/admin/products"} className="text-decoration-none">
-                    Danh sách Sản Phẩm
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/admin/employees"} className="text-decoration-none">
-                    Danh sách nhân viên
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/admin/employee/create"} className="text-decoration-none">
-                    Đăng ký Nhân Viên mới
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="menu-item">
-              <h5>
-                <span className="d-inline-block me-1">
-                  <i className="fa-solid fa-cookie-bite"></i>
-                </span>
-                Tài Khoản
-              </h5>
-              <ul className="m-0 p-0">
-                <li>
-                  <Link
-                    to={"/employee/personal-information"}
-                    className="text-decoration-none"
-                  >
-                    Thông tin tài khoản
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={"/employee/change-password"}
-                    className="text-decoration-none"
-                  >
-                    Đổi mật khẩu
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </>
-        )}
+          )}
+        </nav>
       </div>
-    </div>
+    </>
   );
 }
 

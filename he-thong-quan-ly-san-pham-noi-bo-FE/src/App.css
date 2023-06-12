@@ -389,7 +389,6 @@ footer .container .footer-top .footer-top-item .title {
 }
 
 .search-results {
-  max-height: 500px;
   overflow-y: auto;
 }
 

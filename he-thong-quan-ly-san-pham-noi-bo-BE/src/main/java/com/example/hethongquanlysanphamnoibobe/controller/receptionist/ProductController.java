@@ -13,12 +13,12 @@ public class ProductController {
     private ProductService productService;
 
     // lấy danh sách sản phẩm mới đăng ký
-    @GetMapping("product-new")
-    public ResponseEntity<?> getPageProductNewCreate(
+    @GetMapping("product-waiting")
+    public ResponseEntity<?> findProductWaitingRepairAll(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "") String term) {
-        return ResponseEntity.ok(productService.getPageProductNewCreate(page,pageSize,term));
+        return ResponseEntity.ok(productService.findProductWaitingRepairAll(page,pageSize,term));
     }
     // lấy ra ra chi tiết sản phẩm theo id
     @GetMapping("product/{id}")

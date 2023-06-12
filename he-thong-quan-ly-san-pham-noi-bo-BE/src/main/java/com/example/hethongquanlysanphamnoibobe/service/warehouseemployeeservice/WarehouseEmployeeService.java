@@ -2,6 +2,7 @@ package com.example.hethongquanlysanphamnoibobe.service.warehouseemployeeservice
 
 import com.example.hethongquanlysanphamnoibobe.dto.*;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
+import com.example.hethongquanlysanphamnoibobe.mapper.DataMapper;
 import com.example.hethongquanlysanphamnoibobe.request.CreateComponentsRequest;
 import com.example.hethongquanlysanphamnoibobe.request.CreateMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.request.CreateVendorRequest;
@@ -13,6 +14,7 @@ import com.example.hethongquanlysanphamnoibobe.exception.NotFoundException;
 import com.example.hethongquanlysanphamnoibobe.repository.ComponentsRepository;
 import com.example.hethongquanlysanphamnoibobe.repository.MaterialRepository;
 import com.example.hethongquanlysanphamnoibobe.repository.VendorRepository;
+import com.example.hethongquanlysanphamnoibobe.request.UpdateMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.response.DataResponse;
 import com.example.hethongquanlysanphamnoibobe.response.StatusResponse;
 import com.example.hethongquanlysanphamnoibobe.security.ICurrentUserLmpl;
@@ -49,10 +51,9 @@ public class WarehouseEmployeeService {
         );
     }
     // lấy ra linh kiện theo id - 2
-    public Object getComponentsById(Integer id) {
-        return componentsRepository.getComponentsById(id).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id: " + id);
-        });
+    public ComponentsDto getComponentsById(Integer id) {
+        return componentsRepository.getComponentsById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
     }
     // tạo mới Components - 3
     public StatusResponse createComponents(CreateComponentsRequest request) {
@@ -69,50 +70,40 @@ public class WarehouseEmployeeService {
         // lưu vào csdl
         componentsRepository.save(components);
 
-        // tạo response trả veef
-        DataResponse dataResponse = DataResponse.builder()
-                .id(components.getId())
-                .name(components.getName())
-                .code(iCurrentUserLmpl.getUser().getEmployeeCode())
-                .build();
-
-        return new StatusResponse(HttpStatus.OK, "Create Components success" , dataResponse);
+        return new StatusResponse(HttpStatus.CREATED,
+                "Create Components success" ,
+                DataMapper.toDataResponse(components.getId(), components.getName(), iCurrentUserLmpl.getUser().getEmployeeCode()));
     }
 
     // tạo mới Material - 4
     public StatusResponse createMaterial(CreateMaterialRequest request) {
         // kiểm tra xem material đã tồn tại hay chưa
-        if (materialRepository.findByCode(request.getMaterialCode()).isPresent()) {
+        if (materialRepository.findByCodeAndDeleteTrue(request.getMaterialCode()).isPresent()) {
             // nếu tồn tại rồi lấy ra set lại số lương (quantity cũ + quantity mới)
-            Material material = materialRepository.findByCode(request.getMaterialCode()).get();
-            material.setQuantity(material.getQuantity() + request.getQuantity());
+            Material material = materialRepository.findByCodeAndDeleteTrue(request.getMaterialCode()).get();
+            material.setImportQuantity(material.getImportQuantity() + request.getQuantity());
             // lưu lại vào csdl
             materialRepository.save(material);
 
-            // tạo response trả veef
-            DataResponse dataResponse = DataResponse.builder()
-                    .id(material.getId())
-                    .name(material.getNameModel())
-                    .code(material.getCode())
-                    .build();
 
-            return new StatusResponse(HttpStatus.OK, "Create Material success" , dataResponse);
+            return new StatusResponse(HttpStatus.OK,
+                    "Update quantity Material success" ,
+                    DataMapper.toDataResponse(material.getId(), material.getCode(), material.getNameModel()));
 
         }
         // lấy ra Components theo ComponentsId - 5
-        Components components = componentsRepository.findById(request.getComponentsId()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id : " + request.getComponentsId());
-        });
+        Components components = componentsRepository.findById(request.getComponentsId())
+                .orElseThrow(() -> new NotFoundException("Not Found with id : " + request.getComponentsId()));
         // lấy ra Vendor theo VendorId
-        Vendor vendor = vendorRepository.findById(request.getVenderId()).orElseThrow(() -> {
-            throw new NotFoundException("Not Found with id : " + request.getVenderId());
-        });
+        Vendor vendor = vendorRepository.findById(request.getVenderId())
+                .orElseThrow(() -> new NotFoundException("Not Found with id : " + request.getVenderId()));
 
         // tạo Material mới
         Material material = Material.builder()
                 .code(request.getMaterialCode())
                 .nameModel(request.getNameModel())
-                .quantity(request.getQuantity())
+                .importQuantity(request.getQuantity())
+                .price(request.getPrice())
                 .components(components)
                 .vendor(vendor)
                 .warehouseEmployee(iCurrentUserLmpl.getUser())
@@ -120,14 +111,28 @@ public class WarehouseEmployeeService {
         // lưu vvào ccsdl
         materialRepository.save(material);
 
-        // tạo response trả veef
-        DataResponse dataResponse = DataResponse.builder()
-                .id(material.getId())
-                .name(material.getNameModel())
-                .code(material.getCode())
-                .build();
+        return new StatusResponse(HttpStatus.CREATED,
+                "Create Material success" ,
+                DataMapper.toDataResponse(material.getId(), material.getCode(), material.getNameModel()));
+    }
 
-        return new StatusResponse(HttpStatus.OK, "Create Material success" , dataResponse);
+    // cập nhật số lượng vật liệu
+    public StatusResponse updateMaterialById(UpdateMaterialRequest request, Integer id) {
+        // lấy ra vật liệu theo id
+        Material material = materialRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found With id: " + id));
+        //kiểm tra số lượng nhập vào có lớn hơn 0 không
+        if (request.getQuantity() <= 0 ) {
+            throw new BadRequestException("quantity must be greater than 0");
+        }
+        // cập nhât số lượng
+        material.setImportQuantity(material.getImportQuantity() + request.getQuantity());
+        // lưu lại
+        materialRepository.save(material);
+
+        return new StatusResponse(HttpStatus.OK,
+                "Update quantity Material success" ,
+                DataMapper.toDataResponse(material.getId(), material.getCode(), material.getNameModel()));
     }
 
     // lấy ra danh sách material all có phân trang - 6
@@ -270,5 +275,6 @@ public class WarehouseEmployeeService {
             throw new NotFoundException("Not Found with id : " + id);
         });
     }
+
 
 }

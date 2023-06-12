@@ -3,12 +3,14 @@ package com.example.hethongquanlysanphamnoibobe.controller.admin;
 import com.example.hethongquanlysanphamnoibobe.request.AUpdateMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.request.AUpdateOrderMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.service.admin.MaterialManageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("admin/api/v5")
+@Slf4j
 public class MaterialManageController {
     @Autowired
     private MaterialManageService materialManageService;
@@ -39,6 +41,7 @@ public class MaterialManageController {
 
     @PutMapping("material/{id}")
     public ResponseEntity<?> updateMaterialById (@RequestBody AUpdateMaterialRequest request, @PathVariable Integer id) {
+        log.info("id : {}", request.getVendorId());
         return ResponseEntity.ok(materialManageService.updateMaterialById(request, id));
     }
     @DeleteMapping("material/{id}")

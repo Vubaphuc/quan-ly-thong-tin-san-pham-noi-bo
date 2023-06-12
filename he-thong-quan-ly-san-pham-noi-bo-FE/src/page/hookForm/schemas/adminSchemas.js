@@ -20,7 +20,6 @@ export const updateMaterialSchema = yup.object({
     id: yup.number().required("Id Vật Liệu không được để trống"),
     code: yup.string().required("Mã Vật liệu không được để trống"),
     nameModel: yup.string().required("Tên Model không được để trống"),
-    quantity: yup.number().required("Số lượng không được để trống"),
     employeeCode: yup.string().required("Mã Nhân Viên không được để trống"),
     componentId: yup.number().required("Id Linh kiện không được để trống"),
     vendorId: yup.number().required("Id Vendor không được để trống"),

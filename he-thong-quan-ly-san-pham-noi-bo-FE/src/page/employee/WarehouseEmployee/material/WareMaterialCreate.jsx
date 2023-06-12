@@ -130,6 +130,17 @@ function WareMaterialCreate() {
                             {errors.quantity?.message}
                           </p>
                         </div>
+                        <div className="form-group">
+                          <label className="mb-2 mt-2">Giá Tiền</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            {...register("price")}
+                          />
+                          <p className="text-danger fst-italic mt-2">
+                            {errors.price?.message}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>

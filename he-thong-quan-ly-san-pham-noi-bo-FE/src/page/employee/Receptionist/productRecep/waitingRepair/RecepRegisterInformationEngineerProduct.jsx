@@ -1,53 +1,46 @@
-import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import React from "react";
+import { Controller } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import Select from "react-select";
-import { getEmployees } from "../../../formHTML/options";
-import { useGetListEngineerQuery } from "../../../../app/apis/employee/employeeApi";
-import { useGetProductByIdQuery } from "../../../../app/apis/receptionist/productApi";
-import { isEqual } from "lodash";
-import hookRecepUpdateProductPending from "../../../hookForm/hook/hookReceptionist/hookRecepUpdateProductPeding";
+import hookRecepRegisterInformationEngineer from "../../../../hookForm/hook/hookReceptionist/hookRecepRegisterInformationEngineer";
+import { useGetListEngineerQuery } from "../../../../../app/apis/employee/employeeApi";
+import { getEmployees } from "../../../../formHTML/options";
+import { useGetProductByIdQuery } from "../../../../../app/apis/receptionist/productApi";
 
-function RecepProductPendingDetail() {
+function RecepRegisterInformationEngineerProduct() {
   const { productId } = useParams();
 
-  const {
-    control, register, handleSubmit, onUpdateProductPending, errors 
-  } = hookRecepUpdateProductPending(productId);
+  const { control, handleSubmit, register, errors, onRegisterEnginner } =
+    hookRecepRegisterInformationEngineer(productId);
+
+  const { data: productData, isLoading: productLoading } =
+    useGetProductByIdQuery(productId);
 
   const { data: engineerData, isLoading: engineerLoading } =
     useGetListEngineerQuery();
-  const { data: productData, isLoading: productLoading } =
-    useGetProductByIdQuery(productId);
 
   if (engineerLoading || productLoading) {
     return <h2>Loading...</h2>;
   }
+
   const listEngineerOptions = getEmployees(engineerData);
-
-  const isProductStatusTrue = productData?.status === true;
-
-  const defaultEngineerOption = {
-    value: productData?.engineerCode,
-    label: productData?.engineerName
-  }
-
 
   return (
     <>
       <section className="content">
         <div className="container-fluid">
-          <form onSubmit={handleSubmit(onUpdateProductPending)} >
+          <form onSubmit={handleSubmit(onRegisterEnginner)}>
             <div className="row py-2">
               <div className="col-6">
-                <Link to={"/employee/receptionist/products/pending"} className="btn btn-default">
+                <Link
+                  to={"/employee/receptionist/products"}
+                  className="btn btn-default"
+                >
                   <i className="fas fa-chevron-left"></i> Quay lại
                 </Link>
-                {!isProductStatusTrue && (
-                  <button type="submit" className="btn btn-success px-4">
-                    Cập Nhật
-                  </button>
-                )}
+                <button type="submit" className="btn btn-info px-4">
+                  Lưu
+                </button>
               </div>
             </div>
             <div className="row">
@@ -58,13 +51,13 @@ function RecepProductPendingDetail() {
                       <div className="col-md-5">
                         <h4 className="mb-4">Thông Tin Sản Phẩm</h4>
                         <div className="form-group">
-                          <label>Hãng Sản Phẩm</label>
+                          <label>Hãng Điện Thoại</label>
                           <input
                             type="text"
                             className="form-control"
-                            id="hangSanPham"
+                            id="hang-san-pham"
                             defaultValue={productData?.phoneCompany}
-                            readOnly
+                            disabled
                           />
                         </div>
                         <div className="form-group">
@@ -74,7 +67,7 @@ function RecepProductPendingDetail() {
                             className="form-control"
                             id="model"
                             defaultValue={productData?.nameModel}
-                            readOnly
+                            disabled
                           />
                         </div>
                         <div className="form-group">
@@ -84,7 +77,7 @@ function RecepProductPendingDetail() {
                             className="form-control"
                             id="so-IME"
                             defaultValue={productData?.ime}
-                            readOnly
+                            disabled
                           />
                         </div>
                         <div className="form-group">
@@ -94,21 +87,22 @@ function RecepProductPendingDetail() {
                             className="form-control"
                             id="ten-loi"
                             defaultValue={productData?.defectName}
-                            readOnly
+                            disabled
                           />
                         </div>
+                      </div>
+                      <div className="col-md-5">
+                        <h4 className="mb-4">Thông Tin Nhân Viên Sửa Chữa</h4>
                         <div className="form-group">
                           <label className="mb-3">Nhân Viên Sửa Chữa</label>
                           <Controller
                             name="employeeCode"
                             control={control}
-                            defaultValue={defaultEngineerOption.value}
                             render={({ field }) => (
                               <div>
                                 <Select
                                   {...field}
                                   placeholder="--Chọn Nhân Viên--"
-                                  defaultValue={defaultEngineerOption}
                                   options={listEngineerOptions}
                                   value={listEngineerOptions.find(
                                     (c) => c.value === field.value
@@ -120,18 +114,6 @@ function RecepProductPendingDetail() {
                                 </p>
                               </div>
                             )}
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label>Trạng Thái</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="trang-thai"
-                            defaultValue={
-                              productData?.status ? "OK" : "PENDING"
-                            }
-                            readOnly
                           />
                         </div>
                       </div>
@@ -147,4 +129,4 @@ function RecepProductPendingDetail() {
   );
 }
 
-export default RecepProductPendingDetail;
+export default RecepRegisterInformationEngineerProduct;

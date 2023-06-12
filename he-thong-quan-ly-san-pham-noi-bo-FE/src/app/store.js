@@ -14,6 +14,7 @@ import { customerManageApi } from "./apis/admin/manage/CustomerManageApi";
 import { materialManageApi } from "./apis/admin/manage/materialManageApi";
 import { productManageApi } from "./apis/admin/manage/productManageApi";
 import { employeeManageApi } from "./apis/admin/manage/employeeManageApi";
+import { visitorApi } from "./apis/visitor/visitorApi";
 
 
 const store = configureStore ({
@@ -32,7 +33,8 @@ const store = configureStore ({
         [customerManageApi.reducerPath]: customerManageApi.reducer,
         [materialManageApi.reducerPath]: materialManageApi.reducer,
         [productManageApi.reducerPath]: productManageApi.reducer,
-        [employeeManageApi.reducerPath]: employeeManageApi.reducer
+        [employeeManageApi.reducerPath]: employeeManageApi.reducer,
+        [visitorApi.reducerPath]: visitorApi.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
         authApi.middleware,
@@ -48,7 +50,8 @@ const store = configureStore ({
         customerManageApi.middleware,
         materialManageApi.middleware,
         productManageApi.middleware,
-        employeeManageApi.middleware
+        employeeManageApi.middleware,
+        visitorApi.middleware
     ),
 });
 

@@ -66,7 +66,8 @@ public class SecurityConfig {
 
         String [] PUBLIC = {
                 "/api/v1/public/auth/login",
-                "/api/v1/employee/**"
+                "/api/v1/employee/**",
+                "/customer/**"
         };
 
         String [] NHANVIENLETAN = {

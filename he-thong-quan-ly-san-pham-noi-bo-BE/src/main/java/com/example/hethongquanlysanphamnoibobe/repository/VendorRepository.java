@@ -18,7 +18,6 @@ public interface VendorRepository extends JpaRepository<Vendor, Integer> {
     // ###################################################################################################
 
     Optional<Vendor> findByName(String name);
-    Optional<Vendor> findById(Integer id);
 
 
     // khu vực nhân viên lễ tân

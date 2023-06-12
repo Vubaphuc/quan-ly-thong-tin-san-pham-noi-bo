@@ -158,7 +158,7 @@ function EngiOrderMaterialList() {
                         id="statusSelect"
                         className="form-control"
                         value={status}
-                        onChange={handleStatusChange}
+                        onChange={(e) => setStatus(e.target.value)}
                       >
                         <option value="OK">OK</option>
                         <option value="PENDING">PENDING</option>

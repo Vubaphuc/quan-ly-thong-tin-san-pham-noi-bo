@@ -26,7 +26,6 @@ const hookApproverOrderMaterial = (orderId) => {
         .unwrap()
         .then(() => {
             toast.success("Phê Duyệt Thành Công");
-            window.location.reload()
             setTimeout(() => {
                 navigate("/employee/warehouse/orderMaterials");
             },2000)                             

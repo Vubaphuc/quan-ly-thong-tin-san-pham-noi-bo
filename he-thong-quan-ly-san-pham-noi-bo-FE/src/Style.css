@@ -1,0 +1,254 @@
+.tk {
+    height: 150px;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+   justify-content: space-between;
+   margin-left: 30px;
+   margin-right: 30px;
+   margin-bottom: 30px;
+}
+
+.tk .tk-ct {
+    background-color: #191C24;
+    flex: 0 0 auto;
+    width: 23%;
+    border-radius: 10px;
+
+}
+
+.tk-ct-text p {
+    font-size: 20px;
+    color: #6C7293;
+}
+
+.tk-ct-text h6 {
+    font-size: 20px;
+    color: white;
+}
+.tk-ct-icon {
+    color: #EB1616;
+}
+
+.dt {
+    height: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.dt .dt-tp {
+    width: 49%;
+    background-color: #191C24;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.dt .dt-tp div div h6 {
+    font-size: 20px;
+    color: white;
+    font-weight: 700;
+}
+
+.dt .dt-tp div div a {
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #EB1616 !important;
+}
+
+.table-product {
+    margin-top: 130px;
+}
+
+.table-table {
+    background-color: #191C24;
+}
+
+.table-table div h6 {
+    color: white;
+    font-size: 18px;
+}
+
+.table-table div a {
+    color: #EB1616;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.table-responsive table tbody tr td {
+    color: #999;
+}
+
+.footer {
+    height: 40px;
+}
+
+.secondary {
+    background-color: #191C24;
+}
+
+.secondary h6 {
+    color: white;
+}
+
+.av-auth {
+    width: 40px;
+    height: 40px;
+}
+
+.dropdown-item {
+    height: 100%;
+}
+
+
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link.active {
+    color: #EB1616;
+}
+
+
+
+
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item.active {
+    background: #042a40;
+    color: #fff;
+}
+
+.navbar .dropdown-toggle::after {
+    margin-left: 6px;
+    vertical-align: middle;
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    transition: .5s;
+}
+
+.navbar .dropdown-toggle[aria-expanded=true]::after {
+    transform: rotate(-180deg);
+}
+
+
+.wrapper-container .navbar .navbar-nav .nav-item .hd-auth {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(39, 50, 56);
+    top: 57px;
+    border-radius: 20px;
+}
+
+.wrapper-container .navbar .navbar-nav .nav-item .hd-auth .dropdown-item {
+    color: #777;
+    text-align: left;
+    line-height: 30px;
+    height: 40px;
+}
+
+.wrapper-container .navbar .navbar-nav .nav-item .hd-auth .dropdown-item:hover {
+    color: #EB1616;
+}
+
+.sidebar .navbar-nav .nav-item .nav-link {
+    color: #fff;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.sidebar .navbar-nav .nav-item .dropdown-menu {
+    background-color: rgb(34, 45, 50);
+}
+
+.sidebar .navbar-nav .nav-item .dropdown-menu .dropdown-item {
+    color: #fff;
+    margin-top: 8px;
+}
+
+.sidebar .navbar-nav .nav-item .nav-link:hover,
+.sidebar .navbar-nav .nav-item .nav-link.active {
+    color: #f73f3f;
+}
+
+span {
+    cursor: pointer;
+}
+
+
+.navbar-nav .nav-item .dropdown-menu .dropdown-item:hover {
+    cursor: pointer;
+    border-radius: 15px;
+    background-color: rgb(10, 14, 15);
+    color: #f73f3f;
+}
+
+
+.sidebar .navbar-nav .nav-item .dropdown-toggle::after {
+    margin-left: 6px;
+    vertical-align: middle;
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    transition: .5s;
+}
+
+.sidebar .navbar-nav .nav-item .dropdown-toggle[aria-expanded=true]::after {
+    transform: rotate(-180deg);
+}
+
+.sidebar .navbar-nav .nav-link {
+    margin-left: 10px;
+}
+
+.sidebar .navbar-nav .chart {
+    margin-left: 20px;
+    color: #c71178;
+}
+.sidebar .navbar-nav .material {
+    margin-left: 20px;
+    color:#f757b1;
+}
+
+p {
+    color: #33d0c6;
+    padding-top: 10px;
+}
+
+.sidebar .navbar-nav .product {
+    margin-left: 20px;
+    color: #352eb7;
+}
+.product-dt {
+    margin-top: 80px;
+}
+
+.material-tk {
+    margin-bottom: 100px;
+}
+
+.logo-tra-cuu-bh img {
+    margin-left: 500px;
+}
+
+
+.completed {
+    color: rgb(18, 29, 222);
+}
+  
+.not-completed {
+    color: red;
+}
+
+.tra-cuu {
+    width: 200px;
+    color: #5208d2;
+}
+
+.hd-login {
+    margin-right: 30px;
+    color: #fff;
+}

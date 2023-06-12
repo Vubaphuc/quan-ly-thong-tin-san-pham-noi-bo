@@ -24,7 +24,11 @@ function ProductManageList() {
 
 
   const handlePageClick = (page) => {
-
+    getProduct({
+      page: page.selected + 1,
+      pageSize: 10,
+      term: term
+    })
   }
 
 
@@ -43,6 +47,7 @@ function ProductManageList() {
             />
           </div>
           </div>
+          <div className="text-center rounded p-4">
           <div className="search-results mt-3">
             {productData && productData.data.length > 0 ? (
               <div className="card-body">
@@ -150,6 +155,7 @@ function ProductManageList() {
               <p>Không có sản phẩm nào !!!</p>
             )}
           </div>
+        </div>
         </div>
       </section>
     </>

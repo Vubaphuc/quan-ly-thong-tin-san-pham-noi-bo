@@ -1,107 +1,261 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useLazySearchGuaranteeByGuaranteeCodeQuery, useLazySearchHistoryProductByImeProductOrPhoneNumberQuery } from "../../app/apis/visitor/visitorApi";
 
 function Customer() {
+  const [ime, setIme] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [guarantee, setGuarantee] = useState("");
+  const [status, setStatus] = useState("PRODUCT");
+
+  const [getProduct, { data: prodcutData, isLoading: productLoading }] = useLazySearchHistoryProductByImeProductOrPhoneNumberQuery();
+  const [getGuarantee, { data: guaranteeData, isLoading: guaranteeLoading }] = useLazySearchGuaranteeByGuaranteeCodeQuery();
+
+  useEffect(() => {
+    getProduct({ ime: ime, phoneNumber: phoneNumber })
+  }, []);
+
+  useEffect(() => {
+    getGuarantee({ code: guarantee })
+  }, [])
+
+  if (productLoading || guaranteeLoading) {
+    return <h2>Loading...</h2>
+  }
+
+  console.log(guaranteeData)
+
+  const handleClickSearchProduct = () => {
+    getProduct({ ime: ime, phoneNumber: phoneNumber });
+  }
+
+  const handleClickSearchGuarantee = () => {
+    getGuarantee({ code: guarantee })
+  }
+
+
+
   return (
     <>
       <div className="khach-wrapper-container">
         <nav className="d-flex justify-content-end align-items-center px-3">
-          <div className="dropdown">
-            <a
-              className="btn btn-secondary dropdown-toggle"
-              href="#"
-              role="button"
-              id="dropdownMenuLink"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Xin Chào
-            </a>
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <li>
-                <a className="dropdown-item" href="#"></a>
-              </li>
-              <li>
-                <Link to={"/login"} className="button">
-                  Login
-                </Link>
-              </li>
-            </ul>
+          <div className="navbar-nav align-items-center ms-auto">
+            <div className="nav-item">
+              <Link
+                to={"/login"}
+                className="hd-login"
+              >
+                <img
+                  className="rounded-circle me-lg-2 av-auth"
+                  src="https://banner2.cleanpng.com/20190525/rfb/kisspng-button-computer-icons-login-image-illustration-index-of-images-5ce952d5a81805.2893926115587949656885.jpg" alt=""
+                />
+                <span className="d-none d-lg-inline-flex">Login</span>
+              </Link>
+            </div>
           </div>
         </nav>
       </div>
 
       <section className="container clearfix nav-bh">
-        <div className="search-warranty">
-          <div className="search-warranty-content">
-            <h1 className="search-warranty-content__title">Tra cứu bảo hành</h1>
-            <div className="tra-cuu-bh">
-              <div className="v2-error"></div>
-            </div>
-            <div className="search-warranty-content__main v2-search">
-              <form>
-                <input type="hidden" name="_token" />
-                <div className="v2-search-item">
-                  <input
-                    type="text"
-                    name="phone"
-                    className="v2-search-item__phone"
-                    placeholder="Nhập số điện thoại..."
-                  />
-                </div>
-                <div className="v2-search-item">
-                  <input
-                    type="text"
-                    name="imei"
-                    className="v2-search-item__imei"
-                    placeholder="Nhập IMEI..."
-                  />
-                </div>
+        <div className="tra-cuu">
+          <label htmlFor="statusSelect" className="mb-2">
+            Chọn Loại Hình Tra Cứu:
+          </label>
+          <select
+            id="statusSelect"
+            className="form-control"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="GUARANTEE">Bảo Hành</option>
+            <option value="PRODUCT">Sản Phẩm</option>
+          </select>
+        </div>
+        {status === "PRODUCT" && (
+          <div className="search-warranty">
+            <div className="search-warranty-content">
+              <h1 className="search-warranty-content__title">Tra cứu Sản Phẩm</h1>
+              <div className="tra-cuu-bh">
+                <div className="v2-error"></div>
+              </div>
+              <div className="search-warranty-content__main v2-search">
+                <form>
+                  <input type="hidden" name="_token" />
+                  <div className="v2-search-item">
+                    <input
+                      type="text"
+                      name="phone"
+                      className="v2-search-item__phone"
+                      placeholder="Nhập số điện thoại..."
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                    />
+                  </div>
+                  <div className="v2-search-item">
+                    <input
+                      type="text"
+                      name="imei"
+                      className="v2-search-item__imei"
+                      placeholder="Nhập IMEI..."
+                      onChange={(e) => setIme(e.target.value)}
+                    />
+                  </div>
 
-                <div className="v2-search-button">
-                  <button
-                    type="submit"
-                    className="v2-search-submit v2-button-default v2-color-primary"
-                  >
-                    Tìm kiếm
-                  </button>
-                </div>
-              </form>
-            </div>
-            <div className="v2-banner-search">
-              <div className="row">
-                <div className="col-12">
-                  <div className="card">
-                    <div className="card-body">
-                      <table className="table table-bordered table-hover">
-                        <thead>
-                          <tr>
-                            <th>ID Danh Mục</th>
-                            <th>Tên Danh Mục</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <Link to={"/"}></Link>
-                            </td>
-                            <td>
-                              <Link to={"/"}></Link>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <div
-                        className="d-flex justify-content-center mt-3"
-                        id="pagination"
-                      ></div>
+                  <div className="v2-search-button">
+                    <button
+                      type="button"
+                      className="v2-search-submit v2-button-default v2-color-primary"
+                      onClick={handleClickSearchProduct}
+                    >
+                      Tìm kiếm
+                    </button>
+                  </div>
+                </form>
+              </div>
+              {prodcutData && prodcutData.length > 0 ? (
+                <div className="v2-banner-search">
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="card">
+                        <div className="card-body">
+                          <table className="table table-bordered table-hover">
+                            <thead>
+                              <tr>
+                                <th>Họ Và Tên Khách Hàng</th>
+                                <th>Số Điện Thoại</th>
+                                <th>Email</th>
+                                <th>Địa Chỉ</th>
+                                <th>ID Sản Phẩm</th>
+                                <th>Model</th>
+                                <th>Hãng Sản Xuất</th>
+                                <th>Số Ime</th>
+                                <th>Giá Tiền</th>
+                                <th>Tình Trạng</th>
+                                <th>Số Bảo Hành</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {prodcutData.map((product, index) => (
+                                <tr key={index}>
+                                  <td>{product.customer.fullName}</td>
+                                  <td>{product.customer.phoneNumber}</td>
+                                  <td>{product.customer.email}</td>
+                                  <td>{product.customer.address}</td>
+                                  <td>{product.id}</td>
+                                  <td>{product.nameModel}</td>
+                                  <td>{product.phoneCompany}</td>
+                                  <td>{product.ime}</td>
+                                  <td>{product.price}</td>
+                                  <td className={product.status ? "completed" : "not-completed"}>
+                                    {product.status ? "Đã Sửa Chữa Xong" : "Chưa Sửa Chữa Xong"}</td>
+                                  <td>
+                                    {product.guarantees.map((guarantee) => guarantee.guaranteeCode).join(", ")}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                          <div
+                            className="d-flex justify-content-center mt-3"
+                            id="pagination"
+                          ></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="logo-tra-cuu-bh">
+                  <img src="https://mobilecity.vn/public/assets/img/tra-cuu-bao-hanh.jpg" alt="" />
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
+        {status === "GUARANTEE" && (
+          <div className="search-warranty">
+            <div className="search-warranty-content">
+              <h1 className="search-warranty-content__title">Tra cứu Bảo Hành</h1>
+              <div className="tra-cuu-bh">
+                <div className="v2-error"></div>
+              </div>
+              <div className="search-warranty-content__main v2-search">
+                <form>
+                  <input type="hidden" name="_token" />
+                  <div className="v2-search-item">
+                    <input
+                      type="text"
+                      name="imei"
+                      className="v2-search-item__imei"
+                      placeholder="Nhập Mã Bảo Hành..."
+                      onChange={(e) => setGuarantee(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="v2-search-button">
+                    <button
+                      type="button"
+                      className="v2-search-submit v2-button-default v2-color-primary"
+                      onClick={handleClickSearchGuarantee}
+                    >
+                      Tìm kiếm
+                    </button>
+                  </div>
+                </form>
+              </div>
+              {guaranteeData ? (
+                <div className="v2-banner-search">
+                  <div className="row">
+                    <div className="col-12">
+                      <div className="card">
+                        <div className="card-body">
+                          <table className="table table-bordered table-hover">
+                            <thead>
+                              <tr>
+                                <th>ID Bảo Hành</th>
+                                <th>Mã Bảo Hành</th>
+                                <th>Model</th>
+                                <th>Hãng Sản Xuất</th>
+                                <th>Số Ime</th>
+                                <th>Tên Lỗi</th>
+                                <th>Vị trí Sửa</th>
+                                <th>Ngày Tạo</th>
+                                <th>Ngày Hết Hạn</th>
+                                <th>Trạng thái</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+
+                              <tr >
+                                <td>{guaranteeData?.id}</td>
+                                <td>{guaranteeData?.guaranteeCode}</td>
+                                <td>{guaranteeData?.product?.nameModel}</td>
+                                <td>{guaranteeData?.product?.phoneCompany}</td>
+                                <td>{guaranteeData?.product?.ime}</td>
+                                <td>{guaranteeData?.product?.defectName}</td>
+                                <td>{guaranteeData?.product?.location}</td>
+                                <td>{guaranteeData?.activationDate ? new Date(guaranteeData.activationDate).toLocaleDateString() : ""}</td>
+                                <td>{guaranteeData?.expirationDate ? new Date(guaranteeData?.expirationDate).toLocaleDateString() : ""}</td>
+                                <th>{guaranteeData?.status ? "Còn Hạn Bảo Hành" : "Hết Hạn Bảo Hành"}</th>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div
+                            className="d-flex justify-content-center mt-3"
+                            id="pagination"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="logo-tra-cuu-bh">
+                  <img src="https://mobilecity.vn/public/assets/img/tra-cuu-bao-hanh.jpg" alt="" />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </section>
       <footer>
         <div className="container">

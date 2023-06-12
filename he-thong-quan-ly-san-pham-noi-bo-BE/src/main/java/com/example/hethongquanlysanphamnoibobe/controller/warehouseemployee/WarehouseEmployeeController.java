@@ -3,6 +3,7 @@ package com.example.hethongquanlysanphamnoibobe.controller.warehouseemployee;
 import com.example.hethongquanlysanphamnoibobe.request.CreateComponentsRequest;
 import com.example.hethongquanlysanphamnoibobe.request.CreateMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.request.CreateVendorRequest;
+import com.example.hethongquanlysanphamnoibobe.request.UpdateMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.service.warehouseemployeeservice.WarehouseEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,11 @@ public class WarehouseEmployeeController {
     @PostMapping("material/create")
     public ResponseEntity<?> createMaterial (@RequestBody CreateMaterialRequest request) {
         return ResponseEntity.ok(warehouseEmployeeService.createMaterial(request));
+    }
+    // cập nhật số lượng vật liệu
+    @PutMapping("material/{id}")
+    public ResponseEntity<?> updateMaterialById (@RequestBody UpdateMaterialRequest request, @PathVariable Integer id) {
+        return ResponseEntity.ok(warehouseEmployeeService.updateMaterialById(request,id));
     }
 
 

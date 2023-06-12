@@ -89,6 +89,14 @@ export const warehouseEmployeeApi = createApi ({
             query: (id) => `component/${id}`,
             providesTags: ['Warehouse'],
         }),
+        updateMaterialById: builder.mutation ({
+            query: ({id,...data}) => ({
+                url: `material/${id}`,
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ['Warehouse']
+        })
     }),
 });;
 
@@ -106,5 +114,6 @@ export const {
     useGetListVendorByIdQuery,
     useGetListVendorTotalMaterialQuery,
     useGetMaterialByIdQuery,
-    useGetComponentsByIdQuery
+    useGetComponentsByIdQuery,
+    useUpdateMaterialByIdMutation
 } = warehouseEmployeeApi;

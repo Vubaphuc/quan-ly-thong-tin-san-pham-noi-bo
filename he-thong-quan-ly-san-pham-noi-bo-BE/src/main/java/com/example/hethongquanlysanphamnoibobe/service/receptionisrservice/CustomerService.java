@@ -107,7 +107,7 @@ public class CustomerService {
                 .name(newCustomer.getFullName())
                 .build();
 
-        return new StatusResponse(HttpStatus.OK, "Create Customer success" , dataResponse);
+        return new StatusResponse(HttpStatus.CREATED, "Create Customer success" , dataResponse);
     }
 
 

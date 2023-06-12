@@ -71,11 +71,11 @@ public class EmployeeManageService {
     }
     // tạo nhân viên mới
     public StatusResponse createEmployee(ACreateEmployeeRequest request) {
-
+        // kiểm tra xem email có tồn tại không
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new BadRequestException("Email already exists. please use another email");
         }
-
+        // tạo user mới
         User user = User.builder()
                 .employeeName(request.getFullName())
                 .employeeCode(generateCode.generateCode())
@@ -85,6 +85,7 @@ public class EmployeeManageService {
                 .phoneNumber(request.getPhoneNumber())
                 .roles(roleRepository.findAllById(request.getRoleIds()))
                 .build();
+        //lưu lại
         userRepository.save(user);
 
         return new StatusResponse(HttpStatus.CREATED,
@@ -94,18 +95,19 @@ public class EmployeeManageService {
 
     // cập nhât thông tin nhân viên theo id
     public StatusResponse updateInformationEmployeeById(AUpdateInformationEmployeeRequest request, Integer id) {
+        // lấy ra user theo id
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not Found With id" + id));
-
+        // kiểm tra email đã tồn tại chưa
         if (userRepository.findByEmail(request.getEmail()).isPresent()){
             throw new BadRequestException("Email already exists. please use another email");
         }
-
+        // cập nhật lại thông tin user
         user.setEmployeeName(request.getFullName());
         user.setEmail(request.getEmail());
         user.setPhoneNumber(request.getPhone());
         user.setAddress(request.getAddress());
-
+        // lưu lại
         userRepository.save(user);
 
         return new  StatusResponse(HttpStatus.OK,
@@ -115,14 +117,15 @@ public class EmployeeManageService {
 
     // cập nhật mật khẩu theo id
     public StatusResponse updatePasswordAccEmployeeById(AUpdatePasswordRequest request, Integer id) {
+        // lấy ra thông tin user theo id
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not Found With id" + id));
-
+        // cập nhật lại pass word mới
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
+        // lưu lại
         userRepository.save(user);
 
-        // gửi mật khẩu về mail
+        // gửi mật khẩu mới về mail
         emailService.sendMail(user.getEmail(), "New Password", "Mật khẩu mới của bạn là " + request.getPassword());
 
         return new StatusResponse(HttpStatus.OK,
@@ -132,9 +135,12 @@ public class EmployeeManageService {
 
     // khóa tài khoản
     public StatusResponse deleteEmployeeById(Integer id) {
+        // lấy ra user theo id
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not Found With id" + id));
+        // cập nhật lại trạng thái login
         user.setEnabled(false);
+        // lưu lại
         userRepository.save(user);
 
         return new StatusResponse(HttpStatus.NO_CONTENT,

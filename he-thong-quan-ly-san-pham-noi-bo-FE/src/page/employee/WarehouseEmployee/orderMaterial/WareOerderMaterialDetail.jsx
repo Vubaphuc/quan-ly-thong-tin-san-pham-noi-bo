@@ -39,7 +39,7 @@ function WareOerderMaterialDetail() {
           <form onSubmit={handleSubmit(onApproverOrder)}>
             <div className="row py-2">
               <div className="col-6">
-                <Link to={"/nhan-vien/kho/oder"} className="btn btn-default">
+                <Link to={"/employee/warehouse/orderMaterials"} className="btn btn-default">
                   <i className="fas fa-chevron-left"></i> Quay lại
                 </Link>
                 <button type="submit" className="btn btn-info px-4">

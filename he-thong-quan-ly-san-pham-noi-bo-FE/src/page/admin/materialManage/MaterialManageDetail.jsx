@@ -139,19 +139,34 @@ function MaterialManageDetail() {
                                                     )}
                                                 </div>
                                                 <div className="form-group">
-                                                    <label>Số Lượng</label>
+                                                    <label>Số Lượng Nhập</label>
                                                     <input
                                                         type="text"
                                                         className="form-control"
                                                         id="so-IME"
-                                                        defaultValue={materialData?.quantity}
-                                                        {...register("quantity")}
-                                                    />
-                                                    {errors.quantity && (
-                                                        <p className="text-danger fst-italic mt-2">
-                                                            {errors.quantity.message}
-                                                        </p>
-                                                    )}
+                                                        defaultValue={materialData?.importQuantity}
+                                                        readOnly
+                                                    />                                                  
+                                                </div>
+                                                <div className="form-group">
+                                                    <label>Số Lượng xuất</label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        id="so-IME"
+                                                        defaultValue={materialData?.exportQuantity}
+                                                        readOnly
+                                                    />                                                   
+                                                </div>
+                                                <div className="form-group">
+                                                    <label>Số Lượng còn lại</label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        id="so-IME"
+                                                        defaultValue={materialData?.remainingQuantity}
+                                                        readOnly
+                                                    />                                                 
                                                 </div>
                                                 <div className="form-group">
                                                     <label>Ngày Tạo</label>

@@ -104,7 +104,7 @@ function ProductManageDetail() {
                         <div className="row py-2">
                             <div className="col-6">
                                 <Link
-                                    to={"/admin/products"}
+                                    to={"/admin"}
                                     className="btn btn-default"
                                 >
                                     <i className="fas fa-chevron-left"></i> Quay lại

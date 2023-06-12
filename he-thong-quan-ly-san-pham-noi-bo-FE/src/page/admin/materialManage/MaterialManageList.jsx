@@ -12,7 +12,7 @@ function MaterialManageList() {
 
     useEffect(() => {
         getMaterial({ page: 1, pageSize: 10, term: term });
-    }, [materialData, term, getMaterial]);
+    }, [term]);
 
     if (materialLoading) {
         return <h2>Loading...</h2>

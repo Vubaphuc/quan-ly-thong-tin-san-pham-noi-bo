@@ -4,6 +4,7 @@ import com.example.hethongquanlysanphamnoibobe.request.ACreateEmployeeRequest;
 import com.example.hethongquanlysanphamnoibobe.request.AUpdateInformationEmployeeRequest;
 import com.example.hethongquanlysanphamnoibobe.request.AUpdatePasswordRequest;
 import com.example.hethongquanlysanphamnoibobe.service.admin.EmployeeManageService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class EmployeeManageController {
     }
     // tạo nhân viên mới
     @PostMapping("create/employee")
-    public ResponseEntity<?> createEmployee (@RequestBody ACreateEmployeeRequest request) {
+    public ResponseEntity<?> createEmployee (@Valid @RequestBody ACreateEmployeeRequest request) {
         return ResponseEntity.ok(employeeManageService.createEmployee(request));
     }
     // cập nhật thông tin nhân viên theo id

@@ -281,7 +281,7 @@ class HeThongQuanLySanPhamNoiBoBeApplicationTests {
                     .customer(customers.get(i))
                     .receptionists(customers.get(i).getReceptionists())
                     .defectName(defectName.get(rd.nextInt(defectName.size())))
-                    .IME(generateRandomIMEI(rd))
+                    .ime(generateRandomIMEI(rd))
                     .inputDate(LocalDateTime.now())
                     .price(2000000)
                     .delete(true)

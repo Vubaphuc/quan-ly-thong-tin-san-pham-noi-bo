@@ -1,10 +1,10 @@
 package com.example.hethongquanlysanphamnoibobe.service.warrantyemployeeservice;
 
-import com.example.hethongquanlysanphamnoibobe.dto.*;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.*;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.ProductInfo;
+import com.example.hethongquanlysanphamnoibobe.dto.projection.ProductProjection;
 import com.example.hethongquanlysanphamnoibobe.entity.Bill;
-import com.example.hethongquanlysanphamnoibobe.entity.Customer;
 import com.example.hethongquanlysanphamnoibobe.entity.Product;
 import com.example.hethongquanlysanphamnoibobe.entity.User;
 import com.example.hethongquanlysanphamnoibobe.exception.BadRequestException;
@@ -41,92 +41,114 @@ public class WarrantyEmployeeService {
 
     // lấy danh sách khách hàng trong cửa hàng
     public PageDto getListCustomeriesByTerm(int page, int pageSize, String term) {
-        Page<CustomerDto> customerDtoPage = customerRepository.getListCustomeriesByTerm(PageRequest.of(page - 1, pageSize), term);
+
+        Page<CustomerDto> customers = customerRepository.getListCustomeriesByTerm(PageRequest.of(page - 1, pageSize), term);
+
         return new PageDto(
-                customerDtoPage.getNumber() + 1,
-                customerDtoPage.getSize(),
-                customerDtoPage.getTotalPages(),
-                (int) Math.ceil(customerDtoPage.getTotalElements()),
-                customerDtoPage.getContent()
+                customers.getNumber() + 1,
+                customers.getSize(),
+                customers.getTotalPages(),
+                (int) Math.ceil(customers.getTotalElements()),
+                customers.getContent()
         );
     }
+
+
+
+
     // lấy ra khách hàng theo id
     public CustomerDto getCustomerById(Integer id) {
         return customerRepository.getCustomerById(id)
                 .orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
     }
+
+
+
+    // lấy danh sách sản phẩm đã qua shop sửa chữa
+    public PageDto findHistoryProductRepairShop(int page, int pageSize, String term) {
+
+        Page<ProductProjection> products = productRepository.findHistoryProductRepairShop(PageRequest.of(page - 1, pageSize), term, Product.ProductStatus.DELIVERED);
+
+        return new PageDto(
+                products.getNumber() + 1,
+                products.getSize(),
+                products.getTotalPages(),
+                (int) Math.ceil(products.getTotalElements()),
+                products.getContent()
+        );
+    }
+
+
     // tạo sản phẩm bảo hành mới có tính phí
     public StatusResponse createProductCharge(CreateProductChargeRequest requet) {
-        // lấy ra khách hàng theo id
-        Customer customer = customerRepository.findCustomerById(requet.getCustomerId())
-                .orElseThrow(() -> new NotFoundException("Not Found with id " + requet.getCustomerId()));
+        // lấy ra sản phẩm theo id
+        Product productOld = productRepository.findById(requet.getProductId())
+                .orElseThrow(() -> new NotFoundException("Not Found with id " + requet.getProductId()));
         // kiểm tra sa phẩm đã hoàn thành sửa chữa chưa
-        if ((productRepository.findProductByIME(requet.getIme()).get().getStatus() != Product.ProductStatus.DELIVERED)) {
+        if (productOld.getStatus() != Product.ProductStatus.DELIVERED) {
             throw new BadRequestException("The product has not been repaired. No warranty");
         }
         // tạo sản phẩm mới
         Product product = Product.builder()
-                .phoneCompany(requet.getPhoneCompany())
-                .nameModel(requet.getModel())
-                .IME(requet.getIme())
+                .phoneCompany(productOld.getPhoneCompany())
+                .nameModel(productOld.getNameModel())
+                .ime(productOld.getIme())
                 .defectName(requet.getDefectName())
                 .price(requet.getPrice())
-                .customer(customer)
+                .customer(productOld.getCustomer())
                 .note(requet.getNote())
                 .receptionists(iCurrentUserLmpl.getUser())
                 .isRepair(true) // hàng bảo hành
-                .charge(true) // có tính phí
                 .build();
         // lưu vào csdl
         productRepository.save(product);
 
-        return new StatusResponse(HttpStatus.CREATED, "Create a successful new produc", DataMapper.toDataResponse(product.getId(), product.getIME(), product.getNameModel()));
+        return new StatusResponse(HttpStatus.CREATED, "Create a successful new produc", DataMapper.toDataResponse(product.getId(), product.getIme(), product.getNameModel()));
     }
     // tạo sản phẩm bảo hành mới không tính phí
     public StatusResponse createProductNoCharge(CreateProductNoChargeRequest requet) {
-        // lấy ra khách hàng theo id
-        Customer customer = customerRepository.findCustomerById(requet.getCustomerId())
-                .orElseThrow(() -> new NotFoundException("Not Found with id " + requet.getCustomerId()));
+        // lấy ra sản phẩm theo id
+        Product productOld = productRepository.findById(requet.getProductId())
+                .orElseThrow(() -> new NotFoundException("Not Found with id " + requet.getProductId()));
         // kiểm tra sa phẩm đã hoàn thành sửa chữa chưa
-        if (productRepository.findProductByIME(requet.getIme()).get().getStatus() != Product.ProductStatus.DELIVERED) {
+        if (productOld.getStatus() != Product.ProductStatus.DELIVERED) {
             throw new BadRequestException("The product has not been repaired. No warranty");
         }
         // tạo sản phẩm mới
         Product product = Product.builder()
-                .phoneCompany(requet.getPhoneCompany())
-                .nameModel(requet.getModel())
-                .IME(requet.getIme())
+                .phoneCompany(productOld.getPhoneCompany())
+                .nameModel(productOld.getNameModel())
+                .ime(productOld.getIme())
                 .defectName(requet.getDefectName())
-                .customer(customer)
+                .customer(productOld.getCustomer())
                 .note(requet.getNote())
                 .isRepair(true) // hàng bảo hành
-                .charge(false) // không tính phí
                 .price(0)
                 .receptionists(iCurrentUserLmpl.getUser())
                 .build();
         // lưu vào csdl
         productRepository.save(product);
-        return new StatusResponse(HttpStatus.CREATED, "Create a successful new produc", DataMapper.toDataResponse(product.getId(), product.getIME(), product.getNameModel()));
+        return new StatusResponse(HttpStatus.CREATED, "Create a successful new produc", DataMapper.toDataResponse(product.getId(), product.getIme(), product.getNameModel()));
     }
 
     // lấy danh sách sản phẩm đang pending chưa đăng ký người sửa chưaax
     public PageDto getListProductPendingNoEngineer(int page, int pageSize, String term) {
 
-        Page<ProductDto> productDtoPage = productRepository.getListProductPendingNoEngineer(PageRequest.of(page - 1, pageSize), term);
+        Page<ProductDto> products = productRepository.getListProductPendingNoEngineer(PageRequest.of(page - 1, pageSize), term, Product.ProductStatus.DELIVERED);
 
         return new PageDto(
-                productDtoPage.getNumber() + 1,
-                productDtoPage.getSize(),
-                productDtoPage.getTotalPages(),
-                (int) Math.ceil(productDtoPage.getTotalElements()),
-                productDtoPage.getContent()
+                products.getNumber() + 1,
+                products.getSize(),
+                products.getTotalPages(),
+                (int) Math.ceil(products.getTotalElements()),
+                products.getContent()
         );
     }
 
 
 
     // lấy danh sách sản phẩm theo ime
-    public List<HistoryProductDto> getListHistoryProductByIME(String IME) {
+    public List<ProductProjection> getListHistoryProductByIME(String IME) {
         return productRepository.getListHistoryProductByIME(IME);
     }
     // lấy danh sách sản phẩm theo id
@@ -136,20 +158,20 @@ public class WarrantyEmployeeService {
     }
 
     // đăng ký nhân viên sửa chữa
-    public StatusResponse updateEngineerInformationByProduct(InformationEngineerRequest request) {
+    public StatusResponse updateEngineerInformationByProduct(InformationEngineerRequest request,Integer id) {
         // lấy ra user engineer theo employee code
         User user = userRepository.findUsersByEmployeeCode(request.getEmployeeCode())
                 .orElseThrow(() -> new NotFoundException("Not Found with employee code: " + request.getEmployeeCode()));
         // lấy ra pproduct theo id
-        Product product = productRepository.findProductById(request.getProductId())
-                .orElseThrow(() -> new NotFoundException("Not Found with id: " + request.getProductId()));
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
         // thêm thông tin engineer
         product.setEngineer(user);
         product.setTransferDate(LocalDateTime.now());
         // lưu lại trên csdl
         productRepository.save(product);
 
-        return new StatusResponse(HttpStatus.OK,"update Engineer success",DataMapper.toDataResponse(product.getId(), product.getIME(), product.getNameModel()));
+        return new StatusResponse(HttpStatus.OK,"update Engineer success",DataMapper.toDataResponse(product.getId(), product.getIme(), product.getNameModel()));
     }
     // lấy danh sách sản phẩm bảo hành sửa chữa ok
     public PageDto findProductGuaranteeStatusOKByTerm(int page, int pageSize, String term) {
@@ -193,7 +215,7 @@ public class WarrantyEmployeeService {
 
         return new StatusResponse(HttpStatus.OK,
                 "Create bill a success",
-                DataMapper.toDataResponse(bill.getProduct().getId(), bill.getProduct().getIME(), bill.getProduct().getNameModel()));
+                DataMapper.toDataResponse(bill.getProduct().getId(), bill.getProduct().getIme(), bill.getProduct().getNameModel()));
     }
     // lấy danh saách hhoas đơn bảo hành
     public  PageDto findBillProductGuaranteeAll(int page, int pageSize, String term) {
@@ -254,6 +276,11 @@ public class WarrantyEmployeeService {
         product.setEngineer(engineer);
         productRepository.save(product);
 
-        return new StatusResponse(HttpStatus.OK, "successful engineer change", DataMapper.toDataResponse(product.getId(), product.getIME(), product.getNameModel()));
+        return new StatusResponse(HttpStatus.OK, "successful engineer change", DataMapper.toDataResponse(product.getId(), product.getIme(), product.getNameModel()));
+    }
+
+    // lấy thông tin sản phẩm và khách hàng
+    public ProductProjection findCustomerAndProductById(Integer id) {
+        return productRepository.findCustomerAndProductById(id, Product.ProductStatus.DELIVERED).orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
     }
 }

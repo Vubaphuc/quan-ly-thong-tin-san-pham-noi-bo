@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import { useLazyGetListProductbyUserQuery } from "../../../app/apis/engineer/engineerApi";
+import { getStatusLabel } from "../../formHTML/enum";
 
 function EngineerPage() {
   const [term, setTerm] = useState("");
@@ -64,18 +65,18 @@ function EngineerPage() {
                         </thead>
                         <tbody>
                           {productData.data.map((product) => (
-                            <tr key={product.productId}>
+                            <tr key={product.id}>
                               <td>
                                 <Link
-                                  to={`/employee/engineer/${product.productId}`}
+                                  to={`/employee/engineer/${product.id}`}
                                   className="text-decoration-none"
                                 >
-                                  {product?.model}
+                                  {product?.nameModel}
                                 </Link>
                               </td>
                               <td>
                                 <Link
-                                  to={`/employee/engineer/${product.productId}`}
+                                  to={`/employee/engineer/${product.id}`}
                                   className="text-decoration-none"
                                 >
                                   {product?.phoneCompany}
@@ -84,7 +85,7 @@ function EngineerPage() {
                               <td>{product?.ime}</td>
                               <td>{product?.defectName}</td>
                               <td>
-                                {product?.status === true ? "OK" : "PENDING"}
+                                {getStatusLabel(product.status)}
                               </td>
                               <td>{product.repair ? "Bảo Hành" : "Mới"}</td>
                             </tr>

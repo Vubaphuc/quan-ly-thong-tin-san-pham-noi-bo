@@ -1,7 +1,7 @@
 package com.example.hethongquanlysanphamnoibobe.service.admin;
 
-import com.example.hethongquanlysanphamnoibobe.dto.ComponentsDto;
-import com.example.hethongquanlysanphamnoibobe.dto.VendorDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.ComponentsDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.VendorDto;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.MaterialInfo;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.MaterialProjection;

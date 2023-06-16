@@ -72,7 +72,7 @@ function EngiInformationProdcutRepair() {
                             type="text"
                             className="form-control"
                             id="model"
-                            defaultValue={productData?.model}
+                            defaultValue={productData?.nameModel}
                             disabled
                           />
                         </div>

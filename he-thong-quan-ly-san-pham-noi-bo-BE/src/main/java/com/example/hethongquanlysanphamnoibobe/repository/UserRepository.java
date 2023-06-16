@@ -1,9 +1,8 @@
 package com.example.hethongquanlysanphamnoibobe.repository;
 
-import com.example.hethongquanlysanphamnoibobe.dto.EmployeeDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.EmployeeDto;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.EmployeeInfo;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.EmployeeProjection;
-import com.example.hethongquanlysanphamnoibobe.dto.projection.RoleInfo;
 import com.example.hethongquanlysanphamnoibobe.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // lấy user theo email
     Optional<User> findByEmail(String name);
     // lấy danh sách nhân viên sửa chữa
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.EmployeeDto(u.id, u.employeeCode, u.employeeName) " +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.EmployeeDto(u.id, u.employeeCode, u.employeeName) " +
             "from User u " +
             "join u.roles rl " +
             "where rl.name = 'NHANVIENSUACHUA' ")
@@ -33,13 +32,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // lấy user theo code nhân viên
     Optional<User> findUsersByEmployeeCode(String employeeCode);
     // lấy danh sách nhân viên lễ tân
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.EmployeeDto(u.id, u.employeeCode, u.employeeName) " +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.EmployeeDto(u.id, u.employeeCode, u.employeeName) " +
             "from User u " +
             "join u.roles rl " +
             "where rl.name = 'NHANVIENLETAN' ")
     List<EmployeeDto> findReceptionistAll();
     // lấy danh sách nhân viên kho
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.EmployeeDto(u.id, u.employeeCode, u.employeeName) " +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.EmployeeDto(u.id, u.employeeCode, u.employeeName) " +
             "from User u " +
             "join u.roles rl " +
             "where rl.name = 'NHANVIENKHO' ")

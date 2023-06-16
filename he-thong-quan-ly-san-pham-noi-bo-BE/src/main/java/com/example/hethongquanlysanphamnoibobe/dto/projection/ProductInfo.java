@@ -14,12 +14,16 @@ public interface ProductInfo {
     Integer getId();
     String getNameModel();
     String getPhoneCompany();
-    String getIME();
+    String getIme();
     String getDefectName();
+    String getStatus();
     double getPrice();
+    boolean getIsRepair();
     LocalDateTime getInputDate();
+    LocalDateTime getTransferDate();
     String getLocation();
     String getNote();
+    LocalDateTime getOutputDate();
     LocalDateTime getFinishDate();
     @RequiredArgsConstructor
     class ProductInfoImpl implements ProductInfo {
@@ -29,7 +33,6 @@ public interface ProductInfo {
         public Integer getId() {
             return product.getId();
         }
-
         @Override
         public String getNameModel() {
             return product.getNameModel();
@@ -41,8 +44,8 @@ public interface ProductInfo {
         }
 
         @Override
-        public String getIME() {
-            return product.getIME();
+        public String getIme() {
+            return product.getIme();
         }
 
         @Override
@@ -51,13 +54,28 @@ public interface ProductInfo {
         }
 
         @Override
+        public String getStatus() {
+            return product.getStatus().getMessage();
+        }
+
+        @Override
         public double getPrice() {
             return product.getPrice();
         }
 
         @Override
+        public boolean getIsRepair() {
+            return product.isRepair();
+        }
+
+        @Override
         public LocalDateTime getInputDate() {
             return product.getInputDate();
+        }
+
+        @Override
+        public LocalDateTime getTransferDate() {
+            return product.getTransferDate();
         }
 
         @Override
@@ -69,6 +87,13 @@ public interface ProductInfo {
         public String getNote() {
             return product.getNote();
         }
+
+        @Override
+        public LocalDateTime getOutputDate() {
+            return product.getOutputDate();
+        }
+
+
 
         @Override
         public LocalDateTime getFinishDate() {

@@ -1,7 +1,8 @@
 package com.example.hethongquanlysanphamnoibobe.service.receptionisrservice;
 
 import com.example.hethongquanlysanphamnoibobe.config.GenerateCode;
-import com.example.hethongquanlysanphamnoibobe.dto.*;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.BillDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.GuaranteeDto;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.ProductInfo;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.ProductProjection;
@@ -65,11 +66,12 @@ public class ProductService {
 
 
     // cập nhật thông tin nhân viên sửa chữa  theo id product - 3
-    public StatusResponse updateEngineerInformationByProduct(InformationEngineerRequest request) {
+    public StatusResponse updateEngineerInformationByProduct(InformationEngineerRequest request, Integer id) {
+
         // lấy ra user engineer theo employee code
         User user = userRepository.findUsersByEmployeeCode(request.getEmployeeCode()).orElseThrow(() -> new NotFoundException("Not Found with employee code a " + request.getEmployeeCode()));
         // lấy ra pproduct theo id
-        Product product = productRepository.findProductById(request.getProductId()).orElseThrow(() -> new NotFoundException("Not Found with id a " + request.getProductId()));
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Not Found with id a " + id));
         // thêm thông tin engineer
         product.setEngineer(user);
         product.setStatus(Product.ProductStatus.UNDER_REPAIR);
@@ -77,10 +79,23 @@ public class ProductService {
         // lưu lại trên csdl
         productRepository.save(product);
 
-        return new StatusResponse(HttpStatus.OK,"update Engineer success",DataMapper.toDataResponse(product.getId(), product.getIME(), product.getNameModel()));
+        return new StatusResponse(HttpStatus.OK,"update Engineer success",DataMapper.toDataResponse(product.getId(), product.getIme(), product.getNameModel()));
 
     }
 
+   // lấy ra danh sách sản phẩm đã sửa chữa ok chờ trả khách có phaân trang - 4
+    public PageDto findProductWaitingReturnCustomerAll(int page, int pageSize, String term) {
+
+        Page<ProductProjection> products = productRepository.findProductWaitingReturnCustomerAll(PageRequest.of(page - 1, pageSize),term, Product.ProductStatus.WAITING_FOR_RETURN);
+
+        return new PageDto(
+                products.getNumber() + 1,
+                products.getSize(),
+                products.getTotalPages(),
+                (int) Math.ceil(products.getTotalElements()),
+                products.getContent()
+        );
+    }
     // lấy danh sách sản phẩm ok chờ tạo bảo hành
     public PageDto findProductWaitingRegisterGuaranteeAll(int page, int pageSize, String term) {
 
@@ -96,19 +111,10 @@ public class ProductService {
 
     }
 
-   // lấy ra danh sách sản phẩm đã sửa chữa ok có phaân trang - 4
-    public PageDto getPageProductStatusOK(int page, int pageSize, String term) {
 
-        Page<HistoryProductDto> productDtoPage = productRepository.getPageProductStatusOK(PageRequest.of(page - 1, pageSize),term);
 
-        return new PageDto(
-                productDtoPage.getNumber() + 1,
-                productDtoPage.getSize(),
-                productDtoPage.getTotalPages(),
-                (int) Math.ceil(productDtoPage.getTotalElements()),
-                productDtoPage.getContent()
-        );
-    }
+
+
     // tìm kiếm lịch sử product có phân trang - 5
     public PageDto searchHistoryProductByTerm(int page, int pageSize, String term) {
         // kiểm tra xem term có null hoặc rỗng không
@@ -118,14 +124,14 @@ public class ProductService {
             );
         }
         // lấy ra danh sách có phân trang product theo term
-        Page<HistoryProductDto> productDtoPage = productRepository.searchHistoryProductByTerm(PageRequest.of(page - 1, pageSize),term);
+        Page<ProductProjection> products = productRepository.searchHistoryProductByTerm(PageRequest.of(page - 1, pageSize),term);
 
         return new PageDto(
-                productDtoPage.getNumber() + 1,
-                productDtoPage.getSize(),
-                productDtoPage.getTotalPages(),
-                (int) Math.ceil(productDtoPage.getTotalElements()),
-                productDtoPage.getContent()
+                products.getNumber() + 1,
+                products.getSize(),
+                products.getTotalPages(),
+                (int) Math.ceil(products.getTotalElements()),
+                products.getContent()
         );
     }
     // đăng ký sản phẩm mới - 6
@@ -136,11 +142,10 @@ public class ProductService {
         Product product = Product.builder()
                 .phoneCompany(requet.getPhoneCompany())
                 .nameModel(requet.getModel())
-                .IME(requet.getIme())
+                .ime(requet.getIme())
                 .defectName(requet.getDefectName())
                 .price(requet.getPrice())
                 .isRepair(false)
-                .charge(true)
                 .customer(customer)
                 .receptionists(iCurrentUserLmpl.getUser())
                 .build();
@@ -148,14 +153,14 @@ public class ProductService {
         productRepository.save(product);
 
 
-        return new StatusResponse(HttpStatus.OK, "Create Product a success", DataMapper.toDataResponse(product.getId(), product.getIME(), product.getNameModel()));
+        return new StatusResponse(HttpStatus.OK, "Create Product a success", DataMapper.toDataResponse(product.getId(), product.getIme(), product.getNameModel()));
     }
     // tạo hóa đơn mới - 7
-    public StatusResponse createBill(CreateBillRequest requet) {
+    public StatusResponse createBill(Integer id) {
         // lấy ra sản phẩm theo id
-        Product product = productRepository.findProductById(requet.getProductId()).orElseThrow(() -> new NotFoundException("Not Found with id : " + requet.getProductId()));
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Not Found with id : " + id));
         // kiểm tra sản phẩm đã hoàn thành chưa
-        if (product.getFinishDate() != null) {
+        if (product.getStatus() != Product.ProductStatus.WAITING_FOR_RETURN) {
             throw new BadRequestException("Payment for the product has been completed");
         }
         product.setFinishDate(LocalDateTime.now());
@@ -174,14 +179,17 @@ public class ProductService {
 
         return new StatusResponse(HttpStatus.OK,
                 "Create bill a success",
-                DataMapper.toDataResponse(bill.getProduct().getId(), bill.getProduct().getIME(), bill.getProduct().getNameModel()));
+                DataMapper.toDataResponse(bill.getProduct().getId(), bill.getProduct().getIme(), bill.getProduct().getNameModel()));
     }
     // tạo bảo hành
-    public StatusResponse createNewWarranty (CreateGuaranteeRequest request) {
+    public StatusResponse createNewWarranty (Integer id) {
         // lấy ra sản phẩm theo id
-        Product product = productRepository.findById(request.getProductId()).orElseThrow(() -> new NotFoundException("Not Found with id:  " + request.getProductId()));
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Not Found with id:  " + id));
         // // kiểm tra xem sản phẩm đã hoàn thành chưa
-        if (product.getFinishDate() == null) {
+        if (product.getStatus() == Product.ProductStatus.UNDER_REPAIR) {
+            throw new BadRequestException("Product repair completed repair");
+        }
+        if (product.getStatus() == Product.ProductStatus.DELIVERED || product.getStatus() == Product.ProductStatus.WAITING_FOR_RETURN) {
             throw new BadRequestException("Product repair completed repair");
         }
         // kiểm tra sản phẩm đã tạo hoá đơn chưa
@@ -233,14 +241,14 @@ public class ProductService {
     // lấy ra danh sách sản phẩm đang pending chỗ người sửa chữa - 10
     public PageDto getListProductsPending(int page, int pageSize, String term) {
 
-        Page<ProductAndEngineerDto> productAndEngineerDtos = productRepository.getListProductsPending(PageRequest.of(page - 1, pageSize), term);
+        Page<ProductProjection> products = productRepository.getListProductsPending(PageRequest.of(page - 1, pageSize), term, Product.ProductStatus.UNDER_REPAIR);
 
         return new PageDto(
-                productAndEngineerDtos.getNumber() + 1,
-                productAndEngineerDtos.getSize(),
-                productAndEngineerDtos.getTotalPages(),
-                (int) Math.ceil(productAndEngineerDtos.getTotalElements()),
-                productAndEngineerDtos.getContent()
+                products.getNumber() + 1,
+                products.getSize(),
+                products.getTotalPages(),
+                (int) Math.ceil(products.getTotalElements()),
+                products.getContent()
         );
     }
     // thay đổi người sửa chữa - 11
@@ -257,15 +265,7 @@ public class ProductService {
         product.setEngineer(engineer);
         productRepository.save(product);
 
-        return new StatusResponse(HttpStatus.OK, "successful engineer change", DataMapper.toDataResponse(product.getId(), product.getIME(), product.getNameModel()));
-    }
-    // lấy sản phẩm và khách hàng theo ime
-    public ProductCustomerDto getProductByIme(String ime) {
-        return productRepository.getProductByIme(ime);
-    }
-    // lấy sản phẩm và khách hàng theo id
-    public ProductCustomerDto getProductAndCustomerById(Integer id) {
-        return productRepository.getProductAndCustomerById(id);
+        return new StatusResponse(HttpStatus.OK, "successful engineer change", DataMapper.toDataResponse(product.getId(), product.getIme(), product.getNameModel()));
     }
 
     // lấy danh sách hóa đơn
@@ -283,4 +283,53 @@ public class ProductService {
 
     }
 
+    // lấy sản phẩm  chờ trả khách theo id
+    public ProductProjection findProductRepaiedById(Integer id) {
+        return productRepository.findProductRepaiedById(id, Product.ProductStatus.WAITING_FOR_RETURN).orElseThrow(() -> new NotFoundException("Not Found With id: " + id));
+    }
+
+    // danh sách sản phẩm đã hoàn thành theo nhân viên người trả
+    public PageDto findProductFinishByUserRegister(int page, int pageSize, String term) {
+
+        Page<ProductProjection> products = productRepository.findProductFinishByUserRegister(PageRequest.of(page - 1, pageSize), term, Product.ProductStatus.DELIVERED, iCurrentUserLmpl.getUser().getId());
+
+        return new PageDto(
+                products.getNumber() + 1,
+                products.getSize(),
+                products.getTotalPages(),
+                (int) Math.ceil(products.getTotalElements()),
+                products.getContent()
+        );
+    }
+
+    // lấy danh sách sản phẩm đang pending trong cửa hàng
+    public PageDto findProductPendingInShop(int page, int pageSize, String term) {
+
+        Page<ProductProjection> products = productRepository.findProductPendingInShop(PageRequest.of(page - 1, pageSize) ,term, Product.ProductStatus.WAITING_FOR_REPAIR, Product.ProductStatus.UNDER_REPAIR);
+
+        return new PageDto(
+                products.getNumber() + 1,
+                products.getSize(),
+                products.getTotalPages(),
+                (int) Math.ceil(products.getTotalElements()),
+                products.getContent()
+        );
+    }
+
+    // hủy sản phẩm trả khách
+    public StatusResponse deleteProductById(Integer id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not Found With id: " + id);
+        });
+
+        if (product.getStatus() == Product.ProductStatus.REPAIRED || product.getStatus() == Product.ProductStatus.DELIVERED || product.getStatus() == Product.ProductStatus.WAITING_FOR_RETURN) {
+            throw new BadRequestException("The product may have been repaired. The product cannot be canceled.");
+        }
+
+        product.setDelete(false);
+        productRepository.save(product);
+        return new StatusResponse(HttpStatus.NO_CONTENT,
+                "Product Cancellation Successfully",
+                DataMapper.toDataResponse(product.getId(), product.getIme(), product.getNameModel()));
+    }
 }

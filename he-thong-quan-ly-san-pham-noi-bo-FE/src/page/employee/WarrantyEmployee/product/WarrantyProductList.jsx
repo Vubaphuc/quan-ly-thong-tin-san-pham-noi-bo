@@ -1,33 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import { useGetListProductPendingNoEngineerQuery } from "../../../../app/apis/warrantyEmployee/warrantyEmployeeApi";
+import { useLazyGetListProductPendingNoEngineerQuery } from "../../../../app/apis/warrantyEmployee/warrantyEmployeeApi";
 
 function WarrantyProductList() {
   const [term, setTerm] = useState("");
-  const [page, setPage] = useState(0);
 
-  const { data: productData, isLoading: productLoading } =
-    useGetListProductPendingNoEngineerQuery({
-      page: page + 1,
+  const [getProduct, { data: productData, isLoading: productLoading }] =
+    useLazyGetListProductPendingNoEngineerQuery();
+
+  useEffect(() => {
+    getProduct({
+      page: 1,
       pageSize: 10,
       term: term,
-    });
+    })
+  }, [])
 
   if (productLoading) {
     return <h2>Loading...</h2>;
   }
 
-  console.log(productData);
 
   const handlePageClick = (page) => {
-    setPage(page.selected);
+    getProduct({
+      page: page.selected + 1,
+      pageSize: 10,
+      term: term,
+    })
   };
 
-  const handleChaneNameCustomer = (e) => {
-    setTerm(e.target.value);
-  };
 
   return (
     <>
@@ -40,7 +43,7 @@ function WarrantyProductList() {
               type="text"
               placeholder="Tìm kiếm sản phẩm..."
               value={term}
-              onChange={handleChaneNameCustomer}
+              onChange={(e) => setTerm(e.target.value)}
             />
           </div>
           <div className="search-results mt-3">
@@ -84,7 +87,7 @@ function WarrantyProductList() {
                               <td>
                                 {product.status === true ? "OK" : "PENDING"}
                               </td>
-                              <td>{product.repair ? "Tính Phí" : "Không Tính Phí" }</td>
+                              <td>{product.repair ? "Tính Phí" : "Không Tính Phí"}</td>
                             </tr>
                           ))}
                         </tbody>

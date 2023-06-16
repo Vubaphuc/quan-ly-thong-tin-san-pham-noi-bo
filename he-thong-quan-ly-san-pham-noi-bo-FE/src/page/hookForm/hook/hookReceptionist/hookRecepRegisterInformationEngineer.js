@@ -21,7 +21,8 @@ const hookRecepRegisterInformationEngineer = (productId) => {
     const onRegisterEnginner = (data) => {
 
         const newData = {...data, productId: id};
-        registerEngineer(newData)
+        
+        registerEngineer({id,...newData})
         .unwrap()
         .then(() => {
             toast.success("Đăng ký nhân Viên thành công");

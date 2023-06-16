@@ -1,46 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import { useFindProductWaitingRepairAllQuery } from "../../../../app/apis/receptionist/productApi";
+import { useLazyFindProductFinishByUserRegisterQuery } from "../../../../app/apis/receptionist/productApi";
+import { getStatusLabel } from "../../../formHTML/enum";
+
 
 function RecepProductList() {
   const [term, setTerm] = useState("");
-  const [page, setPage] = useState(0);
 
-  const { data: productData, isLoading: productLoading } =
-    useFindProductWaitingRepairAllQuery({
-      page: page + 1,
+  const [getProduct, { data: productData, isLoading: productLoading }] =
+    useLazyFindProductFinishByUserRegisterQuery();
+
+  useEffect(() => {
+    getProduct({
+      page: 1,
       pageSize: 10,
-      term: term,
-    });
+      term: term
+    })
+  }, [term])
 
   if (productLoading) {
-    return <h2>Loading...</h2>;
+    return <h2>Loading....</h2>;
   }
 
-  console.log(productData);
+  console.log(productData)
 
   const handlePageClick = (page) => {
-    setPage(page.selected);
+
+    getProduct({
+      page: page.selected + 1,
+      pageSize: 10,
+      term: term
+    })
   };
 
-  const handleChaneNameCustomer = (e) => {
-    setTerm(e.target.value);
-  };
 
   return (
     <>
       <section className="content">
         <div className="container-fluid">
-          <div className="row py-2">
-          </div>
           <div className="search-container">
             <input
               className="input-search mb-4"
               type="text"
-              placeholder="Tìm kiếm sản phẩm..."
+              placeholder="Tìm kiếm kiếm sản phẩm..."
               value={term}
-              onChange={handleChaneNameCustomer}
+              onChange={(e) => setTerm(e.target.value)}
             />
           </div>
           <div className="search-results mt-3">
@@ -56,33 +61,31 @@ function RecepProductList() {
                             <th>Hãng Điện Thoại</th>
                             <th>Số IME</th>
                             <th>Tên Lỗi</th>
+                            <th>Vị Trí Sửa</th>
+                            <th>Giá Tiền</th>
                             <th>Trạng Thái</th>
+                            <th>Mã Nhân Viên Giao</th>
+                            <th>Tên Nhân Viên Giao</th>
                           </tr>
                         </thead>
                         <tbody>
                           {productData.data.map((product) => (
                             <tr key={product.id}>
                               <td>
-                                <Link
-                                  to={`/employee/receptionist/register/${product.id}`}
-                                  className="text-decoration-none"
-                                >
-                                  {product.nameModel}
-                                </Link>
+                                {product?.nameModel}
                               </td>
                               <td>
-                                <Link
-                                  to={`/employee/receptionist/register/${product.id}`}
-                                  className="text-decoration-none"
-                                >
-                                  {product.phoneCompany}
-                                </Link>
+                                {product?.phoneCompany}
                               </td>
-                              <td>{product.ime}</td>
-                              <td>{product.defectName}</td>
+                              <td>{product?.ime}</td>
+                              <td>{product?.defectName}</td>
+                              <td>{product?.location}</td>
+                              <td>{product?.price}</td>
                               <td>
-                                {product.status === true ? "OK" : "PENDING"}
+                                {getStatusLabel(product?.status)}
                               </td>
+                              <td>{product.productPayer.employeeCode}</td>
+                              <td>{product.productPayer.employeeName}</td>
                             </tr>
                           ))}
                         </tbody>

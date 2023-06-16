@@ -16,7 +16,7 @@ public interface CustomerSearchInfo {
     Integer getId();
     String getNameModel();
     String getPhoneCompany();
-    String getIME();
+    String getIme();
     String getDefectName();
     String getStatus();
     double getPrice();
@@ -50,8 +50,8 @@ public interface CustomerSearchInfo {
         }
 
         @Override
-        public String getIME() {
-            return product.getIME();
+        public String getIme() {
+            return product.getIme();
         }
 
         @Override
@@ -61,7 +61,7 @@ public interface CustomerSearchInfo {
 
         @Override
         public String getStatus() {
-            return product.getStatus().getStatus();
+            return product.getStatus().getMessage();
         }
 
         @Override

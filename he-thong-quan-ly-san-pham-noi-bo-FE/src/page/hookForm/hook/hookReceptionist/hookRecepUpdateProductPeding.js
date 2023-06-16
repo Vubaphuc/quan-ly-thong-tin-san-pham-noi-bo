@@ -14,7 +14,7 @@ const hookRecepUpdateProductPending = (productId) => {
 
     const [updateEngineer] = useUpdateEngineerProductByIdMutation();
 
-    const { control, register, handleSubmit, formState: { errors } } = useForm({
+    const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(registerInformationEngineerSchema),
         mode: "all"
     });
@@ -40,7 +40,7 @@ const hookRecepUpdateProductPending = (productId) => {
     }
 
     return {
-        control, handleSubmit, register, errors, onUpdateProductPending
+        control, handleSubmit, errors, onUpdateProductPending
     }
 }
 

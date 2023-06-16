@@ -1,11 +1,11 @@
 package com.example.hethongquanlysanphamnoibobe.service.engineerservice;
 
 import com.example.hethongquanlysanphamnoibobe.config.GenerateCode;
-import com.example.hethongquanlysanphamnoibobe.dto.ComponentsDto;
-import com.example.hethongquanlysanphamnoibobe.dto.MaterialDto;
-import com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto;
-import com.example.hethongquanlysanphamnoibobe.dto.ProductDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.ComponentsDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.MaterialDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.OrderMaterialDto;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
+import com.example.hethongquanlysanphamnoibobe.dto.projection.ProductInfo;
 import com.example.hethongquanlysanphamnoibobe.request.CreateOrderMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.request.InformationRepairRequest;
 import com.example.hethongquanlysanphamnoibobe.request.UpdateOrderMaterialRequest;
@@ -48,24 +48,29 @@ public class EngineerService {
     // lấy danh sách sản suwawr chữa theo engineer - 1
     public PageDto getListProductByUser(int page, int pageSize, String term) {
 
-        Page<ProductDto> productDtoPage = productRepository.getListProductByUser(PageRequest.of(page -1 , pageSize), iCurrentUserLmpl.getUser().getId(), term);
+        Page<ProductInfo> products = productRepository.getListProductByUser(PageRequest.of(page -1 , pageSize), iCurrentUserLmpl.getUser().getId(), term, Product.ProductStatus.UNDER_REPAIR);
 
         return new PageDto(
-                productDtoPage.getNumber() + 1,
-                productDtoPage.getSize(),
-                productDtoPage.getTotalPages(),
-                (int) Math.ceil(productDtoPage.getTotalElements()),
-                productDtoPage.getContent()
+                products.getNumber() + 1,
+                products.getSize(),
+                products.getTotalPages(),
+                (int) Math.ceil(products.getTotalElements()),
+                products.getContent()
         );
     }
     // lấy ra sản phẩm theo id - 2
-    public ProductDto getProductById(Integer id) {
-        return productRepository.getProductById(id, iCurrentUserLmpl.getUser().getId()).orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
+    public ProductInfo getProductById(Integer id) {
+        return productRepository.getProductById(id, iCurrentUserLmpl.getUser().getId(), Product.ProductStatus.UNDER_REPAIR).orElseThrow(() -> new NotFoundException("Not Found with id: " + id));
     }
+
+
     // cappj nhật thông tin sửa chữa nhân viên engineer - 3
     public StatusResponse upDateInformationProductbyId(InformationRepairRequest request, Integer id) {
+        if (!request.isStatus()) {
+            throw new BadRequestException("Status change to OK");
+        }
         // lấy ra sản phẩm theo id
-        Product product = productRepository.findProductById_Engineer(id, iCurrentUserLmpl.getUser().getId()).orElseThrow(() -> {
+        Product product = productRepository.findProductById_Engineer(id, iCurrentUserLmpl.getUser().getId(),Product.ProductStatus.UNDER_REPAIR).orElseThrow(() -> {
             throw new NotFoundException("Not Found with id : "  + id);
         });
         // lấy ra loại linh kiện
@@ -83,11 +88,11 @@ public class EngineerService {
         // tạo response trả về
         DataResponse dataResponse = DataResponse.builder()
                 .id(product.getId())
-                .code(product.getIME())
+                .code(product.getIme())
                 .name(product.getNameModel())
                 .build();
 
-        return new StatusResponse(HttpStatus.OK, "update information Product successs", dataResponse);
+        return new StatusResponse(HttpStatus.OK, "update information Product success", dataResponse);
 
     }
     // danh sách các loại linh kiện - 4

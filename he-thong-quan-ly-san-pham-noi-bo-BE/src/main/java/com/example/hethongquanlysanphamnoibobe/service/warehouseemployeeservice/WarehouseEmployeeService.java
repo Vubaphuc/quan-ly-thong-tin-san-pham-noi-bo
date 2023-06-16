@@ -1,6 +1,6 @@
 package com.example.hethongquanlysanphamnoibobe.service.warehouseemployeeservice;
 
-import com.example.hethongquanlysanphamnoibobe.dto.*;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.*;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
 import com.example.hethongquanlysanphamnoibobe.mapper.DataMapper;
 import com.example.hethongquanlysanphamnoibobe.request.CreateComponentsRequest;

@@ -10,6 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InformationEngineerRequest {
-    private Integer productId;
     private String employeeCode;
 }

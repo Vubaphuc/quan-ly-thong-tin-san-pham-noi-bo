@@ -99,6 +99,14 @@ export const warrantyEmployeeApi = createApi({
       }),
       invalidatesTags: ['Warranty'],
     }),
+    findHistoryProductRepairShop: builder.query ({
+      query: ({page, pageSize, term}) => `history-product?page=${page}&pageSize=${pageSize}&term=${term}`,
+      providesTags: ['Warranty'],
+    }),
+    findCustomerAndProductById: builder.query ({
+      query: (id) => `customer-product/${id}`,
+      providesTags: ['Warranty']
+    }),
   }),
 });
 
@@ -107,7 +115,7 @@ export const {
   useGetCustomerByIdQuery,
   useCreateProductChargeMutation,
   useCreateProductNoChargeMutation,
-  useGetListProductPendingNoEngineerQuery,
+  useLazyGetListProductPendingNoEngineerQuery,
   useLazyGetListHistoryProductByIMEQuery,
   useFindProductByIdQuery,
   useUpdateEngineerInformationByProductMutation,
@@ -117,5 +125,7 @@ export const {
   useLazyFindGuaranteeAllQuery,
   useLazyFindProductEngineerPendingAllQuery,
   useFindProductPendingEngineerByIdQuery,
-  useUpdateEngineerProductByIdMutation
+  useUpdateEngineerProductByIdMutation,
+  useLazyFindHistoryProductRepairShopQuery,
+  useFindCustomerAndProductByIdQuery
 } = warrantyEmployeeApi;

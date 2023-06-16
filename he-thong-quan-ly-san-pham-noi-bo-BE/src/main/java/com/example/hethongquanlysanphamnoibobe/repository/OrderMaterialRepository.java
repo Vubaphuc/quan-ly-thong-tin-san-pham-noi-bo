@@ -1,20 +1,16 @@
 package com.example.hethongquanlysanphamnoibobe.repository;
 
-import com.example.hethongquanlysanphamnoibobe.dto.HistoryOrderMaterialDto;
-import com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto;
-import com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialInfo;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.HistoryOrderMaterialDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.OrderMaterialDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.OrderMaterialInfo;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.OrderMaterialProjection;
-import com.example.hethongquanlysanphamnoibobe.entity.Material;
 import com.example.hethongquanlysanphamnoibobe.entity.OrderMaterial;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 public interface OrderMaterialRepository extends JpaRepository<OrderMaterial, Integer> {
@@ -22,7 +18,7 @@ public interface OrderMaterialRepository extends JpaRepository<OrderMaterial, In
     // khu vực nhân viên chung
     // ###################################################################################################
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto" +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.OrderMaterialDto" +
             "(odm.id, odm.orderCode, m.code, m.nameModel, cp.name, odm.quantity, u.employeeCode, u.employeeName, odm.isStatus) " +
             "from OrderMaterial odm " +
             "left join Components cp on cp.id = odm.components.id " +
@@ -39,7 +35,7 @@ public interface OrderMaterialRepository extends JpaRepository<OrderMaterial, In
     // ###################################################################################################
 
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto" +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.OrderMaterialDto" +
             "(odm.id, odm.orderCode, m.code, m.nameModel, cp.name, odm.quantity, u.employeeCode, u.employeeName, odm.isStatus) " +
             "from OrderMaterial odm " +
             "left join Components cp on cp.id = odm.components.id " +
@@ -48,7 +44,7 @@ public interface OrderMaterialRepository extends JpaRepository<OrderMaterial, In
             "where odm.isStatus = true and odm.isDelete = true and odm.orderer.id = ?1 ")
     Page<OrderMaterialDto> getListOrderMaterialByStatusTrue(Pageable pageable, Integer id);
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto" +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.OrderMaterialDto" +
             "(odm.id, odm.orderCode, m.code, m.nameModel, cp.name, odm.quantity, u.employeeCode, u.employeeName, odm.isStatus) " +
             "from OrderMaterial odm " +
             "left join Components cp on cp.id = odm.components.id " +
@@ -60,7 +56,7 @@ public interface OrderMaterialRepository extends JpaRepository<OrderMaterial, In
     // khu vực nhân viên kho
     // ###################################################################################################
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto" +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.OrderMaterialDto" +
             "(odm.id, odm.orderCode, m.code, m.nameModel, cp.name, odm.quantity, u.employeeCode, u.employeeName, odm.isStatus) " +
             "from OrderMaterial odm " +
             "left join Components cp on cp.id = odm.components.id " +
@@ -69,7 +65,7 @@ public interface OrderMaterialRepository extends JpaRepository<OrderMaterial, In
             "where odm.isStatus = false and odm.isDelete = true ")
     Page<OrderMaterialDto> getListOrderMaterialStatusFalse(Pageable pageable);
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto" +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.OrderMaterialDto" +
             "(odm.id, odm.orderCode, m.code, m.nameModel, cp.name, odm.quantity, u.employeeCode, u.employeeName, odm.isStatus) " +
             "from OrderMaterial odm " +
             "left join Components cp on cp.id = odm.components.id " +
@@ -79,7 +75,7 @@ public interface OrderMaterialRepository extends JpaRepository<OrderMaterial, In
             "where odm.isStatus= true and odm.approver.id = ?1 and odm.isDelete = true ")
     Page<OrderMaterialDto> getListOrderMaterialStatusTrue(Pageable pageable, Integer id);
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.HistoryOrderMaterialDto" +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.HistoryOrderMaterialDto" +
             "(odm.id, " +
             "odm.orderCode, " +
             "m.code," +
@@ -141,7 +137,7 @@ public interface OrderMaterialRepository extends JpaRepository<OrderMaterial, In
     @Query("select coalesce(sum(od.quantity), 0) from OrderMaterial od where od.isStatus = true and month(od.approvalDate) = month(current_date) ")
     long totalQuantityExportMaterialThisMonth();
     // danh sách tổng số lượng export material theo mã vật liệu
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialInfo" +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.OrderMaterialInfo" +
             "(m.code, cp.name, coalesce(sum(od.quantity), 0)) from OrderMaterial od " +
             "join od.material m " +
             "join od.components cp " +

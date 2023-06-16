@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import { useLazyGetPageProductStatusOKQuery } from "../../../app/apis/receptionist/productApi";
 import { Link } from "react-router-dom";
+import { useLazyFindProductWaitingReturnCustomerAllQuery } from "../../../app/apis/receptionist/productApi";
+import { getStatusLabel } from "../../formHTML/enum";
 
 function ReceptionistPage() {
   const [term, setTerm] = useState("");
 
   const [getProduct, { data: productData, isLoading: productLoading }] =
-    useLazyGetPageProductStatusOKQuery();
+    useLazyFindProductWaitingReturnCustomerAllQuery();
 
     useEffect(() => {
       getProduct({
@@ -87,7 +88,7 @@ function ReceptionistPage() {
                               <td>{product?.location}</td>
                               <td>{product?.price}</td>
                               <td>
-                                {product?.status === true ? "OK" : "PENDING"}
+                                {getStatusLabel(product?.status)}
                               </td>
                             </tr>
                           ))}

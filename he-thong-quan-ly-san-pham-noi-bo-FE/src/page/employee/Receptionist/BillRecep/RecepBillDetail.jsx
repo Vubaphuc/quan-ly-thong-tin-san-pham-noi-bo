@@ -1,52 +1,68 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
-import { useGetProductByIdQuery } from "../../../../app/apis/receptionist/productApi";
-import hookRecepBillCreate from "../../../hookForm/hook/hookReceptionist/hookRecepBillCreate";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useCreateBillMutation, useFindProductRepaiedByIdQuery } from "../../../../app/apis/receptionist/productApi";
+import { toast } from "react-toastify";
 
 function RecepBillDetail() {
 
   const { productId } = useParams();
+  const navigate = useNavigate();
 
-  const { register, handleSubmit, onCreateBill } = hookRecepBillCreate();
 
-  const { data: productData, isLoading: productLoading } = useGetProductByIdQuery(productId);
+  const { data: productData, isLoading: productLoading } = useFindProductRepaiedByIdQuery(productId);
+  const [createBill] = useCreateBillMutation();
 
   if (productLoading) {
     return <h2>Loading...</h2>
   }  
 
+  const handleClickCreateBill = () => {
+    createBill(productId)
+    .unwrap()
+    .then(() => {
+      toast.success("Tạo Hóa Đơn Thành Công");
+      setTimeout(() => {
+        navigate("/employee/receptionist")
+      },1000)
+    })
+    .catch((err) => {
+      toast.error(err.data.message);
+    })
+  }
+
   return (
     <>
       <section className="content">
         <div className="container-fluid">
-          <form onSubmit={handleSubmit(onCreateBill)}>
             <div className="row py-2">
               <div className="col-6">
                 <Link to={"/employee/receptionist"} className="btn btn-default">
                   <i className="fas fa-chevron-left"></i> Quay lại
                 </Link>
-                <button type="submit" className="btn btn-info px-4">
+                <button 
+                  type="button" 
+                  className="btn btn-info px-4"
+                  onClick={handleClickCreateBill}
+                >
                   Tạo
                 </button>
               </div>
             </div>
             <div className="row">
               <div className="col-12">
-                {/* đoạn này để thêm sản phẩm thứ n + 1 */}
                 <div className="card">
                   <div className="card-body">
                     <div className="table-sp-kh">
                       <div className="col-md-5">
                         <h4 className="mb-4">Hóa Đơn</h4>
                         <div className="form-group">
-                          <label>Mã Sản Phẩm</label>
+                          <label>ID Sản Phẩm</label>
                           <input
                             type="text"
                             className="form-control"
                             id="maSanPham"
                             defaultValue={productData?.id}
                             readOnly
-                            {...register("productId")}
                           />
                         </div>
                         <div className="form-group">
@@ -55,7 +71,7 @@ function RecepBillDetail() {
                             type="text"
                             className="form-control"
                             id="fullNameKH"
-                            defaultValue={productData?.customerName}
+                            defaultValue={productData?.customer.fullName}
                             readOnly
                           />
                         </div>
@@ -65,7 +81,7 @@ function RecepBillDetail() {
                             type="text"
                             className="form-control"
                             id="phoneKH"
-                            defaultValue={productData?.customerPhone}
+                            defaultValue={productData?.customer.phoneNumber}
                             readOnly
                           />
                         </div>
@@ -121,12 +137,12 @@ function RecepBillDetail() {
                           />
                         </div>
                         <div className="form-group">
-                          <label>Loại Bảo Hành</label>
+                          <label>Loại Linh Kiện</label>
                           <input
                             type="text"
                             className="form-control"
                             id="loaiBaoHanh"
-                            defaultValue={productData?.componentsName}
+                            defaultValue={productData?.components.name}
                             readOnly
                           />
                         </div>
@@ -136,7 +152,7 @@ function RecepBillDetail() {
                             type="text"
                             className="form-control"
                             id="thoiGianBaoHanh"
-                            defaultValue={productData?.componentsWarrantyPeriod + " Tháng"}
+                            defaultValue={productData?.components.warrantyPeriod + " Tháng"}
                             readOnly
                           />
                         </div>     
@@ -156,7 +172,6 @@ function RecepBillDetail() {
                 </div>
               </div>
             </div>
-          </form>
         </div>
       </section>
     </>

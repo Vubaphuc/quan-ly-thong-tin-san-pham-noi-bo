@@ -1,9 +1,9 @@
 package com.example.hethongquanlysanphamnoibobe.service.admin;
 
-import com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialInfo;
-import com.example.hethongquanlysanphamnoibobe.dto.TotalMaterialDto;
-import com.example.hethongquanlysanphamnoibobe.dto.TotalPriceDto;
-import com.example.hethongquanlysanphamnoibobe.dto.TotalProductDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.OrderMaterialInfo;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.TotalMaterialDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.TotalPriceDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.TotalProductDto;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.MaterialProjection;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.ProductProjection;

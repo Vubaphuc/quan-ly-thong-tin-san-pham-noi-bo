@@ -5,6 +5,8 @@ import com.example.hethongquanlysanphamnoibobe.entity.Product;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Projection for {@link com.example.hethongquanlysanphamnoibobe.entity.Product}
@@ -14,7 +16,7 @@ public interface ProductProjection {
     Integer getId();
     String getNameModel();
     String getPhoneCompany();
-    String getIME();
+    String getIme();
     String getDefectName();
     String getStatus();
     double getPrice();
@@ -24,13 +26,13 @@ public interface ProductProjection {
     String getLocation();
     String getNote();
     LocalDateTime getOutputDate();
-    boolean getCharge();
     LocalDateTime getFinishDate();
     EmployeeInfo getReceptionists();
     EmployeeInfo getEngineer();
     CustomerInfo getCustomer();
     ComponentInfo getComponents();
     EmployeeInfo getProductPayer();
+    List<GuaranteeInfo> getGuarantees();
 
     @RequiredArgsConstructor
     class ProductImpl implements ProductProjection {
@@ -52,8 +54,8 @@ public interface ProductProjection {
         }
 
         @Override
-        public String getIME() {
-            return product.getIME();
+        public String getIme() {
+            return product.getIme();
         }
 
         @Override
@@ -63,7 +65,7 @@ public interface ProductProjection {
 
         @Override
         public String getStatus() {
-            return product.getStatus().getStatus();
+            return product.getStatus().getMessage();
         }
 
         @Override
@@ -101,10 +103,6 @@ public interface ProductProjection {
             return product.getOutputDate();
         }
 
-        @Override
-        public boolean getCharge() {
-            return product.isCharge();
-        }
 
         @Override
         public LocalDateTime getFinishDate() {
@@ -139,6 +137,13 @@ public interface ProductProjection {
         public EmployeeInfo getProductPayer() {
             if (product.getProductPayer() == null) return null;
             return EmployeeInfo.of(product.getProductPayer());
+        }
+
+        @Override
+        public List<GuaranteeInfo> getGuarantees() {
+            return product.getGuarantees().stream()
+                    .map(GuaranteeInfo::of)
+                    .collect(Collectors.toList());
         }
     }
 

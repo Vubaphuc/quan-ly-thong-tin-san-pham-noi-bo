@@ -27,7 +27,7 @@ public class Product {
     private String phoneCompany;
     // số ime
     @Column(name = "ime")
-    private String IME;
+    private String ime;
     // tên lỗi
     @Column(name = "defect_name")
     private String defectName;
@@ -51,26 +51,20 @@ public class Product {
     // vị trí sửa => tên linh kiện ()
     @Column(name = "location")
     private String location;
-
     @Column(name = "note")
     private String note;
     // ngày sửa chữa hoàn thành;
     @Column(name = "output_date")
     private LocalDateTime outputDate;
-    // trạng thái tính phí hay không tính phí: charge = true => có tính phí , charge = false => không tính phí
-    @Column(name = "charge")
-    private boolean charge;
     // ngày trả sản phẩm cho khách => ngày hoàn thành quá trình sửa chữa product
     @Column(name = "finish_date")
     private LocalDateTime finishDate;
     @Column(name = "is_delete")
     private boolean delete;
-
     // nhân viên nhận sản phẩm. có thể là nhân viên lễ tân hoặc bảo hành
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receptionists_id")
     private User receptionists;
-
     // nhân viên sửa chữa (kỹ sư)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "engineer_id")
@@ -91,6 +85,9 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Guarantee> guarantees = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product")
+    private List<WarrantyInformation> warrantyInformations = new ArrayList<>();
+
     @PrePersist
     public void prePersist() {
         // mặc định khi tạo sản phẩm là ngày nhận sản phẩm vào của hàng
@@ -109,10 +106,10 @@ public class Product {
 
         private String status;
 
-        private ProductStatus(String status) {
+        ProductStatus(String status) {
             this.status = status;
         }
-        public String getStatus() {
+        public String getMessage() {
             return status;
         }
 

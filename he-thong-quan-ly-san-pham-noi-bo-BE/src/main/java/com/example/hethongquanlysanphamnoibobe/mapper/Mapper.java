@@ -1,6 +1,6 @@
 package com.example.hethongquanlysanphamnoibobe.mapper;
 
-import com.example.hethongquanlysanphamnoibobe.dto.TotalProductDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.TotalProductDto;
 import com.example.hethongquanlysanphamnoibobe.entity.User;
 
 public class Mapper {

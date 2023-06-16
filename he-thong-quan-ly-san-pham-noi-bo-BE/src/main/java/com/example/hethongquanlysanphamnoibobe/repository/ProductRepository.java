@@ -1,49 +1,40 @@
 package com.example.hethongquanlysanphamnoibobe.repository;
 
-import com.example.hethongquanlysanphamnoibobe.dto.*;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.*;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.CustomerSearchInfo;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.ProductInfo;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.ProductProjection;
 import com.example.hethongquanlysanphamnoibobe.entity.Product;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-    Optional<Product> findProductByIME(String IME);
+    Optional<Product> findByIme(String ime);
     Optional<Product> findByCustomer_Id(Integer id);
 
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ProductDto " +
-            "(p.id, p.nameModel, p.phoneCompany, p.IME, p.defectName, p.status, p.isRepair) " +
-            "from Product p " +
-            "where p.id = ?1 and p.engineer.id = ?2 ")
-    Optional<ProductDto> getProductById(Integer productId, Integer userId);
+    @Query("select p from Product p where p.id = ?1 and p.engineer.id = ?2 and p.status = ?3 and p.delete = true ")
+    Optional<ProductInfo> getProductById(Integer productId, Integer userId, Product.ProductStatus productStatus);
 
 
     // khu vực nhân viên chung
     // ###########################################################################################################
 
-    @Query("select p from Product p where p.id = :id and p.engineer.id = :userId and p.status = false ")
-    Optional<Product> findProductById_Engineer(@Param("id") Integer id,@Param("userId") Integer userId);
+    @Query("select p from Product p where p.id = :id and p.engineer.id = :userId and p.status = :productStatus and p.delete = true ")
+    Optional<Product> findProductById_Engineer(@Param("id") Integer id,@Param("userId") Integer userId,@Param("productStatus") Product.ProductStatus productStatus);
     @Query("select p from Product p where p.id = :id and p.status = true and p.isRepair = true ")
     Optional<Product> findProductById_Eng(@Param("id") Integer id);
 
     /// <--------------------------------------> <>
-    @Query("select p from Product p where p.id = ?1 and p.engineer is null and p.status = false ")
-    Optional<Product> findProductById(Integer id);
-
     @Query("select p from Product p where p.id = ?1 and p.engineer is not null and p.status = false and p.isRepair = false ")
     Optional<Product> findProductById_Recep(Integer id);
 
@@ -62,101 +53,38 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     // lấy ra danh sách sản phẩm mới đăng ký chưa chuyển cho người sửa chữa có phân trang
 
-    @Query("select p from Product p where p.IME like %?1% and p.status = ?2 and p.isRepair = false order by p.inputDate asc ")
+    @Query("select p from Product p where p.ime like %?1% and p.status = ?2 and p.isRepair = false and p.delete = true order by p.inputDate asc ")
     Page<ProductProjection> findProductWaitingRepairAll(Pageable pageable, String term,Product.ProductStatus productStatus);
 
-    @Query("select p from Product p where p.IME like %?1% and p.status = ?2 and p.isRepair = false order by p.isRepair asc ")
-    Page<ProductProjection> findProductWaitingRegisterGuaranteeAll(PageRequest of, String term, Product.ProductStatus productStatus);
+    @Query("select p from Product p where p.ime like %?1% and p.status = ?2 and p.isRepair = false and p.delete = true order by p.isRepair asc ")
+    Page<ProductProjection> findProductWaitingRegisterGuaranteeAll(Pageable pageable, String term, Product.ProductStatus productStatus);
 
     // lấy ra danh sách sản phẩm sửa chữa ok có phân trang
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.HistoryProductDto" +
-            "(p.id," +
-            "p.nameModel, " +
-            "p.phoneCompany, " +
-            "p.IME, " +
-            "p.defectName, " +
-            "p.status, " +
-            "p.price, " +
-            "p.isRepair," +
-            "p.charge, " +
-            "p.inputDate, " +
-            "recep.employeeCode, " +
-            "recep.employeeName," +
-            "p.transferDate, " +
-            "engi.employeeCode," +
-            "engi.employeeName, " +
-            "p.location, " +
-            "p.note, " +
-            "p.outputDate, " +
-            "pl.employeeCode," +
-            "pl.employeeName, " +
-            "p.finishDate, " +
-            "c.fullName," +
-            "c.email," +
-            "c.phoneNumber," +
-            "cp.name," +
-            "cp.warrantyPeriod," +
-            "g.guaranteeCode ) " +
-            "from Product p " +
-            "left join Customer c on c.id = p.customer.id " +
-            "left join Components cp on cp.id = p.components.id " +
-            "left join User recep on recep.id = p.receptionists.id " +
-            "left join User engi on engi.id = p.engineer.id " +
-            "left join User pl on pl.id = p.productPayer.id " +
-            "left join Guarantee g on g.product.id = p.id " +
-            "where p.IME like %?1% and p.status = true and p.finishDate is null and p.isRepair = false " +
-            "order by p.outputDate asc ")
-    Page<HistoryProductDto> getPageProductStatusOK(Pageable pageable, String term);
+    @Query("select p from Product p where p.ime like %?1% and p.status = ?2 and p.isRepair = false and p.delete = true order by p.outputDate asc ")
+    Page<ProductProjection> findProductWaitingReturnCustomerAll(Pageable pageable, String term,Product.ProductStatus productStatus);
+
+    // lấy sản phẩm chờ trả khác theo id
+    @Query("select p from Product p where p.id = ?1 and p.status = ?2 and p.delete = true ")
+    Optional<ProductProjection> findProductRepaiedById(Integer id,Product.ProductStatus productStatus);
+
+    // danh sách sản phầm đã trả khách hàng theo user người trả
+    @Query("select p from Product p where p.ime like %?1% and p.status = ?2 and p.productPayer.id = ?3 and p.delete = true ")
+    Page<ProductProjection> findProductFinishByUserRegister(Pageable pageable, String term, Product.ProductStatus productStatus, Integer id);
+
+    // danh sách sản phẩm đang pending trong shop
+    @Query("select p from Product p where p.ime like %?1% and (p.status = ?2 or p.status = ?3) and p.delete = true ")
+    Page<ProductProjection> findProductPendingInShop(Pageable pageable, String term, Product.ProductStatus productStatus, Product.ProductStatus productStatus1);
 
     // tìm kiếm lích sử sản phẩm có phần trang
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.HistoryProductDto" +
-            "(p.id," +
-            "p.nameModel, " +
-            "p.phoneCompany, " +
-            "p.IME, " +
-            "p.defectName, " +
-            "p.status, " +
-            "p.price, " +
-            "p.isRepair," +
-            "p.charge, " +
-            "p.inputDate, " +
-            "recep.employeeCode, " +
-            "recep.employeeName," +
-            "p.transferDate, " +
-            "engi.employeeCode," +
-            "engi.employeeName, " +
-            "p.location, " +
-            "p.note, " +
-            "p.outputDate, " +
-            "pl.employeeCode," +
-            "pl.employeeName, " +
-            "p.finishDate, " +
-            "c.fullName," +
-            "c.email," +
-            "c.phoneNumber," +
-            "cp.name," +
-            "cp.warrantyPeriod," +
-            "g.guaranteeCode ) " +
-            "from Product p " +
-            "left join Customer c on c.id = p.customer.id " +
-            "left join Components cp on cp.id = p.components.id " +
-            "left join User recep on recep.id = p.receptionists.id " +
-            "left join User engi on engi.id = p.engineer.id " +
-            "left join User pl on pl.id = p.productPayer.id " +
-            "left join Guarantee g on g.product.id = p.id " +
-            "where p.IME like %?1% " +
-            "order by p.inputDate asc ")
-    Page<HistoryProductDto> searchHistoryProductByTerm(Pageable pageable, String term);
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ProductAndEngineerDto" +
-            "(p.id, p.nameModel, p.phoneCompany, p.IME, p.defectName, u.employeeCode, u.employeeName, p.status, p.isRepair) " +
-            "from Product p " +
-            "join User u on u.id = p.engineer.id " +
-            "where p.status = false and p.isRepair = false and p.IME like %?1%")
-    Page<ProductAndEngineerDto> getListProductsPending(Pageable pageable, String term);
+    @Query("select p from Product p where p.ime like %?1% order by p.inputDate asc ")
+    Page<ProductProjection> searchHistoryProductByTerm(Pageable pageable, String term);
+
+    @Query("select p from Product p where p.ime like %?1% and p.status = ?2 and p.delete = true ")
+    Page<ProductProjection> getListProductsPending(Pageable pageable, String term, Product.ProductStatus productStatus);
 
     // lấy ra danh sách khách hàng có sản phẩm đã sửa xong có phân trang
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.CustomerDto" +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.CustomerDto" +
             "(c.id, c.fullName, c.phoneNumber, c.email, c.address, count (p.id)) " +
             "from Customer c " +
             "left join Product p on p.customer.id = c.id " +
@@ -166,7 +94,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
     // lấy ra danh sách khách hàng có sản phẩm đang pending chờ sửa có phân trang
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.CustomerDto" +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.CustomerDto" +
             "(c.id, c.fullName, c.phoneNumber, c.email, c.address, count (p.id)) " +
             "from Customer c " +
             "left join Product p on p.customer.id = c.id " +
@@ -175,19 +103,19 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<CustomerDto> searchProductStatusPendingByCustomer(Pageable pageable, String term);
 
     // chưa test
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ProductDto" +
-            "(p.id, p.nameModel, p.phoneCompany, p.IME, p.defectName, p.status, p.isRepair ) " +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.ProductDto" +
+            "(p.id, p.nameModel, p.phoneCompany, p.ime, p.defectName, p.status, p.isRepair ) " +
             "from Product p " +
             "left join Customer c on p.customer.id = c.id " +
             "where c.id = ?1 and p.isRepair = false ")
     Page<ProductDto> getListProductByCustomerId(Pageable pageable, Integer id);
 
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ProductCustomerDto" +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.ProductCustomerDto" +
             "(p.id," +
             "p.nameModel, " +
             "p.phoneCompany, " +
-            "p.IME," +
+            "p.ime," +
             "p.status, " +
             "c.id, " +
             "c.fullName," +
@@ -196,15 +124,15 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "c.address ) " +
             "from Product p " +
             "join p.customer c " +
-            "where p.IME = ?1 and p.status = true and p.isRepair = false and p.finishDate is not null and p.id not in (select g.product.id from Guarantee g )" +
+            "where p.ime = ?1 and p.status = true and p.isRepair = false and p.finishDate is not null and p.id not in (select g.product.id from Guarantee g )" +
             "order by p.outputDate asc ")
     ProductCustomerDto getProductByIme(String ime);
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ProductCustomerDto" +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.ProductCustomerDto" +
             "(p.id," +
             "p.nameModel, " +
             "p.phoneCompany, " +
-            "p.IME," +
+            "p.ime," +
             "p.status, " +
             "c.id, " +
             "c.fullName," +
@@ -222,11 +150,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     // ###########################################################################################################
 
  // danh sách sửa chữa theo id người sửa => hàng mới
- @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ProductDto " +
-         "(p.id, p.nameModel, p.phoneCompany, p.IME, p.defectName, p.status, p.isRepair) " +
-         "from Product p " +
-         "where p.engineer.id = :id and p.status = false and p.IME like %:term% ")
- Page<ProductDto> getListProductByUser(Pageable pageable, @Param("id") Integer id,@Param("term") String term);
+ @Query("select p from Product p where p.engineer.id = :id and p.status = :productStatus and p.ime like %:term% and p.delete = true ")
+ Page<ProductInfo> getListProductByUser(Pageable pageable, @Param("id") Integer id,@Param("term") String term,@Param("productStatus") Product.ProductStatus productStatus);
 
 
 
@@ -238,78 +163,49 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     // khu vực nhân viên bảo hành
     // ###########################################################################################################
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ProductDto" +
-            "(p.id, p.nameModel, p.phoneCompany, p.IME, p.defectName, p.status, p.charge) " +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.ProductDto" +
+            "(p.id, p.nameModel, p.phoneCompany, p.ime, p.defectName, p.status) " +
             "from Product p " +
-            "where p.isRepair = true and p.status = false and p.engineer is null ")
-    Page<ProductDto> getListProductPendingNoEngineer(Pageable pageable, String term);
+            "where p.ime like %?1% and p.status = ?2 and p.engineer is null and p.delete = true ")
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.HistoryProductDto" +
-            "(p.id," +
-            "p.nameModel, " +
-            "p.phoneCompany, " +
-            "p.IME, " +
-            "p.defectName, " +
-            "p.status, " +
-            "p.price, " +
-            "p.isRepair," +
-            "p.charge, " +
-            "p.inputDate, " +
-            "recep.employeeCode, " +
-            "recep.employeeName," +
-            "p.transferDate, " +
-            "engi.employeeCode," +
-            "engi.employeeName, " +
-            "p.location, " +
-            "p.note, " +
-            "p.outputDate, " +
-            "pl.employeeCode," +
-            "pl.employeeName, " +
-            "p.finishDate, " +
-            "c.fullName," +
-            "c.email," +
-            "c.phoneNumber," +
-            "cp.name," +
-            "cp.warrantyPeriod," +
-            "g.guaranteeCode ) " +
-            "from Product p " +
-            "left join Customer c on c.id = p.customer.id " +
-            "left join Components cp on cp.id = p.components.id " +
-            "left join User recep on recep.id = p.receptionists.id " +
-            "left join User engi on engi.id = p.engineer.id " +
-            "left join User pl on pl.id = p.productPayer.id " +
-            "left join Guarantee g on g.product.id = p.id " +
-            "where p.IME = ?1 " +
-            "order by p.outputDate asc ")
-    List<HistoryProductDto> getListHistoryProductByIME(String ime);
+    Page<ProductDto> getListProductPendingNoEngineer(Pageable pageable, String term,Product.ProductStatus productStatus);
+
+    @Query("select p from Product p where p.ime = ?1 order by p.outputDate asc ")
+    List<ProductProjection> getListHistoryProductByIME(String ime);
 
     // lấy danh sách sản phẩm bảo hành sửa chữa ok
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ProductGuaranteeDto " +
-            "(p.id, p.nameModel, p.phoneCompany, p.IME, p.defectName, p.location, p.note, p.components.name, p.price, p.status, p.isRepair, p.charge) " +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.ProductGuaranteeDto " +
+            "(p.id, p.nameModel, p.phoneCompany, p.ime, p.defectName, p.location, p.note, p.components.name, p.price, p.status, p.isRepair) " +
             "from Product p " +
-            "where p.status = true and p.isRepair = true and p.IME like %?1% ")
+            "where p.status = true and p.isRepair = true and p.ime like %?1% ")
     Page<ProductGuaranteeDto> findProductGuaranteeStatusOKByTerm(Pageable pageable, String term);
 
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ProductAndEngineerDto" +
-            "(p.id, p.nameModel, p.phoneCompany, p.IME, p.defectName, u.employeeCode, u.employeeName, p.status, p.isRepair) " +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.ProductAndEngineerDto" +
+            "(p.id, p.nameModel, p.phoneCompany, p.ime, p.defectName, u.employeeCode, u.employeeName, p.status, p.isRepair) " +
             "from Product p " +
             "join User u on u.id = p.engineer.id " +
-            "where p.status = false and p.isRepair = true and p.IME like %?1%")
+            "where p.status = false and p.isRepair = true and p.ime like %?1%")
     Page<ProductAndEngineerDto> findProductEngineerPendingAll(Pageable pageable, String term);
-    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.ProductAndEngineerDto" +
-            "(p.id, p.nameModel, p.phoneCompany, p.IME, p.defectName, u.employeeCode, u.employeeName, p.status, p.isRepair) " +
+    @Query("select new com.example.hethongquanlysanphamnoibobe.dto.dto.ProductAndEngineerDto" +
+            "(p.id, p.nameModel, p.phoneCompany, p.ime, p.defectName, u.employeeCode, u.employeeName, p.status, p.isRepair) " +
             "from Product p " +
             "join User u on u.id = p.engineer.id " +
             "where p.status = false and p.isRepair = true and p.id = ?1 ")
     Optional<ProductAndEngineerDto> findProductPendingEngineerById(Integer id);
 
 
+    // lấy danh sách sản phẩm đã qua shop sửa chữa
+    @Query("select p from Product p where p.ime like %?1% and p.status = ?2 and p.delete = true and p.isRepair = false ")
+    Page<ProductProjection> findHistoryProductRepairShop(Pageable pageable, String term, Product.ProductStatus productStatus);
 
+
+    @Query("select p from Product p where p.id = ?1 and p.status = ?2 and p.delete = true ")
+    Optional<ProductProjection> findCustomerAndProductById(Integer id, Product.ProductStatus productStatus);
 
     // khu vực ADMIN
     // ###########################################################################################################
 
-    @Query("select p from Product p where p.IME like %?1% ")
+    @Query("select p from Product p where p.ime like %?1% ")
     Page<ProductProjection> findProductAlls(Pageable pageable, String term);
 
 
@@ -383,8 +279,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     // Khách hàng
     //###############################################################################
-   @Query("select p from Product p join p.customer c where (:ime is null or p.IME like %:ime%) and (:phoneNumber is null or c.phoneNumber like %:phoneNumber%)")
+   @Query("select p from Product p join p.customer c where (:ime is null or p.ime like %:ime%) and (:phoneNumber is null or c.phoneNumber like %:phoneNumber%)")
     List<CustomerSearchInfo> searchHistoryProductByImeProductOrPhoneNumber(@Param("ime") String ime, @Param("phoneNumber") String phoneNumber);
+
 
 
 }

@@ -26,6 +26,20 @@ public class WarrantyEmployeeController {
         return ResponseEntity.ok(warrantyEmployeeService.getCustomerById(id));
     }
 
+    // lấy thông tin sản phẩm và khách hàng
+    @GetMapping("customer-product/{id}")
+    public ResponseEntity<?> findCustomerAndProductById (@PathVariable Integer id) {
+        return ResponseEntity.ok(warrantyEmployeeService.findCustomerAndProductById(id));
+    }
+
+    // lấy danh sách sản phẩm đã qua shop sửa chữa
+    @GetMapping("history-product")
+    public ResponseEntity<?> findHistoryProductRepairShop (@RequestParam(defaultValue = "1") int page,
+                                                           @RequestParam(defaultValue = "10") int pageSize,
+                                                           @RequestParam(defaultValue = "") String term) {
+        return ResponseEntity.ok(warrantyEmployeeService.findHistoryProductRepairShop(page,pageSize,term));
+    }
+
     // tạo sản phẩm bảo hành mới
     @PostMapping("product/create-charge")
     public ResponseEntity<?> createProductCharge(@RequestBody CreateProductChargeRequest requet) {
@@ -54,9 +68,9 @@ public class WarrantyEmployeeController {
         return ResponseEntity.ok(warrantyEmployeeService.getproductById(id));
     }
     // đăng ký nhân viên sửa chữa
-    @PutMapping("update-product")
-    public ResponseEntity<?> updateEngineerInformationByProduct(@RequestBody InformationEngineerRequest request) {
-        return ResponseEntity.ok(warrantyEmployeeService.updateEngineerInformationByProduct(request));
+    @PutMapping("update-product/{id}")
+    public ResponseEntity<?> updateEngineerInformationByProduct(@RequestBody InformationEngineerRequest request, @PathVariable Integer id) {
+        return ResponseEntity.ok(warrantyEmployeeService.updateEngineerInformationByProduct(request,id));
     }
     // lấy danh sách sản phẩm bảo hành sửa chữa ok
     @GetMapping("products")

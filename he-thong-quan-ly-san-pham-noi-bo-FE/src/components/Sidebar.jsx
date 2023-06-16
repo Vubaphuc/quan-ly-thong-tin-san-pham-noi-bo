@@ -39,9 +39,10 @@ function Sidebar() {
               <div className="nav-item dropdown">
                 <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-th me-2"></i>Quản lý Sản Phẩm</a>
                 <div className="dropdown-menu bg-transparent border-0">
-                  <Link to={"/employee/receptionist"} className="dropdown-item">Danh sách sản phẩm</Link>
-                  <Link to={"/employee/receptionist/products/pending"} className="dropdown-item"> Danh sách sản phẩm Pending</Link>
-                  <Link to={"/employee/receptionist/products"} className="dropdown-item">Đăng ký nhân viên sửa</Link>
+                  <Link to={"/employee/receptionist/products/pending"} className="dropdown-item">Danh sách sản phẩm Pending</Link>
+                  <Link to={"/employee/receptionist/products"} className="dropdown-item">Danh sách sản phẩm trả Khách</Link>
+                  <Link to={"/employee/receptionist/product-waiting-engineer"} className="dropdown-item"> Danh sách sản phẩm đang sửa</Link>
+                  <Link to={"/employee/receptionist/product-waiting-repair"} className="dropdown-item">Đăng ký nhân viên sửa</Link>
                   <Link to={"/employee/receptionist/search"} className="dropdown-item">Tìm kiếm sản phẩm</Link>
                 </div>
               </div>
@@ -56,7 +57,7 @@ function Sidebar() {
                 <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-keyboard me-2"></i>Quản lý Bảo Hành</a>
                 <div className="dropdown-menu bg-transparent border-0">
                   <Link to={"/employee/receptionist/guarantees"} className="dropdown-item">Danh sách bảo hành</Link>
-                  <Link to={"/employee/receptionist/guarantee/create"} className="dropdown-item">Đăng Ký Bảo Hành</Link>
+                  <Link to={"/employee/receptionist/product-register-guarantee"} className="dropdown-item">Sản phẩm chờ đăng ký bảo hành</Link>
                 </div>
               </div>
               <div className="nav-item dropdown">
@@ -170,11 +171,19 @@ function Sidebar() {
             <div className="navbar-nav w-100">
               <Link to={"/employee/warranty"} className="nav-item nav-link active"><i className="fa fa-tachometer-alt me-2"></i>Dashboard</Link>
               <div className="nav-item dropdown">
+                <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-th me-2"></i>Quản lý Sản Phẩm</a>
+                <div className="dropdown-menu bg-transparent border-0">
+                  <Link to={"/employee/warranty/search/products"} className="dropdown-item">Danh sách Sản Phẩm</Link>
+                  <Link to={"/employee/warranty"} className="dropdown-item">Danh sách Sản Phẩm bảo hành</Link>
+                  <Link to={"/employee/warranty/customeries"} className="dropdown-item">Danh Sách Sản Phẩm Pending</Link>
+                  <Link to={"/employee/warranty/products"} className="dropdown-item">Chuyển Sản Phẩm Bảo Hành</Link>
+                </div>
+              </div>
+              <div className="nav-item dropdown">
                 <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i className="fa fa-th me-2"></i>Quản lý Bảo hành</a>
                 <div className="dropdown-menu bg-transparent border-0">
                   <Link to={"/employee/warranty"} className="dropdown-item">Danh sách bảo hành</Link>
                   <Link to={"/employee/warranty/customeries"} className="dropdown-item">Danh Sách Khách hàng</Link>
-                  <Link to={"/employee/warranty/products"} className="dropdown-item">Chuyển Sản Phẩm Bảo Hành</Link>
                 </div>
               </div>
               <div className="nav-item dropdown">

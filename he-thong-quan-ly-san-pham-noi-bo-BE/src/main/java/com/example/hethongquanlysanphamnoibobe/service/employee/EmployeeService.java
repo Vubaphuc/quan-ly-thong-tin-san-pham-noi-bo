@@ -1,7 +1,7 @@
 package com.example.hethongquanlysanphamnoibobe.service.employee;
 
-import com.example.hethongquanlysanphamnoibobe.dto.EmployeeDto;
-import com.example.hethongquanlysanphamnoibobe.dto.UserDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.EmployeeDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.UserDto;
 import com.example.hethongquanlysanphamnoibobe.dto.projection.EmployeeInfo;
 import com.example.hethongquanlysanphamnoibobe.request.ChangePasswordRequest;
 import com.example.hethongquanlysanphamnoibobe.request.ForgotPasswordRequest;

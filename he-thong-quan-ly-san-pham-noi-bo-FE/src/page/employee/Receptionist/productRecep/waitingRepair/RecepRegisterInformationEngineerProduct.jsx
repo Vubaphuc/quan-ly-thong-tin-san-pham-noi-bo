@@ -10,7 +10,7 @@ import { useGetProductByIdQuery } from "../../../../../app/apis/receptionist/pro
 function RecepRegisterInformationEngineerProduct() {
   const { productId } = useParams();
 
-  const { control, handleSubmit, register, errors, onRegisterEnginner } =
+  const { control, handleSubmit, errors, onRegisterEnginner } =
     hookRecepRegisterInformationEngineer(productId);
 
   const { data: productData, isLoading: productLoading } =

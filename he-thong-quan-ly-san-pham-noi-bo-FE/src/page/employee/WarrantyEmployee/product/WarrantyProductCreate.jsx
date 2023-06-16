@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getPhoneCompany } from "../../../formHTML/options";
-import { useGetCustomerByIdQuery } from "../../../../app/apis/warrantyEmployee/warrantyEmployeeApi";
+import { useFindCustomerAndProductByIdQuery } from "../../../../app/apis/warrantyEmployee/warrantyEmployeeApi";
 import hookWarrantyProductCreateCharge from "../../../hookForm/hook/hookWarranty/hookWarrantyProductCreateCharge";
 import hookWarrantyProductCreateNoCharge from "../../../hookForm/hook/hookWarranty/hookWarrantyProductCreateNoCharge";
 
 function WarrantyProductCreate() {
-  const { customerId } = useParams();
+  const { productId } = useParams();
   const [status, setStatus] = useState("TINHPHI");
 
   useEffect(() => {
@@ -25,6 +24,7 @@ function WarrantyProductCreate() {
     reset: resetCharge,
     onProdcutCreateCharge,
   } = hookWarrantyProductCreateCharge();
+  
   const {
     register: registerNoCharge,
     handleSubmit: handleSubmitNoCharge,
@@ -33,14 +33,14 @@ function WarrantyProductCreate() {
     onProductCreateNoCharge,
   } = hookWarrantyProductCreateNoCharge();
 
-  const { data: customerData, isLoading: customerLoading } =
-    useGetCustomerByIdQuery(customerId);
+  const { data: productData, isLoading: productLoading } =
+    useFindCustomerAndProductByIdQuery(productId);
 
-  if (customerLoading) {
+  if (productLoading) {
     return <h2>Loading...</h2>;
   }
 
-  const phoneCompanyOptions = getPhoneCompany();
+  console.log(productData)
 
   const handleStatusChange = (e) => {
     const newStatus = e.target.value;
@@ -86,10 +86,7 @@ function WarrantyProductCreate() {
                           type="text"
                           className="form-control"
                           id="full-name"
-                          defaultValue={customerData?.id}
-                          {...(status === "TINHPHI"
-                            ? registerCharge("customerId")
-                            : registerNoCharge("customerId"))}
+                          defaultValue={productData?.customer.id}                       
                           readOnly
                         />
                       </div>
@@ -99,7 +96,7 @@ function WarrantyProductCreate() {
                           type="text"
                           className="form-control"
                           id="full-name"
-                          defaultValue={customerData?.fullName}
+                          defaultValue={productData?.customer.fullName}
                           readOnly
                         />
                       </div>
@@ -109,7 +106,7 @@ function WarrantyProductCreate() {
                           type="text"
                           className="form-control"
                           id="phone"
-                          defaultValue={customerData?.phone}
+                          defaultValue={productData?.customer.phoneNumber}
                           readOnly
                         />
                       </div>
@@ -118,7 +115,7 @@ function WarrantyProductCreate() {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue={customerData?.email}
+                          defaultValue={productData?.customer.email}
                           readOnly
                         />
                       </div>
@@ -127,7 +124,7 @@ function WarrantyProductCreate() {
                         <input
                           type="text"
                           className="form-control"
-                          defaultValue={customerData?.address}
+                          defaultValue={productData?.customer.address}
                           readOnly
                         />
                       </div>
@@ -150,16 +147,28 @@ function WarrantyProductCreate() {
                         <div className="col-md-5">
                           <h4 className="mb-4">Thông Tin Bảo Hành</h4>
                           <div className="form-group">
+                            <label>ID Sản Phẩm</label>
+                            <input
+                              type="text"
+                              id="input-rs"
+                              className="form-control"
+                              defaultValue={productData.id}
+                              {...registerCharge("productId")}
+                              readOnly
+                            />
+                            <p className="text-danger fst-italic mt-2">
+                              {errorsCharge.productId?.message}
+                            </p>
+                          </div>
+                          <div className="form-group">
                             <label>Hãng Điện Thoại</label>
                             <input
                               type="text"
                               id="input-rs"
                               className="form-control"
-                              {...registerCharge("phoneCompany")}
-                            />
-                            <p className="text-danger fst-italic mt-2">
-                              {errorsCharge.phoneCompany?.message}
-                            </p>
+                              defaultValue={productData.phoneCompany}
+                              readOnly
+                            />                          
                           </div>
                           <div className="form-group">
                             <label>Model</label>
@@ -167,11 +176,9 @@ function WarrantyProductCreate() {
                               type="text"
                               id="input-rs"
                               className="form-control"
-                              {...registerCharge("model")}
-                            />
-                            <p className="text-danger fst-italic mt-2">
-                              {errorsCharge.model?.message}
-                            </p>
+                              defaultValue={productData.nameModel}
+                              readOnly
+                            />                           
                           </div>
                           <div className="form-group">
                             <label>Số IME</label>
@@ -179,11 +186,9 @@ function WarrantyProductCreate() {
                               type="text"
                               id="input-rs"
                               className="form-control"
-                              {...registerCharge("ime")}
-                            />
-                            <p className="text-danger fst-italic mt-2">
-                              {errorsCharge.ime?.message}
-                            </p>
+                              defaultValue={productData.ime}
+                              readOnly
+                            />                          
                           </div>
                           <div className="form-group">
                             <label>Tên Lỗi</label>
@@ -248,17 +253,26 @@ function WarrantyProductCreate() {
                         <div className="col-md-5">
                           <h4 className="mb-4">Thông Tin Sản Phẩm</h4>
                           <div className="form-group">
+                            <label>ID Sản Phẩm</label>
+                            <input
+                              type="text"
+                              id="input-rs"
+                              className="form-control"
+                              defaultValue={productData.id}
+                              {...registerNoCharge("productId")}
+                            />
+                            <p className="text-danger fst-italic mt-2">
+                              {errorsNoCharge.productId?.message}
+                            </p>
+                          </div>
+                          <div className="form-group">
                             <label>Hãng Điện Thoại</label>
                             <input
                               type="text"
                               id="input-rs"
                               className="form-control"
-                              {...registerNoCharge("phoneCompany")}
-                            />
-
-                            <p className="text-danger fst-italic mt-2">
-                              {errorsNoCharge.phoneCompany?.message}
-                            </p>
+                              defaultValue={productData.phoneCompany}
+                            />                          
                           </div>
                           <div className="form-group">
                             <label>Model</label>
@@ -266,12 +280,8 @@ function WarrantyProductCreate() {
                               type="text"
                               id="input-rs"
                               className="form-control"
-                              {...registerNoCharge("model")}
-                            />
-
-                            <p className="text-danger fst-italic mt-2">
-                              {errorsNoCharge.model?.message}
-                            </p>
+                              defaultValue={productData.nameModel}
+                            />                           
                           </div>
                           <div className="form-group">
                             <label>Số IME</label>
@@ -279,11 +289,8 @@ function WarrantyProductCreate() {
                               type="text"
                               id="input-rs"
                               className="form-control"
-                              {...registerNoCharge("ime")}
-                            />
-                            <p className="text-danger fst-italic mt-2">
-                              {errorsNoCharge.ime?.message}
-                            </p>
+                              defaultValue={productData.ime}
+                            />                          
                           </div>
                           <div className="form-group">
                             <label>Tên Lỗi</label>

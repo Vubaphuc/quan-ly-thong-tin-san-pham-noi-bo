@@ -1,7 +1,7 @@
 package com.example.hethongquanlysanphamnoibobe.service.receptionisrservice;
 
-import com.example.hethongquanlysanphamnoibobe.dto.CustomerDto;
-import com.example.hethongquanlysanphamnoibobe.dto.ProductDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.CustomerDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.ProductDto;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
 import com.example.hethongquanlysanphamnoibobe.request.CreateCustomerRequest;
 import com.example.hethongquanlysanphamnoibobe.entity.Customer;

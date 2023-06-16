@@ -1,9 +1,6 @@
 package com.example.hethongquanlysanphamnoibobe.service.employee;
 
-import com.example.hethongquanlysanphamnoibobe.dto.EmployeeDto;
-import com.example.hethongquanlysanphamnoibobe.dto.projection.EmployeeInfo;
 import com.example.hethongquanlysanphamnoibobe.exception.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 

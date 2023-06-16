@@ -21,9 +21,6 @@ function WarrantyCustomerList() {
   const handlePageClick = (page) => {
     setPage(page.selected);
   };
-  const handleChaneNameCustomer = (e) => {
-    setTerm(e.target.value);
-  };
 
   return (
     <>
@@ -36,7 +33,7 @@ function WarrantyCustomerList() {
               type="text"
               placeholder="Tìm kiếm..."
               value={term}
-              onChange={handleChaneNameCustomer}
+              onChange={(e) => setTerm(e.target.value)}
             />
           </div>
           <div className="search-results mt-3">
@@ -59,20 +56,10 @@ function WarrantyCustomerList() {
                           {customerData.data.map((customer) => (
                             <tr key={customer.id}>
                               <td>
-                                <Link
-                                  to={`/employee/warranty/product/create/${customer.id}`}
-                                  className="text-decoration-none"
-                                >
-                                  {customer.id}
-                                </Link>
+                                {customer.id}
                               </td>
                               <td>
-                                <Link
-                                  to={`/employee/warranty/product/create/${customer.id}`}
-                                  className="text-decoration-none"
-                                >
-                                  {customer.fullName}
-                                </Link>
+                                {customer.fullName}
                               </td>
                               <td>{customer.email}</td>
                               <td>{customer.phone}</td>

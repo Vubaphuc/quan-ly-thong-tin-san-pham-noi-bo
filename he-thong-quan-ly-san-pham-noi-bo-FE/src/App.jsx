@@ -18,11 +18,7 @@ import Layout from "./components/Layout";
 import RecepCustomerCreate from "./page/employee/Receptionist/customerRecep/RecepCustomerCreate";
 import RecepCustomerList from "./page/employee/Receptionist/customerRecep/RecepCustomerList";
 import RecepCustomerDetail from "./page/employee/Receptionist/customerRecep/RecepCustomerDetail";
-import RecepProductList from "./page/employee/Receptionist/productRecep/RecepProductList";
-import RecepProductCreate from "./page/employee/Receptionist/productRecep/RecepProductCreate";
-import RecepProductDetail from "./page/employee/Receptionist/productRecep/RecepProductDetail";
 import RecepBillList from "./page/employee/Receptionist/BillRecep/RecepBillList";
-import RecepBillCreate from "./page/employee/Receptionist/BillRecep/RecepBillCreate";
 import RecepBillDetail from "./page/employee/Receptionist/BillRecep/RecepBillDetail";
 import RecepSearchHistoryProduct from "./page/employee/Receptionist/RecepSearchHistoryProduct";
 import EngiInformationProdcutRepair from "./page/employee/Engineer/engiProduct/EngiInformationProdcutRepair";
@@ -49,9 +45,7 @@ import WarrantyProductCreate from "./page/employee/WarrantyEmployee/product/Warr
 import WarrantyCustomerList from "./page/employee/WarrantyEmployee/customer/WarrantyCustomerList";
 import WarrantyProductList from "./page/employee/WarrantyEmployee/product/WarrantyProductList";
 import WarrantySearchHistoryProductList from "./page/employee/WarrantyEmployee/search/WarrantySearchHistoryProductList";
-import RecepGuaranteeCreate from "./page/employee/Receptionist/guarantee/RecepGuaranteeCreate";
 import RecepGuranteeList from "./page/employee/Receptionist/guarantee/RecepGuranteeList";
-import RecepGuranteeDetail from "./page/employee/Receptionist/guarantee/RecepGuranteeDetail";
 import WarrantyGuaranteeList from "./page/employee/WarrantyEmployee/guarantee/WarrantyGuaranteeList";
 import WarrantyProductPendingList from "./page/employee/WarrantyEmployee/product/WarrantyProductPendingList";
 import WarrantyProductPendingDetail from "./page/employee/WarrantyEmployee/product/WarrantyProductPendingDetail";
@@ -72,8 +66,15 @@ import MaterialPage from "./page/admin/statistics/MaterialPage";
 import ProductPage from "./page/admin/statistics/ProductPage";
 import WareUpdateMaterial from "./page/employee/WarehouseEmployee/material/WareUpdateMaterial";
 import RecepProdcutWaitingRepairList from "./page/employee/Receptionist/productRecep/waitingRepair/RecepProdcutWaitingRepairList";
-import RecepProdcutWaitingRepairDetail from "./page/employee/Receptionist/productRecep/waitingRepair/RecepProdcutWaitingRepairDetail";
 import RecepRegisterInformationEngineerProduct from "./page/employee/Receptionist/productRecep/waitingRepair/RecepRegisterInformationEngineerProduct";
+import RecepProductWaitingRegisterGuaranteeList from "./page/employee/Receptionist/productRecep/waitingRegisterGuarantee/RecepProductWaitingRegisterGuaranteeList";
+import RecepProductWaitingRegisterGuaranteeDetail from "./page/employee/Receptionist/productRecep/waitingRegisterGuarantee/RecepProductWaitingRegisterGuaranteeDetail";
+import RecepProductList from "./page/employee/Receptionist/productRecep/RecepProductList";
+import RecepProductWaitingEngineerList from "./page/employee/Receptionist/productRecep/waitingEngineer/RecepProductWaitingEngineerList";
+import RecepProductWaitingEngineerDetail from "./page/employee/Receptionist/productRecep/waitingEngineer/RecepProductWaitingEngineerDetail";
+import RecepProductCreate from "./page/employee/Receptionist/productRecep/RecepProductCreate";
+import RecepProductPendingList from "./page/employee/Receptionist/productRecep/productPending/RecepProductPendingList";
+import RecepProductPendingDetail from "./page/employee/Receptionist/productRecep/productPending/RecepProductPendingDetail";
 
 function App() {
   return (
@@ -97,48 +98,32 @@ function App() {
                   element={<RecepCustomerDetail />}
                 />
 
-
                 <Route path="products" element={<RecepProductList />} />
-                <Route
-                  path="products/pending"
-                  element={<RecepProdcutWaitingRepairList />}
-                />           
-                <Route
-                  path="products/pending/:productId"
-                  element={<RecepProdcutWaitingRepairDetail />}
-                />
-                <Route
-                  path="register/:productId"
-                  element={<RecepRegisterInformationEngineerProduct />}
-                />
-                <Route
-                  path="product/:productId"
-                  element={<RecepProductDetail />}
-                />
-                <Route
-                  path="products/create/:customerId"
-                  element={<RecepProductCreate />}
-                />
+                <Route path="products/create/:customerId" element={<RecepProductCreate />} />
+                <Route path="product-waiting-repair" element={<RecepProdcutWaitingRepairList />} />
+                <Route path="product-register-engineer/:productId" element={<RecepRegisterInformationEngineerProduct />} />
+                <Route path="product-waiting-engineer" element={<RecepProductWaitingEngineerList />} />
+                <Route path="product-waiting-engineer/:productId" element={<RecepProductWaitingEngineerDetail />} />
+                <Route path="product-register-guarantee" element={<RecepProductWaitingRegisterGuaranteeList />} />
+                <Route path="product-register-guarantee/:productId" element={<RecepProductWaitingRegisterGuaranteeDetail />} />
+                <Route path="products/pending" element={<RecepProductPendingList />} />
+                <Route path="products/pending/:productId" element={<RecepProductPendingDetail />} />
+
+
+
+
+
 
 
 
 
 
                 <Route path="bills" element={<RecepBillList />} />
-                <Route path="bill/create" element={<RecepBillCreate />} />
                 <Route path="bill/:productId" element={<RecepBillDetail />} />
                 <Route path="search" element={<RecepSearchHistoryProduct />} />
-              
 
-                <Route
-                  path="guarantee/create"
-                  element={<RecepGuaranteeCreate />}
-                />
-                <Route path="guarantees" element={<RecepGuranteeList />} />
-                <Route
-                  path="guarantee/create/:productId"
-                  element={<RecepGuranteeDetail />}
-                />
+
+                <Route path="guarantees" element={<RecepGuranteeList />} />              
               </Route>
 
               {/* các đường dẫn còn lại */}
@@ -217,13 +202,12 @@ function App() {
             </Route>
 
             <Route path="warranty">
-              {/* trang nhân viên kho */}
               <Route
                 element={<AuthorizeRoutes requireRoles={["NHANVIENBAOHANH"]} />}
               >
                 <Route index element={<WarranttyEmployeePage />} />
                 <Route
-                  path="product/create/:customerId"
+                  path="product/create/:productId"
                   element={<WarrantyProductCreate />}
                 />
                 <Route
@@ -245,6 +229,7 @@ function App() {
                   element={<WarrantyBillCreate />}
                 />
                 <Route path="bills" element={<WarrantyBillList />} />
+
 
                 <Route path="customeries" element={<WarrantyCustomerList />} />
 
@@ -313,7 +298,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route path="/" element={<Customer />} />
-    
+
 
         {/* test layout moi */}
 

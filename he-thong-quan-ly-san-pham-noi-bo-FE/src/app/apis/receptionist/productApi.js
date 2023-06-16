@@ -29,16 +29,21 @@ export const productApi = createApi ({
         }),
         // cập nhât thông tin nhân viên sửa chữa
         updateEngineerInformationByProduct: builder.mutation ({
-            query: (data) => ({
-                url: "update-product",
+            query: ({id,...data}) => ({
+                url: `update-product/${id}`,
                 method: "PUT",
                 body: data
             }),
             invalidatesTags: ['Receptionist'],
         }),
-        // lấy sản phẩm status = ok
-        getPageProductStatusOK: builder.query ({
-            query: ({page, pageSize, term}) => `product-ok?page=${page}&pageSize=${pageSize}&term=${term}`,
+        // lấy sản phẩm ok chờ trả khách
+        findProductWaitingReturnCustomerAll: builder.query ({
+            query: ({page, pageSize, term}) => `products-return-customer?page=${page}&pageSize=${pageSize}&term=${term}`,
+            providesTags: ['Receptionist'],
+        }),
+        // danh sách sản phẩm chờ đăng ký bảo hành
+        findProductWaitingRegisterGuaranteeAll: builder.query ({
+            query: ({page, pageSize, term}) => `products-register-guarantee?page=${page}&pageSize=${pageSize}&term=${term}`,
             providesTags: ['Receptionist'],
         }),
         // lấy tìm kiếm lịch sử sản phẩm
@@ -55,12 +60,15 @@ export const productApi = createApi ({
             }),
             invalidatesTags: ['Receptionist'],
         }),
+        findProductRepaiedById: builder.query ({
+            query: (id) => `product-repaired/${id}`,
+            providesTags: ['Receptionist'],
+        }),
         // tạo hóa đơn mới
         createBill: builder.mutation({
-            query: (data) => ({
-                url: "create-bill",
+            query: (id) => ({
+                url: `create-bill/${id}`,
                 method: "POST",
-                body: data,
             }),
             invalidatesTags: ['Receptionist'],
         }),
@@ -84,26 +92,32 @@ export const productApi = createApi ({
                 body: data
             }),
             invalidatesTags: ['Receptionist'],
-        }),
-        getProductByIme: builder.query ({
-            query: ({ime}) => `product?ime=${ime}`,
-            providesTags: ['Receptionist'],
-        }),
+        }),     
         createNewGuarantee: builder.mutation ({
-            query: (data) => ({
-                url: "guarantee/create",
+            query: (id) => ({
+                url: `guarantee/create/${id}`,
                 method: "POST",
-                body: data,
             }),
             invalidatesTags: ['Receptionist'],
         }),
         findGuaranteeAll: builder.query ({
             query: ({page, pageSize, term}) => `guarantees?page=${page}&pageSize=${pageSize}&term=${term}`,
             providesTags: ['Receptionist'],
+        }),  
+        findProductFinishByUserRegister: builder.query ({
+            query: ({page, pageSize, term}) => `products-finish?page=${page}&pageSize=${pageSize}&term=${term}`,
+            providesTags: ['Receptionist'],    
         }),
-        getProductAndCustomerById: builder.query ({
-            query: (id) => `product-customer/${id}`,
+        findProductPendingInShop: builder.query ({
+            query: ({page, pageSize, term}) =>  `pending/products?page=${page}&pageSize=${pageSize}&term=${term}`,
             providesTags: ['Receptionist'],
+        }),
+        deleteProductById: builder.mutation ({
+            query: (id) => ({
+                url: `product/${id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ['Receptionist'],
         }),
     }),
 });;
@@ -112,16 +126,19 @@ export const {
     useFindProductWaitingRepairAllQuery,
     useGetProductByIdQuery,
     useUpdateEngineerInformationByProductMutation,
-    useLazyGetPageProductStatusOKQuery,
+    useLazyFindProductWaitingReturnCustomerAllQuery,
+    useLazyFindProductWaitingRegisterGuaranteeAllQuery,
     useSearchHistoryProductByTermQuery,
     useCreateProductMutation,
+    useFindProductRepaiedByIdQuery,
     useCreateBillMutation,
     useGetBillByIdQuery,
     useGetListBillAllQuery,
-    useGetListProductsPendingQuery,
+    useLazyGetListProductsPendingQuery,
     useUpdateEngineerProductByIdMutation,
-    useLazyGetProductByImeQuery,
     useCreateNewGuaranteeMutation,
     useFindGuaranteeAllQuery,
-    useGetProductAndCustomerByIdQuery
+    useLazyFindProductFinishByUserRegisterQuery,
+    useLazyFindProductPendingInShopQuery,
+    useDeleteProductByIdMutation
 } = productApi;

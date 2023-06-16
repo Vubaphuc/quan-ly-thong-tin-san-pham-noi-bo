@@ -105,10 +105,10 @@ public class ProductManageService {
             product.setPhoneCompany(request.getPhoneCompany());
             product.setOutputDate(LocalDateTime.now());
             product.setPrice(request.getPrice());
-            product.setCharge(request.isCharge());
+//
             product.setRepair(request.isRepair());
             product.setDefectName(request.getDefectName());
-            product.setIME(request.getIme());
+            product.setIme(request.getIme());
             product.setNote(request.getNote());
             product.setLocation(request.getLocation());
 
@@ -124,10 +124,10 @@ public class ProductManageService {
             product.setComponents(components);
             product.setPhoneCompany(request.getPhoneCompany());
             product.setPrice(request.getPrice());
-            product.setCharge(request.isCharge());
+//
             product.setRepair(request.isRepair());
             product.setDefectName(request.getDefectName());
-            product.setIME(request.getIme());
+            product.setIme(request.getIme());
             product.setNote(request.getNote());
             product.setLocation(request.getLocation());
 
@@ -137,7 +137,7 @@ public class ProductManageService {
 
         return new StatusResponse(HttpStatus.OK,
                 "Update product success",
-                DataMapper.toDataResponse(product.getId(), product.getIME(), product.getCustomer().getFullName()));
+                DataMapper.toDataResponse(product.getId(), product.getIme(), product.getCustomer().getFullName()));
     }
 
     // xóa sản phẩm theo id
@@ -155,6 +155,6 @@ public class ProductManageService {
 
         return new StatusResponse(HttpStatus.NO_CONTENT,
                 "Delete product success",
-                DataMapper.toDataResponse(product.getId(), product.getIME(), product.getCustomer().getFullName()));
+                DataMapper.toDataResponse(product.getId(), product.getIme(), product.getCustomer().getFullName()));
     }
 }

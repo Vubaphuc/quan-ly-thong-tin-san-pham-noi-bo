@@ -1,13 +1,10 @@
 import * as yup from "yup";
 
 export const warrantyProductCreateChargeSchema = yup.object({
-  customerId: yup
+  productId: yup
     .number()
     .required("số lượng không được để trống")
     .integer("số lượng phải là số nguyên"),
-  phoneCompany: yup.string().required("Hãng sản xuất không được để trống"),
-  model: yup.string().required("Dòng máy không được để trống"),
-  ime: yup.string().required("Số IME không được để trống"),
   defectName: yup.string().required("Mô tả lỗi không được để trống"),
   price: yup
     .number()
@@ -16,13 +13,10 @@ export const warrantyProductCreateChargeSchema = yup.object({
 });
 
 export const warrantyProductCreateNoChargeSchema = yup.object({
-  customerId: yup
+  productId: yup
     .number()
     .required("số lượng không được để trống")
     .integer("số lượng phải là số nguyên"),
-  phoneCompany: yup.string().required("Hãng sản xuất không được để trống"),
-  model: yup.string().required("Dòng máy không được để trống"),
-  ime: yup.string().required("Số IME không được để trống"),
   defectName: yup.string().required("Mô tả lỗi không được để trống"),
 });
 

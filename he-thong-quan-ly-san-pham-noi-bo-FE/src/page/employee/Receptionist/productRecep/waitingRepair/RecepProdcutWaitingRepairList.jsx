@@ -1,39 +1,46 @@
 import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import { useGetListProductsPendingQuery } from "../../../../../app/apis/receptionist/productApi";
+import { useFindProductWaitingRepairAllQuery } from "../../../../../app/apis/receptionist/productApi";
+import { getStatusLabel } from "../../../../formHTML/enum";
 
 function RecepProdcutWaitingRepairList() {
   const [term, setTerm] = useState("");
   const [page, setPage] = useState(0);
+
   const { data: productData, isLoading: productLoading } =
-    useGetListProductsPendingQuery({
+    useFindProductWaitingRepairAllQuery({
       page: page + 1,
       pageSize: 10,
       term: term,
     });
+
   if (productLoading) {
     return <h2>Loading...</h2>;
   }
+
   console.log(productData);
+
   const handlePageClick = (page) => {
     setPage(page.selected);
   };
-  const handleChaneNameCustomer = (e) => {
-    setTerm(e.target.value);
-  };
+
+
+
+
   return (
     <>
       <section className="content">
         <div className="container-fluid">
-          <div className="row py-2"></div>
+          <div className="row py-2">
+          </div>
           <div className="search-container">
             <input
               className="input-search mb-4"
               type="text"
               placeholder="Tìm kiếm sản phẩm..."
               value={term}
-              onChange={handleChaneNameCustomer}
+              onChange={(e) =>  setTerm(e.target.value)}
             />
           </div>
           <div className="search-results mt-3">
@@ -49,17 +56,15 @@ function RecepProdcutWaitingRepairList() {
                             <th>Hãng Điện Thoại</th>
                             <th>Số IME</th>
                             <th>Tên Lỗi</th>
-                            <th>Mã Nhân Viên Sửa</th>
-                            <th>Tên Nhân Viên Sửa</th>
                             <th>Trạng Thái</th>
                           </tr>
                         </thead>
                         <tbody>
                           {productData.data.map((product) => (
-                            <tr key={product.productId}>
+                            <tr key={product.id}>
                               <td>
                                 <Link
-                                  to={`/employee/receptionist/products/pending/${product.productId}`}
+                                  to={`/employee/receptionist/product-register-engineer/${product.id}`}
                                   className="text-decoration-none"
                                 >
                                   {product.nameModel}
@@ -67,7 +72,7 @@ function RecepProdcutWaitingRepairList() {
                               </td>
                               <td>
                                 <Link
-                                  to={`/employee/receptionist/products/pending/${product.productId}`}
+                                  to={`/employee/receptionist/product-register-engineer/${product.id}`}
                                   className="text-decoration-none"
                                 >
                                   {product.phoneCompany}
@@ -75,10 +80,8 @@ function RecepProdcutWaitingRepairList() {
                               </td>
                               <td>{product.ime}</td>
                               <td>{product.defectName}</td>
-                              <td>{product.engineerCode}</td>
-                              <td>{product.engineerName}</td>
                               <td>
-                                {product.status === true ? "OK" : "PENDING"}
+                                {getStatusLabel(product.status)}
                               </td>
                             </tr>
                           ))}

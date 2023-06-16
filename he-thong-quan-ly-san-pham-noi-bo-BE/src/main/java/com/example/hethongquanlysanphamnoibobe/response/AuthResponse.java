@@ -1,7 +1,7 @@
 package com.example.hethongquanlysanphamnoibobe.response;
 
 
-import com.example.hethongquanlysanphamnoibobe.dto.UserDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

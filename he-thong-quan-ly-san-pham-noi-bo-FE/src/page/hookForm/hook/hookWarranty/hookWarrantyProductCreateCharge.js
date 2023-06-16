@@ -17,6 +17,7 @@ const hookWarrantyProductCreateCharge = () => {
     });
 
     const onProdcutCreateCharge = (data) => {
+        console.log(data)
         createProductCharge(data)
         .unwrap()
         .then(() => {

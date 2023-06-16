@@ -10,10 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateProductNoChargeRequest {
-    private Integer customerId;
-    private String phoneCompany;
-    private String model;
-    private String ime;
+    private Integer productId;
     private String note;
     private String defectName;
 }

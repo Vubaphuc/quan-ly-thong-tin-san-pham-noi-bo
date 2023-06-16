@@ -1,7 +1,7 @@
 package com.example.hethongquanlysanphamnoibobe.service.warehouseemployeeservice;
 
-import com.example.hethongquanlysanphamnoibobe.dto.HistoryOrderMaterialDto;
-import com.example.hethongquanlysanphamnoibobe.dto.OrderMaterialDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.HistoryOrderMaterialDto;
+import com.example.hethongquanlysanphamnoibobe.dto.dto.OrderMaterialDto;
 import com.example.hethongquanlysanphamnoibobe.dto.page.PageDto;
 import com.example.hethongquanlysanphamnoibobe.request.ApproveOrderMaterialRequest;
 import com.example.hethongquanlysanphamnoibobe.entity.Material;

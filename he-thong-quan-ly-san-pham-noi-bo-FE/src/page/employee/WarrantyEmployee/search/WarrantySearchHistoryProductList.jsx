@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useLazyGetListHistoryProductByIMEQuery } from "../../../../app/apis/warrantyEmployee/warrantyEmployeeApi";
+import { useLazyFindHistoryProductRepairShopQuery } from "../../../../app/apis/warrantyEmployee/warrantyEmployeeApi";
+import { getStatusLabel } from "../../../formHTML/enum";
+import { Link } from "react-router-dom";
 
 function WarrantySearchHistoryProductList() {
-  const [ime, setIme] = useState("");
+  const [term, setTerm] = useState("");
 
-  const [getProductList, { data: productData, isLoading: productLoading }] =
-    useLazyGetListHistoryProductByIMEQuery();
+  const [getProduct, { data: productData, isLoading: productLoading }] =
+    useLazyFindHistoryProductRepairShopQuery();
+
+    useEffect(() => {
+      getProduct({
+        page: 1,
+        pageSize: 10,
+        term: term
+      })
+    }, [term])
 
   if (productLoading) {
     return <h2>Loading...</h2>;
   }
-
-  console.log(ime);
-
-  const handleClickTerm = () => {
-    getProductList({
-      ime: ime,
-    });
-  };
 
   console.log(productData);
 
@@ -32,21 +34,9 @@ function WarrantySearchHistoryProductList() {
                   type="text"
                   className="form-control warranty-input"
                   placeholder="Nhập từ khóa"
-                  onBlur={(e) => setIme(e.target.value)}
+                  onChange={(e) => setTerm(e.target.value)}
                 />
-              </div>
-
-              <div className="col-md-5">
-                <div className="input-group-append">
-                  <button
-                    className="btn btn-primary search-button mb-3"
-                    type="button"
-                    onClick={handleClickTerm}
-                  >
-                    Tìm kiếm
-                  </button>
-                </div>
-              </div>
+              </div>            
             </div>
           </div>
         </div>
@@ -54,11 +44,12 @@ function WarrantySearchHistoryProductList() {
       <section className="content">
         <div className="container-fluid">
           <div className="search-results mt-3">
-            {productData && productData.length > 0 ? (
+            {productData && productData.data.length > 0 ? (
               <div>
                 <table className="table table-bordered table-hover">
                   <thead>
                     <tr>
+                      <th>Action</th>
                       <th>Mã Điện Thoại</th>
                       <th>Model</th>
                       <th>Hãng Điện Thoại</th>
@@ -89,35 +80,43 @@ function WarrantySearchHistoryProductList() {
                     </tr>
                   </thead>
                   <tbody>
-                    {productData?.map((product) => (
+                    {productData.data.map((product) => (
                       <tr key={product?.id}>
+                        <td>
+                          <Link 
+                            to={`/employee/warranty/product/create/${product.id}`}
+                            className="btn btn-success"
+                          >
+                            Guarantee
+                          </Link>
+                          </td>
                         <td>{product.id ? product.id : ""}</td>   
                         <td>{product.nameModel ? product.nameModel : ""}</td>
                         <td>{product.phoneCompany ? product.phoneCompany : ""}</td>
                         <td>{product.ime ? product.ime : ""}</td>
                         <td>{product.defectName ? product.defectName : ""}</td>
-                        <td>{product.status ? "OK" : "PENDING"}</td>
+                        <td>{getStatusLabel(product.status)}</td>
                         <td>{product.price ? product.price : ""}</td>
                         <td>{product.repair ? "Bảo Hành" : "Sản Phẩm Mới"}</td>
                         <td>{product.charge ? "Tính Phí" : "Không Tính Phí"}</td>
                         <td>{product.inputDate ? new Date(product.inputDate).toLocaleDateString() : ""}</td>
-                        <td>{product.receptionistCode ? product.receptionistCode : ""}</td>
-                        <td>{product.receptionistName ? product.receptionistName : ""}</td>
+                        <td>{product.receptionists ? product.receptionists.employeeCode : ""}</td>
+                        <td>{product.receptionists ? product.receptionists.employeeName : ""}</td>
                         <td>{product.transferDate ? new Date(product.transferDate).toLocaleDateString() : ""}</td>
-                        <td>{product.engineerCode ? product.engineerCode : ""}</td>
-                        <td>{product.engineerName ? product.engineerName : ""}</td>
+                        <td>{product.engineer ? product.engineer.employeeCode : ""}</td>
+                        <td>{product.engineer ? product.engineer.employeeName : ""}</td>
                         <td>{product.location ? product.location : ""}</td>
                         <td>{product.note ? product.note : ""}</td>
                         <td>{product.outputDate ? new Date(product.outputDate).toLocaleDateString() : ""}</td>
-                        <td>{product.productPayerCode ? product.productPayerCode : ""}</td>
-                        <td>{product.productPayerName ? product.productPayerName : ""}</td>
+                        <td>{product.productPayer ? product.productPayer.employeeCode : ""}</td>
+                        <td>{product.productPayer ? product.productPayer.employeeName : ""}</td>
                         <td>{product.finishDate ? new Date(product.finishDate).toLocaleDateString() : ""}</td>
-                        <td>{product.customerName ? product.customerName : ""}</td>
-                        <td>{product.customerEmail ? product.customerEmail : ""}</td>
-                        <td>{product.customerPhone ? product.customerPhone : ""}</td>
-                        <td>{product.componentName ? product.componentName : ""}</td>
-                        <td>{product.componentsWarrantyPeriod ? product.componentsWarrantyPeriod : ""}</td>
-                        <td>{product.guaranteeCode ? product.guaranteeCode : ""}</td>
+                        <td>{product.customer ? product.customer.fullName : ""}</td>
+                        <td>{product.customer ? product.customer.email : ""}</td>
+                        <td>{product.customer ? product.customer.phoneNumber : ""}</td>
+                        <td>{product.components ? product.components.name : ""}</td>
+                        <td>{product.components ? product.components.warrantyPeriod : ""}</td>
+                        <td>{product.guarantees ? product.guarantees.map((guarantee) => guarantee.guaranteeCode).join(",") : ""}</td>
                       </tr>
                     ))}
                   </tbody>

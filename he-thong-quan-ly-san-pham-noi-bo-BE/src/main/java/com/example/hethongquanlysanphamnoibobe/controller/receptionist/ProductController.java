@@ -27,19 +27,27 @@ public class ProductController {
     }
 
     // cập nhật thông tin nhân viên sửa chữa
-    @PutMapping("update-product")
-    public ResponseEntity<?> updateEngineerInformationByProduct(@RequestBody InformationEngineerRequest request) {
-
-        return ResponseEntity.ok(productService.updateEngineerInformationByProduct(request));
+    @PutMapping("update-product/{id}")
+    public ResponseEntity<?> updateEngineerInformationByProduct(@RequestBody InformationEngineerRequest request,@PathVariable Integer id) {
+        return ResponseEntity.ok(productService.updateEngineerInformationByProduct(request, id));
     }
 
+    ///////////////////////////////////////////////////////////////////////
+
     // lấy ra danh sách sản phẩm sửa ok
-    @GetMapping("product-ok")
-    public ResponseEntity<?> getPageProductStatusOK(
+    @GetMapping("products-return-customer")
+    public ResponseEntity<?> findProductWaitingReturnCustomerAll(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "") String term) {
-        return ResponseEntity.ok(productService.getPageProductStatusOK(page, pageSize,term));
+        return ResponseEntity.ok(productService.findProductWaitingReturnCustomerAll(page, pageSize,term));
+    }
+
+    @GetMapping("products-register-guarantee")
+    public ResponseEntity<?> findProductWaitingRegisterGuaranteeAll(@RequestParam(defaultValue = "1") int page,
+                                                                    @RequestParam(defaultValue = "10") int pageSize,
+                                                                    @RequestParam(defaultValue = "") String term) {
+        return ResponseEntity.ok(productService.findProductWaitingRegisterGuaranteeAll(page,pageSize,term));
     }
 
     @GetMapping("product-history")
@@ -55,11 +63,44 @@ public class ProductController {
         return ResponseEntity.ok(productService.createProduct(requet));
     }
 
-    @PostMapping("create-bill")
-    public ResponseEntity<?> createBill(@RequestBody CreateBillRequest requet) {
-        return ResponseEntity.ok(productService.createBill(requet));
+    // thay đổi người sửa chữa
+    @PutMapping("product/pending/{id}")
+    public ResponseEntity<?> updateEngineerProductPending (@RequestBody UpdateInformationEngineerRequest request, @PathVariable Integer id) {
+        return ResponseEntity.ok(productService.updateEngineerProductPending(request, id));
     }
 
+    // danh sách sản phẩm đang pending chỗ người sửa chữa
+    @GetMapping("products/pending")
+    public ResponseEntity<?> getListProductsPending(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "") String term) {
+        return ResponseEntity.ok(productService.getListProductsPending(page, pageSize, term));
+    }
+
+
+    // lấy sản phẩm chờ trả khách theo id
+    @GetMapping("product-repaired/{id}")
+    public ResponseEntity<?> findProductRepaiedById(@PathVariable Integer id) {
+        return ResponseEntity.ok(productService.findProductRepaiedById(id));
+    }
+    // lấy danh sách sản phẩm đang pending trong cửa hàng
+    @GetMapping("pending/products")
+    public ResponseEntity<?> findProductPendingInShop ( @RequestParam(defaultValue = "1") int page,
+                                                        @RequestParam(defaultValue = "10") int pageSize,
+                                                        @RequestParam(defaultValue = "") String term) {
+        return ResponseEntity.ok(productService.findProductPendingInShop(page,pageSize,term));
+    }
+
+    // hủy sản phẩm trả khách
+    @DeleteMapping("product/{id}")
+    public ResponseEntity<?> deleteProductById(@PathVariable Integer id) {
+        return ResponseEntity.ok(productService.deleteProductById(id));
+    }
+
+
+
+    //////////////////////////////////////////////
     @GetMapping("product/bill/{id}")
     public ResponseEntity<?> getBillById(@PathVariable Integer id) {
         return ResponseEntity.ok(productService.getBillById(id));
@@ -73,36 +114,12 @@ public class ProductController {
         return ResponseEntity.ok(productService.getListBillAll(page,pageSize,term));
     }
 
-    @GetMapping("product")
-    public ResponseEntity<?> getProductByIme(@RequestParam(defaultValue = "") String ime) {
-        return ResponseEntity.ok(productService.getProductByIme(ime));
-    }
-
-    @GetMapping("product-customer/{id}") ///
-    public ResponseEntity<?> getProductAndCustomerById(@PathVariable Integer id) {
-        return ResponseEntity.ok(productService.getProductAndCustomerById(id));
-    }
 
     // đăng ký bảo hành cho sản phẩm
-    @PostMapping("guarantee/create")
-    public ResponseEntity<?> createNewGuarantee (@RequestBody CreateGuaranteeRequest request) {
-        return ResponseEntity.ok(productService.createNewWarranty(request));
+    @PostMapping("guarantee/create/{id}")
+    public ResponseEntity<?> createNewGuarantee (@PathVariable Integer id) {
+        return ResponseEntity.ok(productService.createNewWarranty(id));
     }
-    // danh sách sản phẩm đang pending chỗ người sửa chữa
-    @GetMapping("products/pending")
-    public ResponseEntity<?> getListProductsPending(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int pageSize,
-            @RequestParam(defaultValue = "") String term) {
-        return ResponseEntity.ok(productService.getListProductsPending(page, pageSize, term));
-    }
-
-    // thay đổi người sửa chữa
-    @PutMapping("product/pending/{id}")
-    public ResponseEntity<?> updateEngineerProductPending (@RequestBody UpdateInformationEngineerRequest request, @PathVariable Integer id) {
-        return ResponseEntity.ok(productService.updateEngineerProductPending(request, id));
-    }
-
 
     // lấy danh sách sách hóa đơn
     @GetMapping("guarantees")
@@ -111,5 +128,17 @@ public class ProductController {
                                               @RequestParam(defaultValue = "") String term) {
         return ResponseEntity.ok(productService.findGuaranteeAll(page,pageSize, term));
     }
+    @PostMapping("create-bill/{id}")
+    public ResponseEntity<?> createBill(@PathVariable Integer id) {
+        return ResponseEntity.ok(productService.createBill(id));
+    }
+
+    @GetMapping("products-finish")
+    public ResponseEntity<?> findProductFinishByUserRegister(@RequestParam(defaultValue = "1") int page,
+                                                             @RequestParam(defaultValue = "10") int pageSize,
+                                                             @RequestParam(defaultValue = "")String term) {
+        return ResponseEntity.ok(productService.findProductFinishByUserRegister(page,pageSize,term));
+    }
+
 
 }

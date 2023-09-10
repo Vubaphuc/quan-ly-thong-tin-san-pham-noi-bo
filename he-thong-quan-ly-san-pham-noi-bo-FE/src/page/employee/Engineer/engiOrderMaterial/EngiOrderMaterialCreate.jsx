@@ -69,7 +69,6 @@ function EngiOrderMaterialCreate() {
                             type="text"
                             className="form-control"
                             defaultValue={materialData?.componentName}
-                            {...register("componentsName")}
                             readOnly
                           />
                         </div>

@@ -85,7 +85,7 @@ function EmployeeManageList() {
                                                                 <td>{employee?.phoneNumber}</td>
                                                                 <td>{employee?.email}</td>
                                                                 <td>{employee.address}</td>
-                                                                <td> {employee.roles.map((role) => role.name).join(", ")}</td>
+                                                                <td>{employee.roles.map((role) => role.name).join(", ")}</td>
                                                                 <td>{employee.enabled ? "Đang Hoạt Động" : "Đã Khóa"}</td>
                                                             </tr>
                                                         ))}

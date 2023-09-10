@@ -1,6 +1,6 @@
 export const getPart = (roles) => {
-    if(!roles) {
-      return [];
+    if (!roles) {
+        return [];
     }
     return roles.map((role) => {
         if (role.name === "NHANVIENLETAN") {
@@ -15,4 +15,4 @@ export const getPart = (roles) => {
             return "";
         }
     });
-  }
+}

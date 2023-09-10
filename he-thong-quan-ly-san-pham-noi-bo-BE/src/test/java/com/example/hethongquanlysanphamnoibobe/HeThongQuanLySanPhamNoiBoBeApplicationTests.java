@@ -213,11 +213,6 @@ class HeThongQuanLySanPhamNoiBoBeApplicationTests {
     @Test
     void save_material () {
 
-
-
-
-
-
         List<Vendor> vendors = vendorRepository.findAll();
         List<Components> components = componentsRepository.findAll();
 

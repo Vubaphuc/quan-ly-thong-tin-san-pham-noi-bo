@@ -35,6 +35,8 @@ public class StatisticsController {
                                              @RequestParam(defaultValue = "5") Integer pageSize) {
         return ResponseEntity.ok(statisticsService.findProductPendingAlls(page,pageSize));
     }
+
+
     // lấy tổng sản phẩm theo từng nhân viên sửa chữa
     @GetMapping("products-engineer")
     public ResponseEntity<?> findTotalProductByEngineerAll() {
